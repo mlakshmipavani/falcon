@@ -20,5 +20,15 @@
     "mongodb": "^2.0.46",
     "request-promise": "^1.0.2",
     "restify": "^4.0.3"
+  },
+  "devDependencies": {
+    "blanket": "^1.1.9",
+    "chai": "^3.4.0",
+    "chai-as-promised": "^5.1.0",
+    "chai-joi": "^1.1.0",
+    "joi": "^6.9.1",
+    "mocha": "^2.3.3",
+    "supertest": "^1.1.0",
+    "supertest-as-promised": "^2.0.2"
   }
 }

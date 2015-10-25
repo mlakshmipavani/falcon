@@ -37,7 +37,10 @@ class RegistrationController {
           if (user.name !== name) UserDao.updateName(user._id.toString(), name);
           return user._id.toString();
         })
-        .then((token) => ContactSyncController.sync());
+        .then((token) => {
+          ContactSyncController.sync();
+          return {token: token, registered: {}, unRegistered: {}};
+        });
 
     });
   }

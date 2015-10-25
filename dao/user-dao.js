@@ -21,7 +21,7 @@ class UserDao {
     let options = {upsert: true, returnOriginal: false};
     return DaoHelper.user.findOneAndUpdate(findUserObj, {$setOnInsert: newUserObj}, options)
       .then((resultObj) => {
-        if (resultObj.value)
+        if (!resultObj.value)
           throw new Error(`value is undefined while creating new user,
             resultObj : ${JSON.stringify(resultObj)}`);
         return resultObj.value;
