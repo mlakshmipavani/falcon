@@ -1,0 +1,24 @@
+{
+  "name": "falconv2",
+  "version": "1.0.0",
+  "description": "A restful server for Yolo-Messenger",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/stayyolo/falconv2.git"
+  },
+  "author": "StayYolo (hello@stayyolo.com)",
+  "private": true,
+  "homepage": "https://bitbucket.org/stayyolo/falconv2#readme",
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "bunyan": "^1.5.1",
+    "google-libphonenumber": "^1.0.7",
+    "mongodb": "^2.0.46",
+    "request-promise": "^1.0.2",
+    "restify": "^4.0.3"
+  }
+}
