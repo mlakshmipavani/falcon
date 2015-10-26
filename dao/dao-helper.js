@@ -7,18 +7,27 @@ var config = require('../config/config');
 var log = require('../utils/logger');
 
 mongodb.MongoClient.connect(config.mongoUrl, {promiseLibrary: Promise})
-  .then((db) => connected(db))
+  .then((db) => DaoHelper.connected(db))
   .catch((err) => log.fatal(`Error connecting to mongodb : ${err}`));
 
 /**
- * @param {Db} db
+ * Helper that wraps the collections and MongoDb object
  */
-function connected(db) {
-  // initialize the global db object
-  exports.db = db;
+class DaoHelper {
 
-  //noinspection JSCheckFunctionSignatures
-  /** @type {Collection} */
-  exports.user = db.collection('user');
+  /**
+   * @param {Db} db
+   */
+  static connected(db) {
+    // initialize the global db object
+    exports.db = db;
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.user = db.collection('user');
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.unRegistered = db.collection('unregistered');
+  }
 }
-

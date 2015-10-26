@@ -15,9 +15,9 @@ class RegistrationController {
    * Registers and syncs contacts
    * @param {string} name
    * @param {string} countryISO
-   * @param contacts
+   * @param {object} contacts Example : { '917405484154': 'Parth', '919108648284': 'Airtel jaydp' }
    * @param {object} requestOptions
-   * @returns {Promise<string>} token is returned
+   * @returns {Promise<{token, registered, unRegistered}>}
    */
   static register(name, countryISO, contacts, requestOptions) {
 
@@ -38,8 +38,8 @@ class RegistrationController {
           return user._id.toString();
         })
         .then((token) => {
-          ContactSyncController.sync();
-          return {token: token, registered: {}, unRegistered: {}};
+          return ContactSyncController.sync(mobNumber, contacts, countryISO)
+            .then(result => Object.assign({token}, result));
         });
 
     });
