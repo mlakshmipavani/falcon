@@ -1,5 +1,7 @@
 --ui bdd
+--reporter spec
 --require test/support/setup
---no-colors
 --bail
 --check-leaks
+--full-trace
+--recursive
