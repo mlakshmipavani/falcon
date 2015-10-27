@@ -6,6 +6,7 @@
 class User {
 
   /**
+   * @constructor
    * @param {Object} userHashObj  A hash containing the user properties
    */
   constructor(userHashObj) {

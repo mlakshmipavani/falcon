@@ -47,12 +47,47 @@ describe('UserDao', () => {
       });
   });
 
-  it('finds registered users from a list');
+  it('finds registered users from a list', () => {
+    var numbers = [user1, user2, user3].map((/* User */ user) => user.mobNumber);
+    return UserDao.findRegistered(numbers).should.eventually.deep.equal([user1.mobNumber]);
+  });
 
-  it('should add him as friend');
+  it('should add him as friend', () => {
+    // first create a new user
+    return UserDao.newUser(user2.mobNumber, user2.name, countryIso)
+      .then(() => {
+        // actual test
+        let numbers = [user1.mobNumber, user2.mobNumber];
+        return UserDao.friendsAddHim(user3.mobNumber, numbers)
+          .then(() => {
+            let query = {mobNumber: {$in: numbers}};
+            return DaoHelper.user.find(query).toArray()
+              .then((/* Array<User> */ docs) => {
+                for (let user of docs) {
+                  user.friends.should.have.length(1);
+                  user.friends[0].should.equal(user3.mobNumber);
+                }
+              });
+          });
+      });
+  });
 
-  it('should add contacts');
+  it('should add contacts', () => {
+    var numbers = [user2.mobNumber, user3.mobNumber];
+    return UserDao.addContacts(user1.mobNumber, numbers)
+      .then(() => {
+        return DaoHelper.user.find({mobNumber: user1.mobNumber}).limit(1).next()
+          .then((/* User */ user) => user.contacts.should.deep.equal(numbers));
+      });
+  });
 
-  it('updates name');
+  it('updates name', () => {
+    var latestName = 'Latest Jaydeep';
+    return UserDao.updateName(user1.mobNumber, latestName)
+      .then(() => {
+        return DaoHelper.user.find({mobNumber: user1.mobNumber}).limit(1).next()
+          .then((/* User */ user) => user.name.should.equal(latestName));
+      });
+  });
 
 });

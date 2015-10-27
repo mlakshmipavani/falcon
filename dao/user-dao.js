@@ -23,12 +23,12 @@ class UserDao {
     return UserDao.updateName(mobNumber, name)
 
       // if the user exists then the nModified count will be 1}
-      .then(op => {
-        if (!op.value)
+      .then(updatedUser => {
+        if (!updatedUser)
           return _newUser(mobNumber, name, countryCode)
             .then(result => result.ops[0]);
         else
-          return op.value;
+          return updatedUser;
       });
   }
 
@@ -110,7 +110,8 @@ class UserDao {
     var query = {mobNumber};
     var update = {name: newName};
     var options = {returnOriginal: false};
-    return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options);
+    return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
+      .then(op => op.value);
   }
 }
 
