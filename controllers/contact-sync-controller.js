@@ -2,8 +2,14 @@
 
 var _obj = require('lodash/object');
 var libPhoneNumber = require('google-libphonenumber');
+
+//noinspection JSUnresolvedVariable
 var phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
+
+//noinspection JSUnresolvedVariable
 var PhoneNumberType = libPhoneNumber.PhoneNumberType;
+
+//noinspection JSUnresolvedVariable
 var PhoneNumberFormat = libPhoneNumber.PhoneNumberFormat;
 
 var UserDao = require('../dao/user-dao.js');

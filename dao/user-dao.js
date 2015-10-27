@@ -49,7 +49,7 @@ class UserDao {
     var projection = {mobNumber: 1};
     return DaoHelper.user.find(query, projection).toArray()
 
-      // the above query gives [ { _id: 562d18eeea79079cdf2295ec, mobNumber: '919033819605' }, .. ]
+      // the above query gives [ { _id: 562d18ea7a79079cdf2295ec, mobNumber: '919033819605' }, .. ]
       // and we transform it to [ '919033819605', . . . ]
       .map((obj) => {
         return obj.mobNumber;

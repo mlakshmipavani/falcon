@@ -21,7 +21,7 @@ process.env.NODE_ENV = 'test';
 //  // excludes the below folders
 //  'data-cover-never': ['node_modules', 'test'],
 //  'data-cover-reporter-options': {
-//    // makes sure each file is refered from project root in the report
+//    // makes sure each file is referred from project root in the report
 //    basepath: process.cwd() + '/lib'
 //  }
 //});

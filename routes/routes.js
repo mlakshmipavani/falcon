@@ -19,8 +19,10 @@ class Routes {
     // a simple routes to test server working
     //app.get({path: '/', version: apiVersion.v1}, (req, res) => res.send({text: 'hello'}));
     //app.get({path: '/', version: apiVersion.v2}, (req, res) => res.send({text: 'hello v2'}));
+
+    //noinspection JSUnresolvedFunction
     app.get('/', (req, res)=> {
-      UserDao.newUser('9033819605', 'jaydeep', '91').then(()=> res.send('done created!'));
+      UserDao.newUser('9033819605', 'Jaydeep', '91').then(()=> res.send('done created!'));
     });
 
     RegistrationRoutes.setup(app);

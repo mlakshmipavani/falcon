@@ -2,8 +2,14 @@
 
 var request = require('request-promise');
 var libPhoneNumber = require('google-libphonenumber');
+
+//noinspection JSUnresolvedVariable
 var phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
+
+//noinspection JSUnresolvedVariable
 var PhoneNumberType = libPhoneNumber.PhoneNumberType;
+
+//noinspection JSUnresolvedVariable
 var PhoneNumberFormat = libPhoneNumber.PhoneNumberFormat;
 
 var UserDao = require('../dao/user-dao.js');
@@ -21,6 +27,7 @@ class RegistrationController {
    */
   static register(name, countryISO, contacts, requestOptions) {
 
+    //noinspection JSUnresolvedFunction
     return request(requestOptions).then((oAuthRes) => {
       let mobNumber = oAuthRes.phone_number;// jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 
