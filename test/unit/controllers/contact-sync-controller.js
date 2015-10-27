@@ -4,12 +4,12 @@ var Promise = require('bluebird');
 var mongodb = require('mongodb');
 var _obj = require('lodash/object');
 
-var config = require('../../config/config.js');
-var User = require('../../models/user');
-var DaoHelper = require('../../dao/dao-helper.js');
-var ContactSyncController = require('../../controllers/contact-sync-controller');
-var UserDao = require('../../dao/user-dao.js');
-var UnRegisteredDao = require('../../dao/unregistered-dao.js');
+var config = require('../../../config/config');
+var User = require('../../../models/user');
+var DaoHelper = require('../../../dao/dao-helper');
+var ContactSyncController = require('../../../controllers/contact-sync-controller');
+var UserDao = require('../../../dao/user-dao');
+var UnRegisteredDao = require('../../../dao/unregistered-dao');
 
 describe('ContactSyncController', () => {
 

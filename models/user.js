@@ -38,9 +38,9 @@ class User {
    */
   static getUserHash(mobNumber, name, countryCode) {
     return {
-      mobNumber: mobNumber,
-      name: name,
-      countryCode: countryCode,
+      mobNumber,
+      name,
+      countryCode,
       lastSeen: new Date(),
       online: true,
       live: true,

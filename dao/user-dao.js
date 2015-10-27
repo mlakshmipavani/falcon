@@ -1,5 +1,7 @@
 'use strict';
 
+var ObjectID = require('mongodb').ObjectID;
+
 var DaoHelper = require('./dao-helper');
 var User = require('../models/user');
 var log = require('../utils/logger');
@@ -13,19 +15,20 @@ class UserDao {
    * @param {string} mobNumber
    * @param {string} name
    * @param {string} countryCode
-   * @returns {Promise}
+   * @returns {Promise<User>}
    */
   static newUser(mobNumber, name, countryCode) {
-    var newUserObj = User.getUserHash(mobNumber, name, countryCode);
-    var query = {mobNumber};
-    var update = {$setOnInsert: newUserObj};
-    var options = {upsert: true, returnOriginal: false};
-    return DaoHelper.user.findOneAndUpdate(query, update, options)
-      .then((resultObj) => {
-        if (!resultObj.value)
-          throw new Error(`value is undefined while creating new user,
-            resultObj : ${JSON.stringify(resultObj)}`);
-        return resultObj.value;
+
+    // first try updating the name of the user
+    return UserDao.updateName(mobNumber, name)
+
+      // if the user exists then the nModified count will be 1}
+      .then(op => {
+        if (!op.value)
+          return _newUser(mobNumber, name, countryCode)
+            .then(result => result.ops[0]);
+        else
+          return op.value;
       });
   }
 
@@ -100,12 +103,28 @@ class UserDao {
 
   /**
    * Updates the name of a user
-   * @param {string} _id
+   * @param {string} mobNumber
    * @param {string} newName
    */
-  static updateName(_id, newName) {
-    // TODO : implement method
+  static updateName(mobNumber, newName) {
+    var query = {mobNumber};
+    var update = {name: newName};
+    var options = {returnOriginal: false};
+    return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options);
   }
+}
+
+/**
+ * This function without checking anything just inserts a new user object in db
+ * @param {string} mobNumber
+ * @param {string} name
+ * @param {string} countryCode
+ * @returns {Promise}
+ * @private
+ */
+function _newUser(mobNumber, name, countryCode) {
+  var newUserObj = User.getUserHash(mobNumber, name, countryCode);
+  return DaoHelper.user.insertOne(newUserObj);
 }
 
 module.exports = UserDao;
