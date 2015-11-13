@@ -4,6 +4,7 @@
   "description": "A restful server for Yolo-Messenger",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js | bunyan -o short -l warn",
     "test": "./node_modules/mocha/bin/mocha -c test/ | bunyan -o short -l warn"
   },
   "repository": {
