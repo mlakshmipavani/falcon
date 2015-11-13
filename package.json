@@ -15,7 +15,7 @@
   "private": true,
   "homepage": "https://bitbucket.org/stayyolo/falconv2#readme",
   "dependencies": {
-    "bluebird": "^2.10.2",
+    "bluebird": "3.0.5",
     "bunyan": "^1.5.1",
     "google-libphonenumber": "^1.0.7",
     "lodash": "^3.10.1",
@@ -28,7 +28,7 @@
     "chai": "^3.4.0",
     "chai-as-promised": "^5.1.0",
     "chai-joi": "^1.1.0",
-    "joi": "^6.9.1",
+    "joi": "7.0.0",
     "mocha": "^2.3.3",
     "supertest": "^1.1.0",
     "supertest-as-promised": "^2.0.2"
