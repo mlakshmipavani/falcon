@@ -18,6 +18,7 @@ var app = restify.createServer({
 app.use(restify.bodyParser({
   mapParams: true
 }));
+app.use(restify.gzipResponse());
 
 Routes.setup(app);
 
