@@ -24,6 +24,7 @@
     "google-libphonenumber": "1.0.7",
     "lodash": "3.10.1",
     "mongodb": "2.0.48",
+    "parse": "1.6.9",
     "request-promise": "1.0.2",
     "restify": "4.0.3"
   },
