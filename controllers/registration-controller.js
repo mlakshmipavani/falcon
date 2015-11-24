@@ -33,7 +33,7 @@ class RegistrationController {
 
     //noinspection JSUnresolvedFunction
     return request(requestOptions).then((oAuthRes) => {
-      let mobNumber = oAuthRes.phone_number;// jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+      let mobNumber = oAuthRes.phone_number; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
       return _register(mobNumber, name, contacts);
     });
 
@@ -56,13 +56,15 @@ function _register(mobNumber, name, contacts) {
   mobNumber = mobNumber.substr(1);
 
   return UserDao.newUser(mobNumber, name, countryISO)
-    .then((/* User */ user) => {
+    .then(( /* User */ user) => {
       if (user.name !== name) UserDao.updateName(user._id.toString(), name);
       return user._id.toString();
     })
     .then((token) => {
       return ContactSyncController.sync(mobNumber, contacts, countryISO)
-        .then(result => Object.assign({token}, result));
+        .then(result => Object.assign({
+          token
+        }, result));
     });
 }
 
