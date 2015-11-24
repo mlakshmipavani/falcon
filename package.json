@@ -33,9 +33,13 @@
     "chai": "3.4.1",
     "chai-as-promised": "5.1.0",
     "chai-joi": "1.1.0",
+    "dockerode": "2.2.3",
+    "gulp": "3.9.0",
+    "gulp-util": "3.0.7",
     "joi": "7.0.0",
     "jscs": "2.6.0",
     "mocha": "2.3.3",
+    "require-dir": "0.3.0",
     "supertest": "1.1.0",
     "supertest-as-promised": "2.0.2"
   }
