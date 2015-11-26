@@ -28,6 +28,10 @@ class DaoHelper {
 
     //noinspection JSCheckFunctionSignatures
     /** @type {Collection} */
+    exports.bot = db.collection('bot');
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
     exports.unRegistered = db.collection('unregistered');
   }
 }

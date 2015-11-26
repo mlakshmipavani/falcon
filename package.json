@@ -26,7 +26,9 @@
     "mongodb": "2.0.48",
     "parse": "1.6.9",
     "request-promise": "1.0.2",
-    "restify": "4.0.3"
+    "restify": "4.0.3",
+    "restify-errors": "3.1.0",
+    "restify-validator": "0.3.1"
   },
   "devDependencies": {
     "blanket": "1.1.9",

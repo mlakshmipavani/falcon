@@ -1,6 +1,7 @@
 'use strict';
 
 var restify = require('restify');
+var restifyValidator = require('restify-validator');
 var Promise = require('bluebird');
 
 var Routes = require('./routes/routes');
@@ -18,7 +19,9 @@ var app = restify.createServer({
 app.use(restify.bodyParser({
   mapParams: true
 }));
+app.use(restify.queryParser());
 app.use(restify.gzipResponse());
+app.use(restifyValidator);
 
 Routes.setup(app);
 

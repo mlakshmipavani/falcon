@@ -3,6 +3,7 @@
 var apiVersion = require('../config/api-version');
 var UserDao = require('../dao/user-dao');
 var RegistrationRoutes = require('./registration-routes');
+var BotDiscoveryRoutes = require('./bot-discovery-routes');
 
 /**
  * A single point entry to all the routes in this server
@@ -26,6 +27,7 @@ class Routes {
     });
 
     RegistrationRoutes.setup(app);
+    BotDiscoveryRoutes.setup(app);
   }
 }
 
