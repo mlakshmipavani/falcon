@@ -56,7 +56,7 @@ function _register(mobNumber, name, contacts) {
   mobNumber = mobNumber.substr(1);
 
   return UserDao.newUser(mobNumber, name, countryISO)
-    .then(( /* User */ user) => {
+    .then((/* User */ user) => {
       if (user.name !== name) UserDao.updateName(user._id.toString(), name);
       return user._id.toString();
     })
