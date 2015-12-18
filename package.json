@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=development node app.js | bunyan -o short -l warn",
-    "test": "./node_modules/mocha/bin/mocha -c test/ | bunyan -o short -l warn"
+    "test": "MONGO_URL='mongodb://localhost:27017/stayyolo-test' ./node_modules/mocha/bin/mocha -c test/ | bunyan -o short -l warn"
   },
   "repository": {
     "type": "git",
