@@ -6,10 +6,9 @@ var Promise = require('bluebird');
 
 var Routes = require('./routes/routes');
 var ApiVersion = require('./config/api-version');
-var User = require('./models/user');
-var UserDao = require('./dao/user-dao');
 var config = require('./config/config.js');
 var log = require('./utils/logger');
+var authMiddleware = require('./middlewares/auth-middleware');
 
 var app = restify.createServer({
   name: config.appName,
@@ -21,6 +20,8 @@ app.use(restify.bodyParser({
 }));
 app.use(restify.queryParser());
 app.use(restify.gzipResponse());
+app.use(restify.authorizationParser());
+app.use(authMiddleware());
 app.use(restifyValidator);
 
 Routes.setup(app);

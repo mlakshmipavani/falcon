@@ -51,7 +51,6 @@ describe('BotDao', () => {
     return DaoHelper.bot.insertMany([bt2, bt3, bt4])
       .then(() => {
         return BotDao.getNew(3).then((/* Array<Bot> */bots) => {
-          console.log(bots);
           bots.should.have.length(3);
           bots[0].handle.should.equal(bt4.handle);
           bots[1].handle.should.equal(bt3.handle);

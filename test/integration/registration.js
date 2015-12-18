@@ -9,9 +9,9 @@ var JoiValidate = require('./../support/joi-validate.js');
 
 describe('Registration', () => {
 
-  const PORT = 3000;
+  const PORT = 3050;
 
-  const DIGITS_PORT = 3001;
+  const DIGITS_PORT = 3051;
 
   before(() => {
     return app.listen(PORT)
