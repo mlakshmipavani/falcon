@@ -16,7 +16,7 @@ module.exports = () => {
     if (pathname === '/register') return next();
 
     // if authorization.basic is undefined, return error
-    if (!req.authorization.basic || req.username === 'anonymous') {
+    if (!req.authorization || !req.authorization.basic || req.username === 'anonymous') {
       return ErrorController.notAuthorized(next);
     }
 
