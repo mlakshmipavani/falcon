@@ -53,6 +53,13 @@ class ParseController {
       data: {action: 'com.stayyolo.PUSH.TEST'}
     }, pushCallbacks);
   }
+
+  static sendBotResponse(/* string */ userToken, /* string */ botHandle, /* string */ body, /* string */ msgId) {
+    Parse.Push.send({
+      channels: [`user_${userToken}`],
+      data: {action: 'com.stayyolo.PUSH.BOT_REPLY', botHandle, body, msgId}
+    }, pushCallbacks);
+  }
 }
 
 module.exports = ParseController;

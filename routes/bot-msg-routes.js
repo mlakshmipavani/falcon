@@ -5,6 +5,7 @@ var apiVersion = require('../config/api-version.js');
 var config = require('../config/config.js');
 var ErrorController = require('../controllers/error-controller.js');
 var BotMsgController = require('../controllers/bot-msg-controller.js');
+var UserMsgDao = require('../dao/user-msg-dao.js');
 
 /**
  * A route that forwards a message to the respective bot
@@ -29,11 +30,14 @@ class BotMsgRoutes {
       let body = req.params.body;
       let localId = req.params.localId;
       let mobNumber = req.username;
+      let userToken = req.password;
 
-      BotMsgController.msg(mobNumber, botHandle, body).then((/*{_id}*/ hash) => {
-        var response = Object.assign(hash, {localId});
-        res.json(response);
-      });
+      return UserMsgDao.insert(mobNumber, botHandle, body)
+        .then(/* UserMsg */ userMsgObj => {
+          let response = {_id: userMsgObj._id.toString(), localId};
+          res.json(response);
+        })
+        .then(() => BotMsgController.msg(userToken, botHandle, body));
     });
   }
 }

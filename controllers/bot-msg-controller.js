@@ -4,6 +4,7 @@ var request = require('request-promise');
 
 var config = require('../config/config.js');
 var UserMsgDao = require('../dao/user-msg-dao.js');
+var ParseController = require('./parse-controller.js');
 
 /**
  * A controller that stores the msg sent by a user
@@ -11,20 +12,20 @@ var UserMsgDao = require('../dao/user-msg-dao.js');
  */
 class BotMsgController {
 
-  static msg(/* string */ mobNumber, /* string */ botHandle, /* string */ body) {
+  /**
+   * Sends a msg to the bot in BotServer and gets the response
+   * @param userToken Token of the user to whom this msg should go
+   * @param botHandle Handle of the bot to send the msg to
+   * @param body Actual msg content
+   * @returns {*}
+   */
+  static msg(/* string */ userToken, /* string */ botHandle, /* string */ body) {
+    var requestOptions = {url: `${config.botServerUrl}${botHandle}`, form: {body}, json: true};
 
-    return UserMsgDao.insert(mobNumber, botHandle, body)
-      .then(/* UserMsg */ userMsgObj => {
-        return {_id: userMsgObj._id.toString()};
-        // TODO : send a request to the bot server and get the result
-      });
-
-    //var requestOptions = {url: `${config.botServerUrl}${botHandle}`, form: {body}, json: true};
-    //
-    //// send the response back to the client
-    //return request.post(requestOptions).then(response => {
-    //  return {_id: Math.random().toString(36).substring(7), body: response, type: 0};
-    //});
+    // send the response back to the client
+    return request.post(requestOptions).then(response => {
+      ParseController.sendBotResponse(userToken, botHandle, response, Math.random().toString(36).substring(7));
+    });
   }
 }
 

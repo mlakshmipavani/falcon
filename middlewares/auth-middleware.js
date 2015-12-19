@@ -26,7 +26,10 @@ module.exports = () => {
     // if token is not available, return error
     if (!token) return ErrorController.notAuthorized(next);
     return UserDao.findUserWithToken(mobNumber, token)
-      .then(userObj =>next())
+      .then(userObj => {
+        req.password = token;
+        return next();
+      })
       .catch(err => ErrorController.notAuthorized(next));
   };
 };
