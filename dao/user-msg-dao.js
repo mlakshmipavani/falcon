@@ -1,6 +1,9 @@
 'use strict';
 
+var ObjectID = require('mongodb').ObjectID;
+
 var DaoHelper = require('./dao-helper.js');
+var ErrorController = require('../controllers/error-controller.js');
 
 class UserMsgDao {
 
@@ -17,6 +20,23 @@ class UserMsgDao {
       .then(result => {
         if (result.insertedCount === 1) return result.ops[0];
         return undefined;
+      });
+  }
+
+  /**
+   * Finds a msg using its _id
+   * @param msgId _id of the msg
+   * @returns {Promise.<UserMsg>}
+   */
+  static getMsg(/* string */ msgId) {
+    var query = {_id: ObjectID(msgId)};
+    return DaoHelper.userMsg.find(query).toArray()
+      .then(msgList => {
+        if (!msgList || msgList.length === 0)
+          throw ErrorController.logAndReturnError(`msg not found with _id : ${msgId}`);
+        if (msgList.length === 1) return msgList[0];
+        if (msgList.length > 1)
+          throw ErrorController.logAndReturnError(`Multiple msgs found with the same _id : ${msgId}`);
       });
   }
 

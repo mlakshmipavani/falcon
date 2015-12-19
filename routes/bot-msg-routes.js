@@ -28,11 +28,33 @@ class BotMsgRoutes {
       let botHandle = req.params.botHandle;
       let body = req.params.body;
       let mobNumber = req.username;
-      let userToken = req.password;
 
       return UserMsgDao.insert(mobNumber, botHandle, body)
-        .then(/* UserMsg */ userMsgObj => res.json({_id: userMsgObj._id.toString()}))
-        .then(() => BotMsgController.msg(userToken, botHandle, body));
+        .then(/* UserMsg */ userMsgObj => res.json({_id: userMsgObj._id.toString()}));
+    });
+
+    app.get({path: '/botReply/:msgId', version: apiVersion.v1}, (req, res) => {
+
+      // error checking
+      req.assert('msgId', 'msgId is a required param').notEmpty();
+
+      let msgId = req.params.msgId;
+      let mobNumber = req.username;
+
+      return UserMsgDao.getMsg(msgId)
+        .then(/* UserMsg */ userMsg => {
+          if (userMsg.mobNumber !== mobNumber) {
+            throw ErrorController.logAndReturnError(
+              `${mobNumber} is asking reply for msg[${msgId}] sent by ${userMsg.mobNumber}`);
+          }
+
+          return BotMsgController.msg(userMsg.botHandle, userMsg.body);
+        })
+        .then(botResponse => {
+          // TODO : @Gayatri store bot response to mongodb and return inserted object
+          return {_id: Math.random().toString(36).substring(7), body: botResponse, createdAt: new Date().getTime()};
+        })
+        .then(response => res.json(response));
     });
   }
 }
