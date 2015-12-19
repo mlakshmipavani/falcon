@@ -19,7 +19,6 @@ class BotMsgRoutes {
       // error checking
       req.assert('botHandle', 'botHandle is a required param').notEmpty();
       req.assert('body', 'body is a required param').notEmpty();
-      req.assert('localId', 'localId is a required param').notEmpty();
       var errors = req.validationErrors();
       if (errors) {
         return ErrorController.paramError(req, res, errors);
@@ -28,15 +27,11 @@ class BotMsgRoutes {
       //noinspection JSUnresolvedVariable
       let botHandle = req.params.botHandle;
       let body = req.params.body;
-      let localId = req.params.localId;
       let mobNumber = req.username;
       let userToken = req.password;
 
       return UserMsgDao.insert(mobNumber, botHandle, body)
-        .then(/* UserMsg */ userMsgObj => {
-          let response = {_id: userMsgObj._id.toString(), localId};
-          res.json(response);
-        })
+        .then(/* UserMsg */ userMsgObj => res.json({_id: userMsgObj._id.toString()}))
         .then(() => BotMsgController.msg(userToken, botHandle, body));
     });
   }
