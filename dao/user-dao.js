@@ -69,10 +69,10 @@ class UserDao {
     return DaoHelper.user.find(query).project(projection).toArray()
       .then(userList => {
         if (!userList || userList.length === 0)
-          return ErrorController.logAndReturnError(`User not found with token : ${token}`);
+          throw ErrorController.logAndReturnError(`User not found with token : ${token}`);
         if (userList.length === 1) return userList[0];
         if (userList.length > 1)
-          return ErrorController.logAndReturnError(`Multiple users found with the same token : ${token}`);
+          throw ErrorController.logAndReturnError(`Multiple users found with the same token : ${token}`);
       });
   }
 
