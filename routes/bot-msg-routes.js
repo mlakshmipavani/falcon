@@ -6,6 +6,7 @@ var config = require('../config/config.js');
 var ErrorController = require('../controllers/error-controller.js');
 var BotMsgController = require('../controllers/bot-msg-controller.js');
 var UserMsgDao = require('../dao/user-msg-dao.js');
+var ParseController = require('../controllers/parse-controller.js');
 
 /**
  * A route that forwards a message to the respective bot
@@ -40,6 +41,7 @@ class BotMsgRoutes {
 
       let msgId = req.params.msgId;
       let mobNumber = req.username;
+      let token = req.password;
 
       return UserMsgDao.getMsg(msgId)
         .then(/* UserMsg */ userMsg => {
@@ -48,13 +50,20 @@ class BotMsgRoutes {
               `${mobNumber} is asking reply for msg[${msgId}] sent by ${userMsg.mobNumber}`);
           }
 
-          return BotMsgController.msg(userMsg.botHandle, userMsg.body);
+          return BotMsgController.msg(userMsg.botHandle, userMsg.body)
+            .then(botResponse => {
+              return {
+                _id: Math.random().toString(36).substring(7),
+                botHandle: userMsg.botHandle,
+                body: botResponse,
+                createdAt: new Date().getTime()
+              };
+            });
         })
-        .then(botResponse => {
-          // TODO : @Gayatri store bot response to mongodb and return inserted object
-          return {_id: Math.random().toString(36).substring(7), body: botResponse, createdAt: new Date().getTime()};
-        })
-        .then(response => res.json(response));
+        .then(response => {
+          res.json(response);
+          ParseController.sendBotResponse(token, response);
+        });
     });
   }
 }
