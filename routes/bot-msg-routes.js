@@ -6,6 +6,7 @@ var config = require('../config/config.js');
 var ErrorController = require('../controllers/error-controller.js');
 var BotMsgController = require('../controllers/bot-msg-controller.js');
 var UserMsgDao = require('../dao/user-msg-dao.js');
+var UserDao = require('../dao/user-dao.js');
 var ParseController = require('../controllers/parse-controller.js');
 
 /**
@@ -65,6 +66,23 @@ class BotMsgRoutes {
           ParseController.sendBotResponse(token, response);
         });
     });
+
+
+    //for bot pushing messages to user
+    app.post({path: '/botPush', version: apiVersion.v1}, (req,res) => {
+
+      let hash_ids = JSON.parse(req.body.hash_ids);
+
+      UserDao.getUserIdsFromHashIds(hash_ids).then(userIds => {
+          ParseController.sendBotPushtoUsers(userIds,'helelo')
+            .then( parseResponse => {
+              res.json(parseResponse);
+            }, error => {
+              res.send('error !!!');
+            });
+      });
+    });
+
   }
 }
 

@@ -16,6 +16,7 @@ class User {
     if (!this._mobNumber || !this._name) throw new Error('mobNumber and name are required!');
 
     this._countryCode = userHashObj.countryCode;
+    this._hash_id = userHashObj.hash_id;
     this._lastSeen = userHashObj.lastSeen;
     this._online = userHashObj.online;
     this._live = userHashObj.live;
@@ -42,6 +43,7 @@ class User {
       mobNumber,
       name,
       countryCode,
+      hash_id:'',
       lastSeen: new Date(),
       online: true,
       live: true,
@@ -68,6 +70,10 @@ class User {
 
   get countryCode() {
     return this._countryCode;
+  }
+
+  get hashId() {
+    return this._hash_id;
   }
 
   get lastSeen() {
