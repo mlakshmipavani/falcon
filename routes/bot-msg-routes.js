@@ -6,7 +6,7 @@ var config = require('../config/config.js');
 var ErrorController = require('../controllers/error-controller.js');
 var BotMsgController = require('../controllers/bot-msg-controller.js');
 var UserMsgDao = require('../dao/user-msg-dao.js');
-var ParseController = require('../controllers/parse-controller.js');
+var BotMsgDao = require('../dao/bot-msg-dao.js');
 
 /**
  * A route that forwards a message to the respective bot
@@ -39,30 +39,24 @@ class BotMsgRoutes {
       // error checking
       req.assert('msgId', 'msgId is a required param').notEmpty();
 
+      //noinspection JSUnresolvedVariable
       let msgId = req.params.msgId;
       let mobNumber = req.username;
-      let token = req.password;
+      let botHandle;
 
       return UserMsgDao.getMsg(msgId)
         .then(/* UserMsg */ userMsg => {
-          if (userMsg.mobNumber !== mobNumber) {
+          if (userMsg.mobNumber !== mobNumber)
             throw ErrorController.logAndReturnError(
               `${mobNumber} is asking reply for msg[${msgId}] sent by ${userMsg.mobNumber}`);
-          }
-
-          return BotMsgController.msg(userMsg.botHandle, userMsg.body)
-            .then(botResponse => {
-              return {
-                _id: Math.random().toString(36).substring(7),
-                botHandle: userMsg.botHandle,
-                body: botResponse,
-                createdAt: new Date().getTime()
-              };
-            });
+          botHandle = userMsg.botHandle;
+          return BotMsgController.msg(userMsg.botHandle, userMsg.body);
         })
-        .then(response => {
+        .then((/* string */ botResponse) =>
+          BotMsgDao.insert(mobNumber, botHandle, botResponse, msgId))
+        .then(/* BotMsg */ doc => {
+          let response = {_id: doc._id, body: doc.body, createdAt: doc.createdAt.getTime()};
           res.json(response);
-          ParseController.sendBotResponse(token, response);
         });
     });
   }
