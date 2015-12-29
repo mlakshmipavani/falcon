@@ -71,11 +71,11 @@ class ParseController {
    * @param msg message to be sent
    * @returns {Parse.Promise}
    */
-  static sendBotPushtoUsers(userTokens , msg) {
+  static sendBotPushtoUsers(userTokens, msg) {
     let channels = userTokens.map(token =>  `user_${token}`);
     return Parse.Push.send({
       channels: channels,
-      data: Object.assign({action:'com.stayyolo.PUSH.BOT_PUSH'},msg)
+      data: Object.assign({action: 'com.stayyolo.PUSH.BOT_PUSH'}, msg)
     });
   }
 

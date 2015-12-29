@@ -28,12 +28,8 @@ class UserDao {
       .then(updatedUser => {
         if (!updatedUser)
           return _newUser(mobNumber, name, countryCode)
-            .then(result => {
-              return result.ops[0];
-            })
-            .then(newUser => {
-              return UserDao.updatehashId(newUser._id);
-            });
+            .then(result => result.ops[0])
+            .then(newUser => UserDao.updatehashId(newUser._id));
         else
           return updatedUser;
       });
@@ -141,32 +137,30 @@ class UserDao {
   }
 
   /**
-   * Update hash_id of the user
+   * Update hashOfId of the user
    * @param {ObjectID} userId
    * @returns {Promise}
    */
   static updatehashId(userId) {
-    let hash_id = crypto.createHash('sha512').update('' + userId).digest('base64').toString();
+    let hashOfId = crypto.createHash('sha512').update('' + userId).digest('base64').toString();
     let query = {_id: userId};
-    let update = {hash_id: hash_id};
+    let update = {hashOfId: hashOfId};
     let options = {returnOriginal: false};
     return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
       .then(result => result.value);
   }
 
   /**
-   *  Returns _Ids of respective hash_ids
-   *  @params {Array} hash_ids
+   *  Returns _Ids of respective hashOfIds
+   *  @params {Array} hashOfIds
    *  @returns {Promise}
    */
-  static getUserIdsFromHashIds(hash_ids) {
-    var query = {hash_id: {$in: hash_ids}};
+  static getUserIdsFromHashIds(hashOfIds) {
+    var query = {hashOfId: {$in: hashOfIds}};
     var projection = {_id: 1};
     return DaoHelper.user.find(query, projection)
       .toArray()
-      .map(obj => {
-        return obj._id;
-      });
+      .map(obj => obj._id);
   }
 
 }

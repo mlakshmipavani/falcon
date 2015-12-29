@@ -67,19 +67,16 @@ class BotMsgRoutes {
         });
     });
 
-
     //for bot pushing messages to user
-    app.post({path: '/botPush', version: apiVersion.v1}, (req,res) => {
+    app.post({path: '/botPush', version: apiVersion.v1}, (req, res) => {
 
-      let hash_ids = JSON.parse(req.body.hash_ids);
+      let hashOfIds = JSON.parse(req.body.hashOfIds);
 
-      UserDao.getUserIdsFromHashIds(hash_ids).then(userIds => {
-          ParseController.sendBotPushtoUsers(userIds,'helelo')
-            .then( parseResponse => {
-              res.json(parseResponse);
-            }, error => {
-              res.send('error !!!');
-            });
+      UserDao.getUserIdsFromHashIds(hashOfIds).then(userIds => {
+        ParseController.sendBotPushtoUsers(userIds, 'helelo')
+          .then(parseResponse =>res.json(parseResponse),
+            error => res.send('error !!!')
+          );
       });
     });
 
