@@ -90,4 +90,12 @@ describe('UserDao', () => {
       });
   });
 
+  it('should get userIds from given hashIds', () => {
+    return UserDao.newUser(user1.mobNumber, user1.name, countryIso)
+      .then(user => {
+        let _Id = user._id;
+        UserDao.getUserIdsFromHashIds([user.hashOfId])
+          .then(userId => userId[0].should.deep.equal(_Id));
+      });
+  });
 });
