@@ -3,8 +3,6 @@
 var request = require('request-promise');
 
 var config = require('../config/config.js');
-var UserMsgDao = require('../dao/user-msg-dao.js');
-var ParseController = require('./parse-controller.js');
 
 /**
  * A controller that stores the msg sent by a user

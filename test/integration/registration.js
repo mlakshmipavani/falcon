@@ -4,7 +4,6 @@ var request = require('supertest-as-promised');
 
 var app = require('../../app');
 var mockDigits = require('./../support/mock-digits');
-var RegistrationController = require('../../controllers/registration-controller.js');
 var JoiValidate = require('./../support/joi-validate.js');
 
 describe('Registration', () => {

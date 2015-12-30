@@ -5,7 +5,6 @@ var mongodb = require('mongodb');
 var _obj = require('lodash/object');
 
 var config = require('../../../config/config');
-var User = require('../../../models/user');
 var DaoHelper = require('../../../dao/dao-helper');
 var ContactSyncController = require('../../../controllers/contact-sync-controller');
 var UserDao = require('../../../dao/user-dao');
@@ -25,9 +24,7 @@ describe('ContactSyncController', () => {
 
   it('should return only unRegistered', () => {
     var contacts = {};
-    for (let user of [user2, user3]) {
-      contacts[user.mobNumber] = user.name;
-    } // contacts = { '917405484154': 'Parth', '919108648284': 'Airtel jaydp' }
+    for (let user of [user2, user3]) contacts[user.mobNumber] = user.name;
 
     return ContactSyncController.sync(user1.mobNumber, contacts, countryIso)
       .should.eventually.deep.equal({registered: {}, unRegistered: contacts});
@@ -49,9 +46,7 @@ describe('ContactSyncController', () => {
 
   it('should return both', () => {
     var contacts = {};
-    for (let user of [user1, user3]) {
-      contacts[user.mobNumber] = user.name;
-    } // contacts = { '917405484154': 'Parth', '919108648284': 'Airtel jaydp' }
+    for (let user of [user1, user3]) contacts[user.mobNumber] = user.name;
 
     let expectReg = _obj.pick(contacts, user1.mobNumber);
     let expectUnReg = _obj.pick(contacts, user3.mobNumber);

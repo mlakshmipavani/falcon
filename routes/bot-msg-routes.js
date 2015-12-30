@@ -20,10 +20,8 @@ class BotMsgRoutes {
       // error checking
       req.assert('botHandle', 'botHandle is a required param').notEmpty();
       req.assert('body', 'body is a required param').notEmpty();
-      var errors = req.validationErrors();
-      if (errors) {
-        return ErrorController.paramError(req, res, errors);
-      }
+      let errors = req.validationErrors();
+      if (errors) return ErrorController.paramError(req, res, errors);
 
       //noinspection JSUnresolvedVariable
       let botHandle = req.params.botHandle;

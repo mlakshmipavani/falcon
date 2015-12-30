@@ -9,6 +9,7 @@ var UserDao = require('../../../dao/user-dao.js');
 
 describe('Auth Middleware', () => {
 
+  //noinspection Eslint
   var authMiddleware = Auth();
 
   const mobNumber = '919033819605';

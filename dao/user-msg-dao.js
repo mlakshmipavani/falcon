@@ -29,6 +29,7 @@ class UserMsgDao {
    * @returns {Promise.<UserMsg>}
    */
   static getMsg(/* string */ msgId) {
+    //noinspection Eslint
     var query = {_id: ObjectID(msgId)};
     return DaoHelper.userMsg.find(query).toArray()
       .then(msgList => {
@@ -36,7 +37,8 @@ class UserMsgDao {
           throw ErrorController.logAndReturnError(`msg not found with _id : ${msgId}`);
         if (msgList.length === 1) return msgList[0];
         if (msgList.length > 1)
-          throw ErrorController.logAndReturnError(`Multiple msgs found with the same _id : ${msgId}`);
+          throw ErrorController.logAndReturnError(
+            `Multiple msgs found with the same _id : ${msgId}`);
       });
   }
 

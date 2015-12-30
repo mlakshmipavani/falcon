@@ -4,7 +4,6 @@ var ObjectID = require('mongodb').ObjectID;
 
 var DaoHelper = require('./dao-helper');
 var User = require('../models/user');
-var log = require('../utils/logger');
 var ErrorController = require('../controllers/error-controller.js');
 
 class UserDao {
@@ -64,6 +63,7 @@ class UserDao {
    * @returns {Promise.<{_id, mobNumber}>}
    */
   static findUserWithToken(/* string */ mobNumber, /* string */ token) {
+    //noinspection Eslint
     var query = {_id: ObjectID(token), mobNumber};
     var projection = {mobNumber: 1}; // _id is included by default
     return DaoHelper.user.find(query).project(projection).toArray()
@@ -72,7 +72,8 @@ class UserDao {
           throw ErrorController.logAndReturnError(`User not found with token : ${token}`);
         if (userList.length === 1) return userList[0];
         if (userList.length > 1)
-          throw ErrorController.logAndReturnError(`Multiple users found with the same token : ${token}`);
+          throw ErrorController.logAndReturnError(
+            `Multiple users found with the same token :${token}`);
       });
   }
 

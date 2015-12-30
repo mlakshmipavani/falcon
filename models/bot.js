@@ -47,6 +47,10 @@ class Bot {
   get createdAt() {
     return this._createdAt;
   }
+
+  set createdAt(timestamp) {
+    this._createdAt = timestamp;
+  }
 }
 
 module.exports = Bot;

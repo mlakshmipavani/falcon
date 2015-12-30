@@ -26,9 +26,13 @@ gulp.task('docker.runMongo', () => {
  * Removes a container with the given name
  */
 function removeContainer(name, cb) {
+  //noinspection JSCheckFunctionSignatures
   docker.listContainers({all: 1}, (err, containers) => {
+    //noinspection Eslint
     for (let containerInfo of containers) {
+      //noinspection JSUnresolvedVariable
       if (containerInfo.Names[0] === `/${name}`) {
+        //noinspection JSUnresolvedVariable
         docker.getContainer(containerInfo.Id).remove(cb);
         return;
       }

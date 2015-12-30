@@ -1,7 +1,6 @@
 'use strict';
 
 var DaoHelper = require('./dao-helper');
-var UnRegistered = require('../models/unregistered');
 var log = require('../utils/logger');
 
 class UnRegisteredDao {

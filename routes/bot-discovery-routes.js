@@ -22,10 +22,8 @@ function newBots(req, res) {
   req.assert('count', 'count is a required param').notEmpty();
   req.assert('count', 'count should be an integer').isInt();
 
-  var errors = req.validationErrors();
-  if (errors) {
-    return ErrorController.paramError(req, res, errors);
-  }
+  let errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
 
   BotDiscoveryController.getNew(parseInt(req.params.count))
     .then((/* Array<Bot> */ bots) => res.json(bots));

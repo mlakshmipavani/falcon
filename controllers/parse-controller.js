@@ -62,7 +62,7 @@ class ParseController {
   static sendBotResponse(/* String */ userToken, response) {
     Parse.Push.send({
       channels: [`user_${userToken}`],
-      data: Object.assign({action: 'com.stayyolo.PUSH.BOT_REPLY'}, response),
+      data: Object.assign({action: 'com.stayyolo.PUSH.BOT_REPLY'}, response)
     }, pushCallbacks);
   }
 }
