@@ -1,14 +1,12 @@
 'use strict';
 
-var Promise = require('bluebird');
-var mongodb = require('mongodb');
-
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-
-var config = require('../../config/config.js');
-
 process.env.NODE_ENV = 'test';
+
+let Promise = require('bluebird');
+let mongodb = require('mongodb');
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
+let config = require('../../config/config.js');
 
 // configure chai
 global.should = chai.should();
