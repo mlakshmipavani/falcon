@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "NODE_ENV=development node app.js | bunyan -o short -l warn",
-    "test": "MONGO_URL='mongodb://localhost:27017/stayyolo-test' ./node_modules/mocha/bin/mocha -c test/ | bunyan -o short -l warn"
+    "test": "MONGO_URL='mongodb://localhost:27017/stayyolo-test' ./node_modules/mocha/bin/mocha -c test/ | bunyan -o short -l warn",
+    "cover": "MONGO_URL='mongodb://localhost:27017/stayyolo-test' node_modules/istanbul/lib/cli.js cover node_modules/.bin/_mocha -- -c test/ | bunyan -o short -l warn"
   },
   "repository": {
     "type": "git",
@@ -31,13 +32,13 @@
     "restify-validator": "0.3.1"
   },
   "devDependencies": {
-    "blanket": "1.1.9",
     "chai": "3.4.1",
     "chai-as-promised": "5.1.0",
     "chai-joi": "1.1.0",
     "dockerode": "2.2.3",
     "gulp": "3.9.0",
     "gulp-util": "3.0.7",
+    "istanbul": "0.4.2",
     "joi": "7.0.0",
     "jscs": "2.6.0",
     "mocha": "2.3.3",

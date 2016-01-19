@@ -10,23 +10,6 @@ var config = require('../../config/config.js');
 
 process.env.NODE_ENV = 'test';
 
-/**
- * Blanket is a code coverage tool
- */
-
-//require('blanket')({
-//  // covers all the code whose path matches the below regex
-//  pattern: [''],
-//
-//  // excludes the below folders
-//  'data-cover-never': ['node_modules', 'test'],
-//  'data-cover-reporter-options': {
-//    // makes sure each file is referred from project root in the report
-//    basepath: process.cwd() + '/lib'
-//  }
-//});
-// FIXME : code coverage
-
 // configure chai
 global.should = chai.should();
 chai.use(chaiAsPromised);
