@@ -58,8 +58,7 @@ function parsePriceResult(/* Array<{display_name, estimate, product_id, surge_mu
     finalObj[productId] = finalObj[productId] || {};
     finalObj[productId].name = cab.display_name;// jscs:ignore
     finalObj[productId].fare = cab.estimate;
-    let surgeMultiplier = cab.surge_multiplier;// jscs:ignore
-    if (surgeMultiplier > 1) finalObj[productId].fare += ` (${surgeMultiplier}x)`;
+    finalObj[productId].surgeMultiplier = cab.surge_multiplier;// jscs:ignore
   }
 
   return finalObj;
