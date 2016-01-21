@@ -1,5 +1,17 @@
 'use strict';
 
+/**
+ * Gets the PNR status from IndianRail.gov
+ * The magic number 24357 is actually provided by IndianRail.gov
+ * It is present in the from returned from http://www.indianrail.gov.in/valid.php
+ * Ideally that number should be fetched from /valid.php every time, but just to save time it has
+ * been hard coded here.
+ * So in future if this code stops working, first check if the code is the same, if not update the
+ * magic number.
+ * Secondly, http://www.indianrail.gov.in/cgi_bin/inet_pnstat_cgi_2484.cgi
+ * the 4 numeric digits in the url also change sometimes, so that's the second thing to check when
+ * things go south. This url is also present in the form returned by /valid.php
+ */
 var cheerio = require('cheerio');
 var request = require('request-promise');
 
