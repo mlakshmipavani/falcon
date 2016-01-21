@@ -6,6 +6,7 @@ var RegistrationRoutes = require('./registration-routes');
 var BotDiscoveryRoutes = require('./bot-discovery-routes');
 var BotMsgRoutes = require('./bot-msg-routes.js');
 var UberBotRoutes = require('./uber-bot-routes.js');
+var RailPnrRoutes = require('./railpnr-bot-routes.js');
 
 /**
  * A single point entry to all the routes in this server
@@ -32,6 +33,7 @@ class Routes {
     BotDiscoveryRoutes.setup(app);
     BotMsgRoutes.setup(app);
     UberBotRoutes.setup(app);
+    RailPnrRoutes.setup(app);
   }
 }
 
