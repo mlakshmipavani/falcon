@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=development node app.js | bunyan -o short -l warn",
+    "start_prod": "node app.js",
     "test": "MONGO_URL='mongodb://localhost:27017/stayyolo-test' ./node_modules/mocha/bin/mocha -c test/ | bunyan -o short -l warn",
     "cover": "MONGO_URL='mongodb://localhost:27017/stayyolo-test' node_modules/istanbul/lib/cli.js cover node_modules/.bin/_mocha -- -c test/ | bunyan -o short -l warn"
   },
@@ -37,14 +38,18 @@
     "chai-as-promised": "5.1.0",
     "chai-joi": "1.1.0",
     "dockerode": "2.2.3",
+    "dotenv": "2.0.0",
     "gulp": "3.9.0",
+    "gulp-help": "1.6.1",
     "gulp-util": "3.0.7",
     "istanbul": "0.4.2",
     "joi": "7.0.0",
     "jscs": "2.6.0",
     "mocha": "2.3.3",
     "require-dir": "0.3.0",
+    "stream": "0.0.2",
     "supertest": "1.1.0",
-    "supertest-as-promised": "2.0.2"
+    "supertest-as-promised": "2.0.2",
+    "tar-fs": "1.9.0"
   }
 }

@@ -11,3 +11,5 @@ node_modules
 
 # Code coverage folder
 coverage/
+
+.env
