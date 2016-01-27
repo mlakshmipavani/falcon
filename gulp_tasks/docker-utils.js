@@ -139,6 +139,20 @@ class DockerUtils {
       .then(() => this.realTimeLogs(name))
       .catch(console.error);
   }
+
+  /**
+   * Tag an image with a different tag
+   * @param imageName Existing image with it's tag
+   * @param newRepo New Image Repo (Eg. falcon)
+   * @param newRepoTag New Image Tag (Eg. production)
+   * @returns {Promise<string>}
+   */
+  static tag(imageName, newRepo, newRepoTag) {
+    let image = docker.getImage(imageName);
+    image.tag = Promise.promisify(image.tag);
+    return image.tag({repo: newRepo, tag: newRepoTag, force: true})
+      .thenReturn(`${newRepo}:${newRepoTag}`);
+  }
 }
 
 module.exports = DockerUtils;

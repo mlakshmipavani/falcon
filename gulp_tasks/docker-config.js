@@ -1,5 +1,6 @@
 'use strict';
-var EnvVar = require('./envvar');
+var EnvVar = require('./gulp_utils/envvar');
+var Port = require('./gulp_utils/port');
 var config; // lazy load this module
 
 class DockerConfig {
@@ -21,6 +22,13 @@ class DockerConfig {
 
   get name() {
     return 'falcon';
+  }
+
+  get ports() {
+    return [
+      new Port(3000, this._isDev ? 3000 : 80),
+      new Port(3001, this._isDev ? 3001 : 443)
+    ];
   }
 
   get envVars() {
@@ -64,6 +72,39 @@ class DockerConfig {
     return specs;
   }
 
+  tutumConfig(/*string*/ username) {
+    var ports = this.ports.map(port => {
+      //noinspection Eslint
+      return {
+        protocol: port.protocol,
+        inner_port: port.innerPort,// jscs:ignore
+        outer_port: port.outerPort// jscs:ignore
+      };
+    });
+    var envVars = this.envVars.map(envVar => {
+      return {key: envVar.key, value: envVar.value};
+    });
+
+    //noinspection Eslint
+    return {
+      image: this.getTutumImage(username),
+      name: this.name,
+      container_ports: ports,// jscs:ignore
+      container_envvars: envVars,// jscs:ignore
+      autorestart: 'ALWAYS',
+      tags: ['mainserver']
+    };
+  }
+
+  tutumUpdateConfig(/*string*/ username) {
+    var updateConfig = this.tutumConfig(username);
+    delete updateConfig.name;
+    return updateConfig;
+  }
+
+  getTutumImage(/*string*/ username) {
+    return `tutum.co/${username}/${this.name}:production`;
+  }
 }
 
 /**

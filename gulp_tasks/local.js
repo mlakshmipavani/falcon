@@ -3,7 +3,7 @@
 var gulp = require('gulp-help')(require('gulp'));
 var stream = require('stream');
 
-var ENV = require('./env.js');
+var ENV = require('./gulp_utils/env.js');
 var dockerUtils = require('./docker-utils');
 
 // TODO : crate a separate file for deploying server to tutum
