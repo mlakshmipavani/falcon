@@ -7,6 +7,8 @@ var ErrorController = require('../controllers/error-controller.js');
 var BotMsgController = require('../controllers/bot-msg-controller.js');
 var UserMsgDao = require('../dao/user-msg-dao.js');
 var BotMsgDao = require('../dao/bot-msg-dao.js');
+var UserDao = require('../dao/user-dao.js');
+var ParseController = require('../controllers/parse-controller.js');
 
 /**
  * A route that forwards a message to the respective bot
@@ -57,6 +59,20 @@ class BotMsgRoutes {
           res.json(response);
         });
     });
+
+    //for bot pushing messages to user
+    app.post({path: '/botPush', version: apiVersion.v1}, (req, res) => {
+
+      let hashOfIds = JSON.parse(req.body.hashOfIds);
+
+      UserDao.getUserIdsFromHashIds(hashOfIds).then(userIds => {
+        ParseController.sendBotPushtoUsers(userIds, 'helelo')
+          .then(parseResponse =>res.json(parseResponse),
+            error => res.send('error !!!')
+          );
+      });
+    });
+
   }
 }
 

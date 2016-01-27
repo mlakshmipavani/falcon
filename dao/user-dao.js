@@ -5,6 +5,7 @@ var ObjectID = require('mongodb').ObjectID;
 var DaoHelper = require('./dao-helper');
 var User = require('../models/user');
 var ErrorController = require('../controllers/error-controller.js');
+var crypto = require('crypto');
 
 class UserDao {
 
@@ -26,7 +27,8 @@ class UserDao {
       .then(updatedUser => {
         if (!updatedUser)
           return _newUser(mobNumber, name, countryCode)
-            .then(result => result.ops[0]);
+            .then(result => result.ops[0])
+            .then(newUser => UserDao.updatehashId(newUser._id));
         else
           return updatedUser;
       });
@@ -134,6 +136,34 @@ class UserDao {
     return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
       .then(op => op.value);
   }
+
+  /**
+   * Update hashOfId of the user
+   * @param {ObjectID} userId
+   * @returns {Promise}
+   */
+  static updatehashId(userId) {
+    let hashOfId = crypto.createHash('sha512').update('' + userId).digest('base64').toString();
+    let query = {_id: userId};
+    let update = {hashOfId: hashOfId};
+    let options = {returnOriginal: false};
+    return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
+      .then(result => result.value);
+  }
+
+  /**
+   *  Returns _Ids of respective hashOfIds
+   *  @params {Array} hashOfIds
+   *  @returns {Promise}
+   */
+  static getUserIdsFromHashIds(hashOfIds) {
+    var query = {hashOfId: {$in: hashOfIds}};
+    var projection = {_id: 1};
+    return DaoHelper.user.find(query, projection)
+      .toArray()
+      .map(obj => obj._id);
+  }
+
 }
 
 /**
