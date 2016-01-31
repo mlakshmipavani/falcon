@@ -21,11 +21,13 @@
   "private": true,
   "homepage": "https://bitbucket.org/stayyolo/falconv2#readme",
   "dependencies": {
+    "agenda": "0.7.7",
     "bluebird": "3.0.5",
     "bunyan": "1.5.1",
     "cheerio": "0.19.0",
     "google-libphonenumber": "1.0.7",
     "lodash": "3.10.1",
+    "moment": "2.11.1",
     "mongodb": "2.0.48",
     "parse": "1.6.13",
     "request-promise": "1.0.2",
