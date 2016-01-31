@@ -10,7 +10,7 @@ class RailPnrRoutes {
   static setup(app) {
     app.get({path: '/bot/@railpnr/getstatus', version: apiVersion.v1}, getStatus);
 
-    app.get({path: '/bot/@railpnr/trackpnr', version: apiVersion.v1}, trackPnr);
+    app.post({path: '/bot/@railpnr/trackpnr', version: apiVersion.v1}, trackPnr);
   }
 }
 
