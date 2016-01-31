@@ -42,9 +42,6 @@ function trackPnr(req, res, next) {
   let errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 
-  console.log('pnr ' + req.params.pnr);
-  console.log('password ' + userToken);
-
   let pnr = req.params.pnr;
   TrackPnr.startTracking(userToken, pnr);
   res.send('Tracking Started');

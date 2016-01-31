@@ -3,11 +3,11 @@
 class Utils {
 
   /**
-   * Returns duplicate object
+   * Returns an object with the same properties as the passed one
    * @param object
-   * @return JSON
+   * @return {*}
    */
-  static getDuplicateObject(object) {
+  static cloneProperties(object) {
     return JSON.parse(JSON.stringify(object));
   }
 

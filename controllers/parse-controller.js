@@ -73,15 +73,14 @@ class ParseController {
    */
   static sendBotPushtoUsers(userTokens, msg) {
     let channels = userTokens.map(token => `user_${token}`);
-    return Parse.Push.send(
-      {
+    return Parse.Push.send({
         channels: channels,
         data: Object.assign({action: 'com.stayyolo.PUSH.BOT_PUSH'}, msg)
       },
       {
         success: () =>log.debug('parse success'),
         error: err => {
-          console.log('parse error in response: ' + JSON.stringify(err));
+          log.error(err, 'parse error');
           setTimeout(() => this.sendBotPushtoUsers(userTokens, msg), 600000);
         }
       });

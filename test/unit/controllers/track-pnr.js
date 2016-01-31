@@ -80,14 +80,13 @@ describe('TrackPnr', () => {
 
     let moreThan2Day = moment().add('3', 'day').format('DD-MM-YYYY');
     TrackPnrController._getNextSchedule(moreThan2Day).should.equal('in 24 hours');
-
   });
 
-  it('should check whether pnr status changed Or not ', () => {
-    let passengerFromDB = Utils.getDuplicateObject(onePassengerConfirmed.passengers);
+  it('should check whether pnr status changed Or not', () => {
+    let passengerFromDB = Utils.cloneProperties(onePassengerConfirmed.passengers);
     passengerFromDB[0].currentStatus = 'RAC';
 
-    let passengerFormAPI = Utils.getDuplicateObject(onePassengerConfirmed.passengers);
+    let passengerFormAPI = Utils.cloneProperties(onePassengerConfirmed.passengers);
 
     //noinspection BadExpressionStatementJS
     TrackPnrController._isPassengersDetailSame(passengerFromDB, passengerFormAPI).should.be.false;
@@ -96,19 +95,16 @@ describe('TrackPnr', () => {
 
     //noinspection BadExpressionStatementJS
     TrackPnrController._isPassengersDetailSame(passengerFromDB, passengerFormAPI).should.be.true;
-
   });
 
   it('should insert pnr details in DB for further tracking', () => {
-
     return TrackPnrController._trackAndNotify(userToken, pnr, onePassengerConfirmed)
       .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
       .should.eventually.be.of.length(1);
-
   });
 
-  it('should update pnr details in DB ', () => {
-    let twoPassenger11Confirmed = Utils.getDuplicateObject(twoPassenger01Confirmed);
+  it('should update pnr details in DB', () => {
+    let twoPassenger11Confirmed = Utils.cloneProperties(twoPassenger01Confirmed);
     twoPassenger11Confirmed.passengers[1].currentStatus = 'CNF';
 
     return DaoHelper.pnrStatus.insertOne({
@@ -121,10 +117,7 @@ describe('TrackPnr', () => {
       })
       .then(() => TrackPnrController._trackAndNotify(userToken, pnr, twoPassenger11Confirmed))
       .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
-      .spread(result => {
-        result.detail.passengers[1].currentStatus.should.be.equal('CNF');
-      });
-
+      .spread(result => result.detail.passengers[1].currentStatus.should.be.equal('CNF'));
   });
 
 });

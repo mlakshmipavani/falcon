@@ -42,6 +42,7 @@ class DaoHelper {
     /** @type {Collection} */
     exports.botMsg = db.collection('botMsg');
 
+    //noinspection JSCheckFunctionSignatures
     /** @type {Collection} */
     exports.pnrStatus = db.collection('pnrStatus');
   }

@@ -27,19 +27,26 @@ var agenda = new Agenda({db: {address: url}});
 //  chartStatus: 'CHART NOT PREPARED'
 //};
 
-agenda.define('trackPnr', (job, done) => {
+const taskName = 'trackPnr';
+
+agenda.define(taskName, (job, done) => {
 
   let userToken = job.attrs.data.userToken;
   let pnr = job.attrs.data.pnr;
 
-  RailPnr.getStatus(pnr)
+  return RailPnr.getStatus(pnr)
     .then(pnrFromAPI => {
-      TrackPnr._trackAndNotify(userToken, pnr, pnrFromAPI);
-      TrackPnr._scheduleNextIfNeeded(userToken, pnr, pnrFromAPI);
-    });
-
-  done();
+      //noinspection JSUnresolvedFunction
+      return TrackPnr._trackAndNotify(userToken, pnr, pnrFromAPI).thenReturn(pnrFromAPI);
+    })
+    .then(pnrFromAPI => {
+      //noinspection JSUnresolvedFunction
+      return TrackPnr._scheduleNextIfNeeded(userToken, pnr, pnrFromAPI);
+    })
+    .then(done);
 });
+
+agenda.on('ready', () => agenda.start());
 
 class TrackPnr {
 
@@ -49,8 +56,7 @@ class TrackPnr {
    * @param pnr
    */
   static startTracking(/*String*/ userToken, /*String*/ pnr) {
-    agenda.schedule('in 2 seconds', 'trackPnr', {userToken: userToken, pnr: pnr});
-    agenda.start();
+    agenda.schedule('in 2 seconds', taskName, {userToken: userToken, pnr: pnr});
   }
 
   /**
@@ -61,12 +67,9 @@ class TrackPnr {
    * @private
    */
   static _scheduleNextIfNeeded(userToken, pnr, pnrFromAPI) {
-
     let boardingDate = pnrFromAPI.boardingDate;
     let confirmed = this._isAllConfirmed(pnrFromAPI);
-
-    if (!confirmed)
-      this._schedule(boardingDate, userToken, pnr);
+    if (!confirmed) this._schedule(boardingDate, userToken, pnr);
   }
 
   /**
@@ -85,20 +88,17 @@ class TrackPnr {
       .then(pnrFromDBArray => {
         let isPnrInDB = pnrFromDBArray.length > 0;
 
-        if (isPnrInDB) {
-          let passengersFromAPI = pnrFromAPI.passengers;
-          let passengersFromDB = pnrFromDBArray[0].detail.passengers;
-          let isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
+        if (!isPnrInDB) return DaoHelper.pnrStatus.insertOne(pnrDetail)
+          .then(() => this._notifyUser(userToken, pnrFromAPI));
 
-          if (!isSame)
-            return DaoHelper.pnrStatus.updateMany({pnr: pnr}, {$set: {detail: pnrFromAPI}})
-              .then(() => this._notifyUser(userToken, pnrFromAPI));
+        let passengersFromAPI = pnrFromAPI.passengers;
+        let passengersFromDB = pnrFromDBArray[0].detail.passengers;
+        let isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
 
-          return new Promise();
+        if (!isSame) return DaoHelper.pnrStatus.updateMany({pnr: pnr}, {$set: {detail: pnrFromAPI}})
+          .then(() => this._notifyUser(userToken, pnrFromAPI));
 
-        } else
-          return DaoHelper.pnrStatus.insertOne(pnrDetail)
-            .then(() => this._notifyUser(userToken, pnrFromAPI));
+        return new Promise();
       });
   }
 
@@ -108,11 +108,9 @@ class TrackPnr {
    * @returns Boolean
    * @private
    */
-  static _isAllConfirmed(/*{}*/ pnrDetail) {
+  static _isAllConfirmed(/*{passengers}*/ pnrDetail) {
     let passengers = pnrDetail.passengers;
-    return passengers.every((passenger) => {
-      return passenger.currentStatus === 'CNF';
-    });
+    return passengers.every((passenger) => passenger.currentStatus === 'CNF');
   }
 
   /**
@@ -124,7 +122,7 @@ class TrackPnr {
    */
   static _schedule(/*String*/ boardingDate, /*String*/ userToken, /*String*/ pnr) {
     let nextSchedule = this._getNextSchedule(boardingDate);
-    agenda.schedule(nextSchedule, 'trackPnr', {userToken: userToken, pnr: pnr});
+    agenda.schedule(nextSchedule, taskName, {userToken: userToken, pnr: pnr});
   }
 
   /**
@@ -139,18 +137,9 @@ class TrackPnr {
 
     let boardingDate = moment(date, 'DD-MM-YYYY');
     let difference = boardingDate.diff(now, 'hours');
-    console.log(now.format());
-    console.log(boardingDate.format());
-    console.log(difference);
-    if (difference < 48 && difference > 24)
-      nextSchedule = 'in 4 hours';
-
-    if (difference >= 48)
-      nextSchedule = 'in 24 hours';
-
-    if (difference <= 24)
-      nextSchedule = 'in 30 minutes';
-
+    if (difference < 48 && difference > 24) nextSchedule = 'in 4 hours';
+    else if (difference >= 48) nextSchedule = 'in 24 hours';
+    else if (difference <= 24) nextSchedule = 'in 30 minutes';
     return nextSchedule;
   }
 
@@ -167,7 +156,7 @@ class TrackPnr {
   /**
    * Checks whether both the passenger details is same or not
    * @param passengersFromDB passenger details saved in DB
-   * @param passengersFromAPI passenger details from API responce
+   * @param passengersFromAPI passenger details from API response
    * @returns {*|boolean}
    * @private
    */
@@ -181,10 +170,11 @@ class TrackPnr {
    * Notifies to User about pnr status Update
    * @param userToken
    * @param pnrFromAPI
+   * @returns {Parse.Promise}
    * @private
    */
   static _notifyUser(/*String*/ userToken, /*{}*/ pnrFromAPI) {
-    ParseController.sendBotPushtoUsers([userToken], pnrFromAPI).then(res => console.log(res));
+    return ParseController.sendBotPushtoUsers([userToken], pnrFromAPI);
   }
 
 }
