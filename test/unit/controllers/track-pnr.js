@@ -51,16 +51,12 @@ describe('TrackPnr', () => {
     chartStatus: 'CHART NOT PREPARED'
   };
 
-  function dropDB() {
-    return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
-  }
-
   before(() => {
-    return dropDB();
+    return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });
 
   afterEach(() => {
-    return dropDB();
+    return DaoHelper.db.dropDatabase();
   });
 
   it('should check whether all passengers pnr status is confirmed', () => {

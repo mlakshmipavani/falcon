@@ -98,7 +98,7 @@ class TrackPnr {
         if (!isSame) return DaoHelper.pnrStatus.updateMany({pnr: pnr}, {$set: {detail: pnrFromAPI}})
           .then(() => this._notifyUser(userToken, pnrFromAPI));
 
-        return new Promise();
+        return Promise.resolve();
       });
   }
 
@@ -170,11 +170,10 @@ class TrackPnr {
    * Notifies to User about pnr status Update
    * @param userToken
    * @param pnrFromAPI
-   * @returns {Parse.Promise}
    * @private
    */
   static _notifyUser(/*String*/ userToken, /*{}*/ pnrFromAPI) {
-    return ParseController.sendBotPushtoUsers([userToken], pnrFromAPI);
+    ParseController.sendBotPushtoUsers([userToken], pnrFromAPI);
   }
 
 }
