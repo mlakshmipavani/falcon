@@ -50,13 +50,18 @@ class BotMsgRoutes {
             throw ErrorController.logAndReturnError(
               `${mobNumber} is asking reply for msg[${msgId}] sent by ${userMsg.mobNumber}`);
           botHandle = userMsg.botHandle;
-          return BotMsgController.msg(userMsg.botHandle, userMsg.body);
+          return BotMsgController.msg(mobNumber, userMsg.botHandle, userMsg.body);
+        })
+        .tap((/* string */ botResponse) => {
+          if (!botResponse) throw new Error('no bot response');
         })
         .then((/* string */ botResponse) =>
           BotMsgDao.insert(mobNumber, botHandle, botResponse, msgId))
         .then(/* BotMsg */ doc => {
           let response = {_id: doc._id, body: doc.body, createdAt: doc.createdAt.getTime()};
           res.json(response);
+        }).catch(err => {
+          if (err.message !== 'no bot response') throw err;
         });
     });
 

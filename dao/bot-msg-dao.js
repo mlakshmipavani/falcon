@@ -47,6 +47,14 @@ class BotMsgDao {
       });
   }
 
+  static getLastMsg(/*String*/ mobNumber) {
+    return DaoHelper.botMsg.find({mobNumber})
+      .limit(1)
+      .sort({$natural: -1})
+      .toArray()
+      .spread(arr => arr);
+  }
+
 }
 
 module.exports = BotMsgDao;

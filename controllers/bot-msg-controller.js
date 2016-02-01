@@ -1,8 +1,9 @@
 'use strict';
 
-var request = require('request-promise');
+const request = require('request-promise');
 
-var config = require('../config/config.js');
+const config = require('../config/config.js');
+const HelloController = require('./hello-controller.js');
 
 /**
  * A controller that stores the msg sent by a user
@@ -12,15 +13,18 @@ class BotMsgController {
 
   /**
    * Sends a msg to the bot in BotServer and gets the response
+   * @param mobNumber Mobile number of the user sending this request
    * @param botHandle Handle of the bot to send the msg to
    * @param body Actual msg content
    * @returns {Promise.<string>}
    */
-  static msg(/* string */ botHandle, /* string */ body) {
-    var requestOptions = {url: `${config.botServerUrl}${botHandle}`, form: {body}, json: true};
-
-    // send the response back to the client
-    return request.post(requestOptions);
+  static msg(/*String*/ mobNumber, /* string */ botHandle, /* string */ body) {
+    switch (botHandle) {
+      case HelloController.handle:
+        return HelloController.reply(mobNumber, body);
+      default:
+        return Promise.reject(new Error('Unknown bot handle'));
+    }
   }
 }
 

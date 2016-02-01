@@ -43,4 +43,12 @@ describe('BotMsgDao', () => {
       });
   });
 
+  it('Gets the last msg from MsgDao', () => {
+    let userMsgId = 'abcxyz';
+    return BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, 'some random msg', userMsgId)
+      .then(() => BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, botMsg.body, userMsgId))
+      .then(() => BotMsgDao.getLastMsg(botMsg.mobNumber))
+      .then((/*BotMsg*/ msg) => msg.body.should.equal(botMsg.body));
+  });
+
 });

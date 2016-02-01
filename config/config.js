@@ -29,6 +29,12 @@ config.uber.baseUrl = process.env.NODE_ENV === 'test' ? 'http://localhost:5001'
   : 'https://api.uber.com/v1';
 
 /**
+ * Wit.AI
+ */
+config.wit = {};
+config.wit.apiKey = process.env.WIT_API_KEY || 'UUA2F5RZ4W4CGX2P7EQWM2RIVXSTDEIA';
+
+/**
  * Export
  */
 module.exports = config;
