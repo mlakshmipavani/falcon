@@ -25,10 +25,9 @@ function register(req, res) {
   var url = req.header('X-Auth-Service-Provider');
   var headers = req.header('X-Verify-Credentials-Authorization');
   var name = req.params.name;
-  var contacts = req.params.contacts;
   var requestOptions = {url: url, headers: {Authorization: headers}, json: true};
 
-  RegistrationController.register(name, contacts, requestOptions)
+  RegistrationController.register(name, requestOptions)
     .then((response) => res.json(response))
     .catch((err) => console.log(err));
 }
