@@ -11,6 +11,8 @@ class RailPnrRoutes {
     app.get({path: '/bot/@railpnr/getstatus', version: apiVersion.v1}, getStatus);
 
     app.post({path: '/bot/@railpnr/trackpnr', version: apiVersion.v1}, trackPnr);
+
+    app.post({path: '/bot/@railpnr/stopTrackingPnr', version: apiVersion.v1}, stopTrackingPnr);
   }
 }
 
@@ -45,6 +47,22 @@ function trackPnr(req, res, next) {
   let pnr = req.params.pnr;
   TrackPnr.startTracking(userToken, pnr);
   res.send('Tracking Started');
+}
+
+function stopTrackingPnr(req, res, next) {
+  let userToken = req.authorization.basic.password;
+
+  // error checking
+  req.assert('pnr', 'PNR is a required param').notEmpty();
+  req.assert('pnr', 'should contain only numbers').isNumeric();
+  req.assert('pnr', 'should be of length 10').len(10, 10);
+
+  let errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  let pnr = req.params.pnr;
+  return TrackPnr.stopTracking(userToken, pnr)
+    .then(() => res.send('Tracking Stopped'));
 }
 
 module.exports = RailPnrRoutes;

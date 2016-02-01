@@ -45,5 +45,10 @@ class DaoHelper {
     //noinspection JSCheckFunctionSignatures
     /** @type {Collection} */
     exports.pnrStatus = db.collection('pnrStatus');
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.agendaJobs = db.collection('agendaJobs');
+
   }
 }

@@ -60,6 +60,17 @@ class TrackPnr {
   }
 
   /**
+   * Stops tracking pnr status for given user
+   * @param userToken
+   * @param pnr
+   * @returns {Promise<T>}
+   */
+  static stopTracking(/*String*/ userToken, /*String*/ pnr) {
+    let data = {userToken: userToken, pnr: pnr};
+    return DaoHelper.agendaJobs.removeMany({name: taskName, data: data});
+  }
+
+  /**
    * it schedules next pnr check if all tickets are not confirmed
    * @param userToken
    * @param pnr
