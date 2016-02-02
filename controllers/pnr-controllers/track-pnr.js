@@ -38,21 +38,21 @@ agenda.define(taskName, (job, done) => {
   return RailPnr.getStatus(pnr)
     .then(pnrFromAPI => {
       //noinspection JSUnresolvedFunction
-      return TrackPnr._checkAndNotify(pnr, pnrFromAPI).thenReturn(pnrFromAPI);
+      return TrackPnrController._checkAndNotify(pnr, pnrFromAPI).thenReturn(pnrFromAPI);
     })
     .then(pnrFromAPI => {
       //noinspection JSUnresolvedFunction
-      return TrackPnr._scheduleNextIfNeeded(pnr, pnrFromAPI);
+      return TrackPnrController._scheduleNextIfNeeded(pnr, pnrFromAPI);
     })
     .then(done);
 });
 
 agenda.on('ready', () => agenda.start());
 
-class TrackPnr {
+class TrackPnrController {
 
   /**
-   * Same as RailPnr.getStatus(), but in the result it also returns a field 'isTracked' that shows
+   * Same as RailPnrController.getStatus(), but in the result it also returns a field 'isTracked' that shows
    * if the calling user is tracking this pnr or not
    * @param pnr PNR number
    * @param userToken Token (or _id of the user)
@@ -262,4 +262,4 @@ class TrackPnr {
 
 }
 
-module.exports = TrackPnr;
+module.exports = TrackPnrController;

@@ -6,9 +6,9 @@ const Utils = require('../../../utils/Utils');
 
 const moment = require('moment');
 const TrackPnrController = require('../../../controllers/pnr-controllers/track-pnr');
-const RailPnr = require('../../../controllers/pnr-controllers/rail-pnr-controller.js');
+const RailPnrController = require('../../../controllers/pnr-controllers/rail-pnr-controller.js');
 
-describe('TrackPnr', () => {
+describe('TrackPnrController', () => {
   const pnr = '4528171237';
   const userToken = '7405484154';
 
@@ -54,7 +54,7 @@ describe('TrackPnr', () => {
 
   beforeEach(() => {
     // mock
-    RailPnr.getStatus = (pnr) => Promise.resolve(onePassengerConfirmed);
+    RailPnrController.getStatus = (pnr) => Promise.resolve(onePassengerConfirmed);
 
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });

@@ -30,7 +30,7 @@ const options = {
   }
 };
 
-class RailPnr {
+class RailPnrController {
 
   /**
    * Returns the status of the pnr
@@ -79,4 +79,4 @@ class RailPnr {
   }
 }
 
-module.exports = RailPnr;
+module.exports = RailPnrController;
