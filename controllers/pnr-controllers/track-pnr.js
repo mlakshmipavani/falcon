@@ -256,7 +256,7 @@ class TrackPnrController {
   static _notifyAll(/*String*/ pnr, /*{}*/ pnrFromAPI) {
     return DaoHelper.pnrStatus.find({pnr: pnr}).toArray()
       .spread(pnrStatus => {
-        ParseController.sendBotPushtoUsers(pnrStatus.userTokens, pnrFromAPI);
+        ParseController.pushPnrUpdate(pnrStatus.userTokens, pnrFromAPI);
       });
   }
 

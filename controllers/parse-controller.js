@@ -74,17 +74,30 @@ class ParseController {
   static sendBotPushtoUsers(userTokens, msg) {
     let channels = userTokens.map(token => `user_${token}`);
     return Parse.Push.send({
+      channels: channels,
+      data: Object.assign({action: 'com.stayyolo.PUSH.BOT_PUSH'}, msg)
+    }, pushCallbacks);
+  }
+
+  /**
+   * Pushes a PNR status update to
+   * @param userTokens Token (_id) of the users to send the push
+   * @param pnrStatus PNR status data
+   * @returns {*}
+   */
+  static pushPnrUpdate(userTokens, pnrStatus) {
+    let channels = userTokens.map(token => `user_${token}`);
+    return Parse.Push.send({
         channels: channels,
-        data: Object.assign({action: 'com.stayyolo.PUSH.BOT_PUSH'}, msg)
+        data: Object.assign({action: 'com.stayyolo.PUSH.ON_PNR_TRACK_UPDATE'}, pnrStatus)
       },
       {
-        success: () =>log.debug('parse success'),
+        success: () => log.debug('parse success'),
         error: err => {
           log.error(err, 'parse error');
-          setTimeout(() => this.sendBotPushtoUsers(userTokens, msg), 600000);
+          setTimeout(() => this.pushPnrUpdate(userTokens, pnrStatus), 600000);
         }
       });
-
   }
 
 }
