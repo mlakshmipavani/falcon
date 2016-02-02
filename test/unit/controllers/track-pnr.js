@@ -119,13 +119,13 @@ describe('TrackPnr', () => {
   it('should not start tracking again', () => {
     return TrackPnrController.startTracking(userToken, pnr)
       .then(() => TrackPnrController.startTracking(userToken, pnr))
-      .should.eventually.be.equal('Already tracking');
+      .should.eventually.be.false;
   });
 
   it('should start tracking already tracking pnr for different user ', () => {
     return TrackPnrController.startTracking(userToken, pnr)
       .then(() => TrackPnrController.startTracking('9990913081', pnr))
-      .then(result => result.should.be.equal('Trackin Started'))
+      .then(result => result.should.be.true)
       .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
       .spread(pnrStatus => pnrStatus.userTokens)
       .then(userTokens => userTokens.indexOf('9990913081') > -1)

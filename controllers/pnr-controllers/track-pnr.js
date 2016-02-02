@@ -71,6 +71,7 @@ class TrackPnr {
    * Initialises tracking for pnr status
    * @param userToken Token of the user who wants to track pnr
    * @param pnr PNR Number to track
+   * @returns {Promise<boolean>}
    */
   static startTracking(/*String*/ userToken, /*String*/ pnr) {
     return this._isTrackingPNR(pnr)
@@ -92,8 +93,8 @@ class TrackPnr {
       .then(trackingForUser => {
         if (!trackingForUser)
           return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$addToSet: {userTokens: userToken}})
-            .thenReturn('Trackin Started');
-        return 'Already tracking';
+            .thenReturn(true);
+        return false;
       });
   }
 
@@ -101,17 +102,15 @@ class TrackPnr {
    * Creates a new pnr track job and associates the user to it's notify list
    * @param userToken Token of the user who wants to track pnr
    * @param pnr PNR Number to track
-   * @returns {Promise<T>}
+   * @returns {Promise<boolean>}
    * @private
    */
   static _turnTrackingOnForPnr(/*String*/ userToken, /*String*/ pnr) {
     return RailPnr.getStatus(pnr).then(pnrFromAPI => {
       let pnrDetail = {userTokens: [userToken], pnr: pnr, detail: pnrFromAPI};
       return DaoHelper.pnrStatus.insertOne(pnrDetail)
-        .then(() => {
-          this._scheduleNextIfNeeded(pnr, pnrFromAPI);
-          return 'Tracking Started';
-        });
+        .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
+        .thenReturn(true);
     });
   }
 

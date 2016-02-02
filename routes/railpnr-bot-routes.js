@@ -2,7 +2,6 @@
 
 var apiVersion = require('../config/api-version.js');
 var ErrorController = require('../controllers/error-controller.js');
-var RailPnr = require('../controllers/pnr-controllers/rail-pnr-controller.js');
 var TrackPnr = require('../controllers/pnr-controllers/track-pnr.js');
 
 class RailPnrRoutes {
@@ -47,7 +46,8 @@ function trackPnr(req, res) {
 
   let pnr = req.params.pnr;
   return TrackPnr.startTracking(userToken, pnr)
-    .then(result => res.send(result));
+    .then(result => res.send({success: true}))
+    .catch(err => res.send(err));
 }
 
 function stopTrackingPnr(req, res) {
@@ -63,7 +63,8 @@ function stopTrackingPnr(req, res) {
 
   let pnr = req.params.pnr;
   return TrackPnr.stopTracking(userToken, pnr)
-    .then(() => res.send('Tracking Stopped'));
+    .then(result => res.send({success: true}))
+    .catch(err => res.send(err));
 }
 
 module.exports = RailPnrRoutes;
