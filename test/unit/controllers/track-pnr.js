@@ -1,14 +1,15 @@
 'use strict';
 
-var Promise = require('bluebird');
-var DaoHelper = require('../../../dao/dao-helper');
-var Utils = require('../../../utils/Utils');
+const Promise = require('bluebird');
+const DaoHelper = require('../../../dao/dao-helper');
+const Utils = require('../../../utils/Utils');
 
-var moment = require('moment');
-var TrackPnrController = require('../../../controllers/pnr-controllers/track-pnr');
+const moment = require('moment');
+const TrackPnrController = require('../../../controllers/pnr-controllers/track-pnr');
+const RailPnr = require('../../../controllers/pnr-controllers/rail-pnr-controller.js');
 
 describe('TrackPnr', () => {
-  const pnr = 4528171237;
+  const pnr = '4528171237';
   const userToken = '7405484154';
 
   const onePassengerConfirmed = {
@@ -52,6 +53,9 @@ describe('TrackPnr', () => {
   };
 
   before(() => {
+    // mock
+    RailPnr.getStatus = () => Promise.resolve(onePassengerConfirmed);
+
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });
 
@@ -93,27 +97,52 @@ describe('TrackPnr', () => {
     TrackPnrController._isPassengersDetailSame(passengerFromDB, passengerFormAPI).should.be.true;
   });
 
-  it('should insert pnr details in DB for further tracking', () => {
-    return TrackPnrController._trackAndNotify(userToken, pnr, onePassengerConfirmed)
-      .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
-      .should.eventually.be.of.length(1);
-  });
-
   it('should update pnr details in DB', () => {
     let twoPassenger11Confirmed = Utils.cloneProperties(twoPassenger01Confirmed);
     twoPassenger11Confirmed.passengers[1].currentStatus = 'CNF';
 
     return DaoHelper.pnrStatus.insertOne({
-        userToken: userToken,
+        userTokens: [userToken],
         pnr: pnr,
         detail: twoPassenger01Confirmed
       })
       .then((result) => {
         if (!result.insertedCount) throw new Error('not inserted in DB');
       })
-      .then(() => TrackPnrController._trackAndNotify(userToken, pnr, twoPassenger11Confirmed))
+      .then(() => TrackPnrController._checkAndNotify(pnr, twoPassenger11Confirmed))
       .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
       .spread(result => result.detail.passengers[1].currentStatus.should.be.equal('CNF'));
+  });
+
+  it('should insert details in DB and start tracking', () => {
+    return TrackPnrController.startTracking(userToken, pnr)
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
+      .should.eventually.be.of.length(1);
+  });
+
+  it('should not start tracking again', () => {
+    return TrackPnrController.startTracking(userToken, pnr)
+      .then(() => TrackPnrController.startTracking(userToken, pnr))
+      .should.eventually.be.equal('Already tracking');
+  });
+
+  it('should start tracking already tracking pnr for different user ', () => {
+    return TrackPnrController.startTracking(userToken, pnr)
+      .then(() => TrackPnrController.startTracking('9990913081', pnr))
+      .then(result => result.should.be.equal('Trackin Started'))
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
+      .spread(pnrStatus => pnrStatus.userTokens)
+      .then(userTokens => userTokens.indexOf('9990913081') > -1)
+      .should.eventually.be.true;
+  });
+
+  it('should stop tracking for user', () => {
+    return TrackPnrController.startTracking(userToken, pnr)
+      .then(() => TrackPnrController.startTracking('9990913081', pnr))
+      .then(() => TrackPnrController.stopTracking(userToken, pnr))
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnr}).toArray())
+      .spread(pnrStatus => pnrStatus.userTokens.indexOf(userToken) > -1)
+      .should.eventually.be.false;
   });
 
 });

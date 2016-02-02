@@ -16,7 +16,7 @@ class RailPnrRoutes {
   }
 }
 
-function getStatus(req, res, next) {
+function getStatus(req, res) {
 
   // error checking
   req.assert('pnr', 'PNR is a required param').notEmpty();
@@ -33,7 +33,7 @@ function getStatus(req, res, next) {
     .catch(err => res.send(err));
 }
 
-function trackPnr(req, res, next) {
+function trackPnr(req, res) {
   let userToken = req.authorization.basic.password;
 
   // error checking
@@ -45,8 +45,24 @@ function trackPnr(req, res, next) {
   if (errors) return ErrorController.paramError(req, res, errors);
 
   let pnr = req.params.pnr;
-  TrackPnr.startTracking(userToken, pnr);
-  res.send('Tracking Started');
+  return TrackPnr.startTracking(userToken, pnr)
+    .then(result => res.send(result));
+}
+
+function stopTrackingPnr(req, res) {
+  let userToken = req.authorization.basic.password;
+
+  // error checking
+  req.assert('pnr', 'PNR is a required param').notEmpty();
+  req.assert('pnr', 'should contain only numbers').isNumeric();
+  req.assert('pnr', 'should be of length 10').len(10, 10);
+
+  let errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  let pnr = req.params.pnr;
+  TrackPnr.stopTracking(userToken, pnr);
+  res.send('Tracking Stopped');
 }
 
 function stopTrackingPnr(req, res, next) {
