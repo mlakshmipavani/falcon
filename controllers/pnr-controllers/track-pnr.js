@@ -1,6 +1,7 @@
 'use strict';
 var Agenda = require('agenda');
 var moment = require('moment');
+const Promise = require('bluebird');
 var Utils = require('../../utils/Utils');
 var RailPnr = require('./rail-pnr-controller.js');
 var DaoHelper = require('../../dao/dao-helper.js');
@@ -51,12 +52,28 @@ agenda.on('ready', () => agenda.start());
 class TrackPnr {
 
   /**
+   * Same as RailPnr.getStatus(), but in the result it also returns a field 'isTracked' that shows
+   * if the calling user is tracking this pnr or not
+   * @param pnr PNR number
+   * @param userToken Token (or _id of the user)
+   * @returns {Promise<{}>}
+   */
+  static getStatusWithTrackingInfo(/*String*/ pnr, /*String*/ userToken) {
+    return Promise.join(RailPnr.getStatus(pnr), this._isTrackingOnForUser(userToken, pnr),
+      (/*{}*/ pnrStatus, /*boolean*/ isTracked) => {
+        //noinspection JSUndefinedPropertyAssignment
+        pnrStatus.isTracked = isTracked;
+        return pnrStatus;
+      });
+  }
+
+  /**
    * Initialises tracking for pnr status
    * @param userToken Token of the user who wants to track pnr
    * @param pnr PNR Number to track
    */
   static startTracking(/*String*/ userToken, /*String*/ pnr) {
-    return this.isTrackingPNR(pnr)
+    return this._isTrackingPNR(pnr)
       .then(isTracking => {
         if (isTracking) return this._turnTrackingOnForUser(userToken, pnr);
         return this._turnTrackingOnForPnr(userToken, pnr);
@@ -71,7 +88,7 @@ class TrackPnr {
    * @private
    */
   static _turnTrackingOnForUser(/*String*/ userToken, /*String*/ pnr) {
-    return this.isTrackingOnForUser(userToken, pnr)
+    return this._isTrackingOnForUser(userToken, pnr)
       .then(trackingForUser => {
         if (!trackingForUser)
           return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$addToSet: {userTokens: userToken}})
@@ -111,8 +128,9 @@ class TrackPnr {
    * checks if pnr is being tracked for any user
    * @param pnr
    * @returns {Promise.<boolean>}
+   * @private
    */
-  static isTrackingPNR(/*String*/ pnr) {
+  static _isTrackingPNR(/*String*/ pnr) {
     return DaoHelper.pnrStatus.find({pnr: pnr})
       .toArray()
       .then(resultArray => resultArray.length > 0);
@@ -125,7 +143,7 @@ class TrackPnr {
    * @returns {Promise.<boolean>}
    * @private
    */
-  static isTrackingOnForUser(/*String*/ userToken, /*String*/ pnr) {
+  static _isTrackingOnForUser(/*String*/ userToken, /*String*/ pnr) {
     return DaoHelper.pnrStatus.find({pnr: pnr}).toArray().then(resultArray => {
       if (resultArray.length > 0)
         return resultArray[0].userTokens.indexOf(userToken) >= 0;

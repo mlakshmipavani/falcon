@@ -12,7 +12,7 @@ class RailPnrRoutes {
 
     app.post({path: '/bot/@railpnr/trackpnr', version: apiVersion.v1}, trackPnr);
 
-    app.post({path: '/bot/@railpnr/stopTrackingPnr', version: apiVersion.v1}, stopTrackingPnr);
+    app.del({path: '/bot/@railpnr/trackpnr', version: apiVersion.v1}, stopTrackingPnr);
   }
 }
 
@@ -27,8 +27,9 @@ function getStatus(req, res) {
   if (errors) return ErrorController.paramError(req, res, errors);
 
   //noinspection JSUnresolvedVariable
-  let pnr = req.params.pnr;
-  return RailPnr.getStatus(pnr)
+  const pnr = req.params.pnr;
+  const userToken = req.authorization.basic.password;
+  return TrackPnr.getStatusWithTrackingInfo(pnr, userToken)
     .then(response => res.json(response))
     .catch(err => res.send(err));
 }
@@ -50,22 +51,6 @@ function trackPnr(req, res) {
 }
 
 function stopTrackingPnr(req, res) {
-  let userToken = req.authorization.basic.password;
-
-  // error checking
-  req.assert('pnr', 'PNR is a required param').notEmpty();
-  req.assert('pnr', 'should contain only numbers').isNumeric();
-  req.assert('pnr', 'should be of length 10').len(10, 10);
-
-  let errors = req.validationErrors();
-  if (errors) return ErrorController.paramError(req, res, errors);
-
-  let pnr = req.params.pnr;
-  TrackPnr.stopTracking(userToken, pnr);
-  res.send('Tracking Stopped');
-}
-
-function stopTrackingPnr(req, res, next) {
   let userToken = req.authorization.basic.password;
 
   // error checking

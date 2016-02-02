@@ -32,6 +32,11 @@ const options = {
 
 class RailPnr {
 
+  /**
+   * Returns the status of the pnr
+   * @param pnr PNR number
+   * @returns {{}}
+   */
   static getStatus(/* string */ pnr) {
     //noinspection Eslint
     options.form.lccp_pnrno1 = pnr;// jscs:ignore

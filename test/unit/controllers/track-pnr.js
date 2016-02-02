@@ -52,15 +52,11 @@ describe('TrackPnr', () => {
     chartStatus: 'CHART NOT PREPARED'
   };
 
-  before(() => {
+  beforeEach(() => {
     // mock
-    RailPnr.getStatus = () => Promise.resolve(onePassengerConfirmed);
+    RailPnr.getStatus = (pnr) => Promise.resolve(onePassengerConfirmed);
 
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
-  });
-
-  afterEach(() => {
-    return DaoHelper.db.dropDatabase();
   });
 
   it('should check whether all passengers pnr status is confirmed', () => {
@@ -145,4 +141,14 @@ describe('TrackPnr', () => {
       .should.eventually.be.false;
   });
 
+  it('gets pnr status with tracking info [false]', () => {
+    return TrackPnrController.getStatusWithTrackingInfo(pnr, userToken)
+      .should.eventually.have.property('isTracked', false);
+  });
+
+  it('gets pnr status with tracking info [true]', () => {
+    return TrackPnrController.startTracking(userToken, pnr)
+      .then(() => TrackPnrController.getStatusWithTrackingInfo(pnr, userToken))
+      .should.eventually.have.property('isTracked', true);
+  });
 });
