@@ -14,10 +14,11 @@
  */
 var cheerio = require('cheerio');
 var request = require('request-promise');
+var config = require('../../config/config.js');
 
 //noinspection Eslint
 const options = {
-  url: 'http://www.indianrail.gov.in/cgi_bin/inet_pnstat_cgi_2484.cgi',
+  url: config.railway.pnrUrl,
   form: {
     lccp_pnrno1: 0,// jscs:ignore
     lccp_cap_value: 24357,// jscs:ignore

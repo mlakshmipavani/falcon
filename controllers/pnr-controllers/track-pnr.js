@@ -256,6 +256,8 @@ class TrackPnrController {
   static _notifyAll(/*String*/ pnr, /*{}*/ pnrFromAPI) {
     return DaoHelper.pnrStatus.find({pnr: pnr}).toArray()
       .spread(pnrStatus => {
+        //noinspection JSUndefinedPropertyAssignment
+        pnrFromAPI.pnr = pnr;
         PushController.pushPnrUpdate(pnrFromAPI, pnrStatus.userTokens);
       });
   }

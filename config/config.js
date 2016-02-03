@@ -29,6 +29,13 @@ config.uber.baseUrl = process.env.NODE_ENV === 'test' ? 'http://localhost:5001'
   : 'https://api.uber.com/v1';
 
 /**
+ * Pnr Api
+ */
+config.railway = {};
+config.railway.pnrUrl = process.env.NODE_ENV === 'test' ? 'http://localhost:5001'
+  : 'http://www.indianrail.gov.in/cgi_bin/inet_pnstat_cgi_2484.cgi';
+
+/**
  * Wit.AI
  */
 config.wit = {};

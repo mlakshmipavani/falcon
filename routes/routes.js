@@ -26,7 +26,7 @@ class Routes {
 
     //noinspection JSUnresolvedFunction
     app.get('/', (req, res)=> {
-      UserDao.newUser('9033819605', 'Jaydeep', '91').then(()=> res.send('done created!'));
+      res.json({hi: 'hello'});
     });
 
     RegistrationRoutes.setup(app);
