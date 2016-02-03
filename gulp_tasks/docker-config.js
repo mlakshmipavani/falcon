@@ -38,6 +38,7 @@ class DockerConfig {
     vars.push(new EnvVar('NODE_ENV', this.env));
     vars.push(new EnvVar('MONGO_URL', mongoUrl));
     vars.push(new EnvVar('BUNYAN_LEVEL', config.bunyan.level));
+    vars.push(new EnvVar('ONESIGNAL_APP_ID', config.oneSignal.appId));
     return vars;
   }
 
