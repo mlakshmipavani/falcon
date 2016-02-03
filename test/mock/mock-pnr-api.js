@@ -38,7 +38,6 @@ mockPnr.post('/', (req, res) => {
 // promisify the listen function
 mockPnr.listen = Promise.promisify(mockPnr.listen);
 mockPnr.close = Promise.promisify(mockPnr.close);
-mockPnr.listen(5001);
 
 /**
  * @type {Server}
@@ -430,7 +429,6 @@ text-align:center;
 </BODY>
 </HTML>
 `;
-
 
 
 var onePassenger1 = `

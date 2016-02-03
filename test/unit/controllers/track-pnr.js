@@ -7,6 +7,7 @@ const Utils = require('../../../utils/Utils');
 const moment = require('moment');
 const TrackPnrController = require('../../../controllers/pnr-controllers/track-pnr');
 const RailPnrController = require('../../../controllers/pnr-controllers/rail-pnr-controller.js');
+const PushController = require('../../../controllers/push-controller');
 
 describe('TrackPnrController', () => {
   const pnrConfirmed = '4528171237';
@@ -78,6 +79,7 @@ describe('TrackPnrController', () => {
       else if (pnr === pnrNotConfirmed)
         return Promise.resolve(onePassengerNotConfirmed);
     };
+    PushController.pushPnrUpdate = ()=> Promise.resolve();
 
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });
