@@ -50,5 +50,8 @@ class DaoHelper {
     /** @type {Collection} */
     exports.agendaJobs = db.collection('agendaJobs');
 
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.oneSignal = db.collection('oneSignal');
   }
 }

@@ -6,7 +6,7 @@ var Utils = require('../../utils/Utils');
 var RailPnr = require('./rail-pnr-controller.js');
 var DaoHelper = require('../../dao/dao-helper.js');
 var config = require('../../config/config');
-var ParseController = require('../parse-controller.js');
+const PushController = require('../push-controller.js');
 
 var url = config.mongoUrl;
 var agenda = new Agenda({db: {address: url}});
@@ -256,7 +256,7 @@ class TrackPnrController {
   static _notifyAll(/*String*/ pnr, /*{}*/ pnrFromAPI) {
     return DaoHelper.pnrStatus.find({pnr: pnr}).toArray()
       .spread(pnrStatus => {
-        ParseController.pushPnrUpdate(pnrStatus.userTokens, pnrFromAPI);
+        PushController.pushPnrUpdate(pnrFromAPI, pnrStatus.userTokens);
       });
   }
 

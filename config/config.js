@@ -35,6 +35,12 @@ config.wit = {};
 config.wit.apiKey = process.env.WIT_API_KEY || 'UUA2F5RZ4W4CGX2P7EQWM2RIVXSTDEIA';
 
 /**
+ * One Signal
+ */
+config.oneSignal = {};
+config.oneSignal.appId = process.env.ONESIGNAL_APP_ID || '782fdeab-89df-4cbf-b875-2422ae3b276f';
+
+/**
  * Export
  */
 module.exports = config;

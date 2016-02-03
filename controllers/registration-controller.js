@@ -6,7 +6,8 @@ var libPhoneNumber = require('google-libphonenumber');
 //noinspection JSUnresolvedVariable
 var phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
 
-var UserDao = require('../dao/user-dao.js');
+const UserDao = require('../dao/user-dao.js');
+const OneSignalDao = require('../dao/onesignal-dao.js');
 
 class RegistrationController {
 
@@ -14,19 +15,20 @@ class RegistrationController {
    * Registers and syncs contacts
    * @param {string} name
    * @param {object} requestOptions
+   * @param oneSignalUserId UserId provided by the OneSignal SDK on the device
    * [NOTE] : if it's a development environment, send the mobile number in
    * `requestOptions.headers.Authorization`
    * @returns {Promise<{token, registered, unRegistered}>}
    */
-  static register(name, requestOptions) {
+  static register(/*string*/ name, requestOptions, /*string*/ oneSignalUserId) {
 
     if (process.env.NODE_ENV === 'development')
-      return _register(requestOptions.headers.Authorization, name);
+      return _register(requestOptions.headers.Authorization, name, oneSignalUserId);
 
     //noinspection JSUnresolvedFunction
     return request(requestOptions).then((oAuthRes) => {
       let mobNumber = oAuthRes.phone_number; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
-      return _register(mobNumber, name);
+      return _register(mobNumber, name, oneSignalUserId);
     });
 
   }
@@ -36,10 +38,11 @@ class RegistrationController {
  * An internal method that puts the user in the db
  * @param {string} mobNumber Mobile number of the user registering (with +91)
  * @param {string} name Name of the user
+ * @param oneSignalUserId UserId provided by the OneSignal SDK on the device
  * @returns {Promise<{token, registered, unRegistered}>}
  * @private
  */
-function _register(mobNumber, name) {
+function _register(mobNumber, name, /*string*/ oneSignalUserId) {
   var phoneNumber = phoneUtil.parse(mobNumber, '');
   var countryISO = phoneUtil.getRegionCodeForNumber(phoneNumber);
 
@@ -50,9 +53,8 @@ function _register(mobNumber, name) {
     .then((/* User */ user) => {
       if (user.name !== name) UserDao.updateName(user._id.toString(), name);
       return user._id.toString();
-    }).then(token => {
-      return {token};
-    });
+    })
+    .then((/*string*/token) => OneSignalDao.map(token, oneSignalUserId).thenReturn({token}));
 }
 
 module.exports = RegistrationController;
