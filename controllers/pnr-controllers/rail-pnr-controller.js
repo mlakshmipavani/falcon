@@ -74,6 +74,7 @@ class RailPnrController {
       obj.passengers.push(passenger);
     }
 
+    obj.bookingFare = getText(dataArr[i++]);
     obj.chartStatus = getText(dataArr[i]);
     return obj;
   }
