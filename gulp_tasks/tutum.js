@@ -64,9 +64,10 @@ gulp.task('tutum.redeploy', 'Redeploys the container on tutum', () => {
 gulp.task('tutum.push', 'Pushes the image falcon:production to tutum', () => {
   let tutumUsername = assertEnvVar(process.env.TUTUM_USERNAME);
   let image = dockerConfig.getTutumImage(tutumUsername);
-  let tag = image.split(':')[1];
-  let imageName = dockerConfig.tag;
-  return dockerUtils.tag(imageName, image, tag)
+  const splits = image.split(':');
+  let imageName = splits[0];
+  let tag = splits[1];
+  return dockerUtils.tag(dockerConfig.tag, imageName, tag)
     .then((imageName) => {
       let cmd = spawn('bash', ['-c', `docker push ${imageName}`]);
       cmd.stdout.setEncoding('utf8');
