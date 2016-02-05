@@ -21,22 +21,25 @@ class HelloController {
     return Promise.all([WitController.getIntent(text), BotMsgDao.getLastMsg(mobNumber)])
       .spread((/*{intent, confidence, entities}*/ witResponse, /*{body}*/ lastMsg) => {
 
-        if (lastMsg && lastMsg.body === this._intro) {
+        if (lastMsg && lastMsg.body === this._introPlusAskName) {
           let name = text;
-          if (witResponse.intent === WitIntents.name) {
-            //noinspection JSUnresolvedVariable
-            let contactObj = witResponse.entities.contact;
-            if (contactObj && contactObj.length > 0) name = contactObj[0].value;
-          }
-
+          if (witResponse.intent === WitIntents.name)
+            name = this._getNameFromWitResponse(witResponse, text);
           return this._tryToBeHelpful(name);
+        } else if (lastMsg && lastMsg.body === this._askNameAgain) {
+          const name = this._getNameFromWitResponse(witResponse, text);
+          return `hello ${name}`;
         } else if (witResponse.intent === WitIntents.name) return this._helloName(witResponse);
-        else if (witResponse.intent === WitIntents.hello && !lastMsg) return this._intro;
+        else if (witResponse.intent === WitIntents.hello && !lastMsg) return this._introPlusAskName;
         else if (witResponse.intent === WitIntents.hello) return StaticResponses.hello;
         else if (witResponse.intent === WitIntents.howAreYou)
           return StaticResponses.howAreYouIntentReply;
         else if (witResponse.intent === WitIntents.thankYou)
           return StaticResponses.thankYouIntentReply;
+        else if (witResponse.intent === WitIntents.inCorrectName) return this._askNameAgain;
+        else if (witResponse.intent === WitIntents.insult) return this._insultReply;
+        else if (witResponse.intent === WitIntents.okay) return `k`;
+        else if (witResponse.intent === WitIntents.introduction) return this._intro;
         else throw new Error(`don't know what to reply`);
       })
       .catch(err => {
@@ -58,7 +61,11 @@ class HelloController {
    * @private
    */
   static get _intro() {
-    return `My name is HelloBot, I'm a built-in robot\nWhat's your name?`;
+    return `My name is HelloBot, I'm a built-in robot`;
+  }
+
+  static get _introPlusAskName() {
+    return `${this._intro}\n${this._askName}`;
   }
 
   /**
@@ -75,6 +82,50 @@ class HelloController {
     let contactObj = witResponse.entities.contact;
     if (contactObj && contactObj.length > 0) return `hello ${contactObj[0].value}`;
     throw new Error(`Name Intent without name entity`);
+  }
+
+  /**
+   * Ask the user's name
+   * @returns {string}
+   * @private
+   */
+  static get _askName() {
+    return `What's your name?`;
+  }
+
+  /**
+   * Ask the user's name again
+   * This is when the user tells us that the name is wrong
+   * @returns {string}
+   * @private
+   */
+  static get _askNameAgain() {
+    return `okay, then what's your name?`;
+  }
+
+  /**
+   * A reply when the user uses curse words
+   * @returns {string}
+   * @private
+   */
+  static get _insultReply() {
+    return `I'm a new born baby bot, you can't say that to me!`;
+  }
+
+  /**
+   * Extract name from WitResponse, else assume the written text is the name
+   * @param witResponse Response from Wit.AI
+   * @param text Text that the user sent
+   * @returns {string}
+   * @private
+   */
+  static _getNameFromWitResponse(witResponse, text) {
+    if (witResponse.entities) {
+      let contactObj = witResponse.entities.contact;
+      if (contactObj && contactObj.length > 0) return contactObj[0].value;
+    }
+
+    return text;
   }
 
 }

@@ -24,7 +24,7 @@ describe('Hello Controller', () => {
 
     // execute
     return HelloController.reply(mobNumber, inputText)
-      .should.eventually.equal(HelloController._intro);
+      .should.eventually.equal(HelloController._introPlusAskName);
   });
 
   it(`verifies response for first non 'hi' msg`, () => {
@@ -60,7 +60,8 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // prepare
-    return BotMsgDao.insert(mobNumber, HelloController.handle, HelloController._intro, 'abcxyz')
+    return BotMsgDao.insert(
+      mobNumber, HelloController.handle, HelloController._introPlusAskName, 'abcxyz')
 
       // execute
       .then(() => HelloController.reply(mobNumber, inputText))
@@ -81,7 +82,8 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return BotMsgDao.insert(mobNumber, HelloController.handle, HelloController._intro, 'abcxyz')
+    return BotMsgDao.insert(
+      mobNumber, HelloController.handle, HelloController._introPlusAskName, 'abcxyz')
       .then(() => HelloController.reply(mobNumber, inputText))
       .should.eventually.equal(HelloController._tryToBeHelpful(name));
   });
@@ -127,5 +129,94 @@ describe('Hello Controller', () => {
     // execute
     return HelloController.reply(mobNumber, inputText)
       .should.eventually.equal(StaticResponses.thankYouIntentReply);
+  });
+
+  it('verifies response for wrong name', () => {
+    // mock
+    const inputText = `that's not my name`;
+    const outcome = {
+      _text: inputText,
+      confidence: 0.994,
+      intent: 'incorrect_name',
+      entities: {}
+    };
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // execute
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal(HelloController._askNameAgain);
+  });
+
+  it(`verifies response for 'name asked again' -> just name`, () => {
+    // mock
+    const inputText = `jaydeep`;
+    const outcome = {confidence: 0};
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // prepare
+    return BotMsgDao.insert(mobNumber, HelloController.handle, HelloController._askNameAgain, 'abc')
+
+      // execute
+      .then(() => HelloController.reply(mobNumber, inputText))
+      .should.eventually.equal(`hello ${inputText}`);
+  });
+
+  it(`verifies response for 'name asked again' -> i'm <name>`, () => {
+    // mock
+    const name = 'jaydp';
+    const inputText = `I'm ${name}`;
+    const outcome = {
+      _text: inputText,
+      confidence: 0.977,
+      intent: 'name',
+      entities: {contact: [{type: 'value', value: 'jaydp'}]}
+    };
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // prepare
+    return BotMsgDao.insert(mobNumber, HelloController.handle, HelloController._askNameAgain, 'ab')
+
+      // execute
+      .then(() => HelloController.reply(mobNumber, inputText))
+      .should.eventually.equal(`hello ${name}`);
+  });
+
+  it('verifies replies to insulting responses', () => {
+    // mock
+    const inputText = 'wtf!';
+    const outcome = {_text: 'wtf', confidence: 0.913, intent: 'insult', entities: {}};
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // execute
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal(HelloController._insultReply);
+  });
+
+  it('verifies response to Okay', () => {
+    // mock
+    const inputText = 'ok';
+    const outcome = {_text: 'ok', confidence: 0.903, intent: 'okay', entities: {}};
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // execute
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal('k');
+  });
+
+  it(`verifies response for 'who are you'`, () => {
+    // mock
+    const inputText = 'who are you';
+    const outcome = {_text: 'who are you', confidence: 0.991, intent: 'introduction', entities: {}};
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // execute
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal(HelloController._intro);
   });
 });
