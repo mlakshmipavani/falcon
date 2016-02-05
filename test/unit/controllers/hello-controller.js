@@ -219,4 +219,16 @@ describe('Hello Controller', () => {
     return HelloController.reply(mobNumber, inputText)
       .should.eventually.equal(HelloController._intro);
   });
+
+  it(`verifies response to 'are you there'`, () => {
+    // mock
+    const inputText = 'are you there';
+    const outcome = {_text: inputText, confidence: 0.991, intent: 'are_you_there', entities: {}};
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // execute
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal(HelloController._yup);
+  });
 });

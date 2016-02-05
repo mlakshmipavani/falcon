@@ -40,6 +40,7 @@ class HelloController {
         else if (witResponse.intent === WitIntents.insult) return this._insultReply;
         else if (witResponse.intent === WitIntents.okay) return `k`;
         else if (witResponse.intent === WitIntents.introduction) return this._intro;
+        else if (witResponse.intent === WitIntents.areYouThere) return this._yup;
         else throw new Error(`don't know what to reply`);
       })
       .catch(err => {
@@ -110,6 +111,15 @@ class HelloController {
    */
   static get _insultReply() {
     return `I'm a new born baby bot, you can't say that to me!`;
+  }
+
+  /**
+   * Affirmative response
+   * @returns {string}
+   * @private
+   */
+  static get _yup() {
+    return `yup!`;
   }
 
   /**

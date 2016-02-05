@@ -8,5 +8,6 @@ module.exports = {
   inCorrectName: 'incorrect_name',
   insult: 'insult',
   okay: 'okay',
-  introduction: 'introduction'
+  introduction: 'introduction',
+  areYouThere: 'are_you_there'
 };
