@@ -5,6 +5,7 @@ const StaticResponses = require('./wit.ai/static-responses.js');
 const WitIntents = require('./wit.ai/wit-intents.js');
 const BotMsgDao = require('../dao/bot-msg-dao.js');
 const Promise = require('bluebird');
+const UserDao = require('../dao/user-dao.js');
 
 /**
  * Controller for hello bot
@@ -25,9 +26,11 @@ class HelloController {
           let name = text;
           if (witResponse.intent === WitIntents.name)
             name = this._getNameFromWitResponse(witResponse, text);
+          this.storeName(mobNumber, name);
           return this._tryToBeHelpful(name);
         } else if (lastMsg && lastMsg.body === this._askNameAgain) {
           const name = this._getNameFromWitResponse(witResponse, text);
+          this.storeName(mobNumber, name);
           return `hello ${name}`;
         } else if (witResponse.intent === WitIntents.name) return this._helloName(witResponse);
         else if (witResponse.intent === WitIntents.hello && !lastMsg) return this._introPlusAskName;
@@ -136,6 +139,16 @@ class HelloController {
     }
 
     return text;
+  }
+
+  /**
+   * Stores the name provided by the user to hello bot
+   * @param mobNumber Mobile number of the user
+   * @param name Name of the user
+   * @returns {Promise<T>}
+   */
+  static storeName(/*string*/ mobNumber, /*string*/ name) {
+    return UserDao.updateName(mobNumber, name);
   }
 
 }
