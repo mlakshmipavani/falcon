@@ -44,10 +44,8 @@ class HelloController {
         else if (witResponse.intent === WitIntents.okay) return `k`;
         else if (witResponse.intent === WitIntents.introduction) return this._intro;
         else if (witResponse.intent === WitIntents.areYouThere) return this._yup;
-        else throw new Error(`don't know what to reply`);
-      })
-      .catch(err => {
-        if (err.message !== `don't know what to reply`) throw err;
+        else return this._sorryNoIdea;
+        //else throw new Error(`don't know what to reply`);
       });
   }
 
@@ -149,6 +147,16 @@ class HelloController {
    */
   static storeName(/*string*/ mobNumber, /*string*/ name) {
     return UserDao.updateName(mobNumber, name);
+  }
+
+  /**
+   * When the bot doesn't know what to respond, it can send this
+   * @returns {string}
+   * @private
+   */
+  static get _sorryNoIdea() {
+    return `Sorry, but I don't know what you're talking about\n` +
+      `I'm a really small hello bot programmed just to greet u`;
   }
 
 }

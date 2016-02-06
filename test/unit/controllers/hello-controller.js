@@ -34,7 +34,8 @@ describe('Hello Controller', () => {
 
     // execute
     const inputText = 'asdfljasdf';
-    return HelloController.reply(mobNumber, inputText).should.eventually.not.exist;
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal(HelloController._sorryNoIdea);
   });
 
   it(`verifies response for non first 'hi' msg`, () => {
@@ -231,4 +232,16 @@ describe('Hello Controller', () => {
     return HelloController.reply(mobNumber, inputText)
       .should.eventually.equal(HelloController._yup);
   });
+
+  it(`verifies response for text it doesn't understand`, () => {
+    // mock
+    const inputText = `lkjalkfjalsdjkf`;
+    const outcome = {confidence: 0};
+    const witResponse = {outcomes: [outcome]};
+    WitController._captureTextIntent = () => Promise.resolve(witResponse);
+
+    // execute
+    return HelloController.reply(mobNumber, inputText)
+      .should.eventually.equal(HelloController._sorryNoIdea);
+  })
 });
