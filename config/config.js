@@ -48,6 +48,12 @@ config.oneSignal = {};
 config.oneSignal.appId = process.env.ONESIGNAL_APP_ID || '782fdeab-89df-4cbf-b875-2422ae3b276f';
 
 /**
+ * BookMyShow
+ */
+config.bookMyShow = {};
+config.bookMyShow.url = process.env.BOOK_MY_SHOW_URL || 'http://data-in.bookmyshow.com';
+
+/**
  * Export
  */
 module.exports = config;

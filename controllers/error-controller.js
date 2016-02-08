@@ -3,7 +3,9 @@
 var util = require('util');
 var Errors = require('restify-errors');
 
-var log = require('../utils/logger');
+var log = require('../utils/logger').child({
+  module: 'error-controller'
+});
 
 /**
  * Logs and returns errors to invalid api requests
