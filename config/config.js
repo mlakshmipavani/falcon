@@ -54,6 +54,12 @@ config.bookMyShow = {};
 config.bookMyShow.url = process.env.BOOK_MY_SHOW_URL || 'http://data-in.bookmyshow.com';
 
 /**
+ * AWS Lambda
+ */
+config.awsLambda = {};
+config.awsLambda.closestMaterialColorUrl = process.env.CLOSEST_MATERIAL_COLOR_URL || 'https://iwwfzsbdy8.execute-api.us-east-1.amazonaws.com/prod/closest-material-color';
+
+/**
  * Export
  */
 module.exports = config;

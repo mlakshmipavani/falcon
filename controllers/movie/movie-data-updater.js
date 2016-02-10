@@ -5,6 +5,7 @@ const _array = require('lodash/array');
 
 const config = require('../../config/config');
 const BookMyShowDao = require('../../dao/bot-bookmyshow-dao');
+const AwsLambda = require('../aws-lambda');
 const log = require('../../utils/logger').child({
   module: 'movie-data-updater'
 });
@@ -25,9 +26,16 @@ class MovieDataUpdater {
         }
       })
       .then((/*{ops}*/ result) => result.ops)
-      .map((/*BmsCity*/ city) => this._getMovieList(city.SubRegionCode))
+      .map((/*BmsCity*/ city) => this._getMovieList(city.SubRegionCode), {concurrency: 50})
       .then(_array.flatten)
-      .then(BookMyShowDao.storeMovies);
+      .then(BookMyShowDao.storeMovies)
+      .then(BookMyShowDao.getAllPosterUrls)
+      .map((/*{eventCode, posterUrl}*/ item) => {
+        return AwsLambda.getClosestMaterialColor(item.posterUrl, item.eventCode);
+
+        // concurrency has been limited to 50 coz AWS lambda invocation limit = 100
+      }, {concurrency: 50})
+      .then(BookMyShowDao.updateMovieColors);
   }
 
   /**
