@@ -14,13 +14,15 @@ describe('UberController', () => {
       name: 'uberGO',
       eta: 60,
       fare: '₹97-118',
-      surgeMultiplier: 1.2
+      surgeMultiplier: 1.2,
+      surgeFixed: 0
     },
     '0dfc35e0-b4be-49a1-b1bf-0bc7217e4b58': {
       name: 'uberX',
       eta: 120,
       fare: '₹108-131',
-      surgeMultiplier: 1
+      surgeMultiplier: 1,
+      surgeFixed: 0
     }
   };
   const finalResponse = [
@@ -29,6 +31,7 @@ describe('UberController', () => {
       eta: 60,
       fare: '₹97-118',
       surgeMultiplier: 1.2,
+      surgeFixed: 0,
       productId: 'db6779d6-d8da-479f-8ac7-8068f4dade6f'
     },
     {
@@ -36,6 +39,7 @@ describe('UberController', () => {
       eta: 120,
       fare: '₹108-131',
       surgeMultiplier: 1,
+      surgeFixed: 0,
       productId: '0dfc35e0-b4be-49a1-b1bf-0bc7217e4b58'
     }
   ];

@@ -43,6 +43,7 @@ class UberController {
       finalObj[productId].name = cab.display_name;// jscs:ignore
       finalObj[productId].fare = cab.estimate;
       finalObj[productId].surgeMultiplier = cab.surge_multiplier;// jscs:ignore
+      finalObj[productId].surgeFixed = 0;
     }
 
     return finalObj;
@@ -101,7 +102,7 @@ class UberController {
 
   //noinspection Eslint
   /**
-   * Retruns the request options for making the http request
+   * Returns the request options for making the http request
    * @param latitude user provided latitude
    * @param longitude user provided longitude
    * @returns {{url: string, headers: {Authorization: string}, qs: {start_latitude: float,start_longitude: float, end_latitude: float, end_longitude: float}, json: boolean}}
