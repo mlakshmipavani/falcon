@@ -6,6 +6,7 @@ const _array = require('lodash/array');
 const config = require('../../config/config');
 const BookMyShowDao = require('../../dao/bot-bookmyshow-dao');
 const AwsLambda = require('../aws-lambda');
+const YoutubeController = require('../youtube-controller');
 const log = require('../../utils/logger').child({
   module: 'movie-data-updater'
 });
@@ -74,6 +75,11 @@ class MovieDataUpdater {
           'Length', 'TrailerURL', 'EventReleaseDate', 'FShareURL'];
         keys.forEach(key => obj[key] = movie[key]);
         obj.PosterUrl = `http://in.bmscdn.com/events/Large/${movie.ImageCode}.jpg`;
+        if (obj.TrailerURL) {
+          const videoId = YoutubeController.getVideoId(obj.TrailerURL);
+          obj.TrailerBgUrl = YoutubeController.getWideThumbnailUrl(videoId);
+        }
+
         obj.cityCode = cityCode;
         return obj;
       });

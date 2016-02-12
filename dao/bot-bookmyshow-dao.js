@@ -4,6 +4,16 @@ const DaoHelper = require('./dao-helper');
 
 class BotMovieDao {
 
+  /**
+   * Finds movies of given languages in a given city
+   * @param langArr An array of languages (Eg. ['Hindi', 'English']
+   * @param cityCode Code for the city interested in
+   * @returns {Promise}
+   */
+  static getMovies(/*Array<string>*/ langArr, /*string*/ cityCode) {
+    return DaoHelper.movies.find({Language: {$in: langArr}, cityCode}).toArray();
+  }
+
   static storeCities(/*Array<BmsCity>*/ cities) {
     return DaoHelper.bmsCities.deleteMany({})
       .then(() => DaoHelper.bmsCities.insertMany(cities));

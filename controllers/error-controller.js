@@ -20,8 +20,14 @@ class ErrorController {
    * @param errors Errors (found using restify-validator)
    */
   static paramError(req, res, errors) {
-    var errorStr = util.inspect(errors);
-    log.error(`[ParamError] Path[${req.route.version}]:${req.route.path} -> ${errorStr}`);
+    let errorStr;
+    if (errors instanceof Array) {
+      const error = errors[0];
+      errorStr = `${error.param} : ${error.msg}`;
+    } else if ((typeof errors) === 'string') errorStr = errors;
+    else errorStr = util.inspect(errors);
+
+    log.error(`[ParamError] Path[${req.route.version}]:${req.route.path} -> [${errorStr}]`);
 
     //noinspection JSUnresolvedFunction
     res.send(new Errors.InvalidArgumentError({message: errorStr}));

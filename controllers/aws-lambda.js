@@ -23,7 +23,7 @@ class AwsLambda {
   }
 
   static _getOptions(/*string*/ imgUrl, /*string*/ eventCode) {
-    const apiKey = process.env.AWS_LAMBDA_API_KEY;
+    const apiKey = config.awsLambda.apiKey;
     if (!apiKey) throw new Error('AWS_LAMBDA_API_KEY is empty');
     return {
       url: config.awsLambda.closestMaterialColorUrl,
