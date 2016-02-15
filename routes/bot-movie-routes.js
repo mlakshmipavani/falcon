@@ -27,7 +27,11 @@ function getMovies(req, res) {
     return ErrorController.paramError(req, res, 'langArr should be an array');
 
   return MovieController.getMovies(langArr, cityCode)
-    .then(movies => res.json(movies))
+    .then(movies => {
+      //noinspection JSUnresolvedFunction
+      res.setHeader('Cache-Control', 'private, max-age=3600'); // 1hr
+      res.json(movies);
+    })
     .catch(err => res.send(err));
 }
 
