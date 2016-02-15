@@ -19,6 +19,23 @@ class MovieController {
       });
   }
 
+  static getCites() {
+    return BookMyShowController.getCities();
+  }
+
+  /**
+   * Gets all the unique languages keeping English and Hindi at the top
+   * @returns {Promise<string>}
+   */
+  static getLanguages() {
+    const english = 'English';
+    const hindi = 'Hindi';
+    return BookMyShowController.getLanguages().reduce((finalObj, eachLang) => {
+      if (eachLang !== english && eachLang !== hindi) finalObj.push(eachLang);
+      return finalObj;
+    }, ['English', 'Hindi']);
+  }
+
 }
 
 module.exports = MovieController;

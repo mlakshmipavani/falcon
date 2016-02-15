@@ -32,7 +32,10 @@ class MovieDataUpdater {
       .then(BookMyShowDao.storeMovies)
       .then(BookMyShowDao.getAllPosterUrls)
       .map((/*{eventCode, posterUrl}*/ item) => {
-        return AwsLambda.getClosestMaterialColor(item.posterUrl, item.eventCode);
+        if (item.posterUrl)
+          return AwsLambda.getClosestMaterialColor(item.posterUrl, item.eventCode);
+        else
+          return {color: '#212121', eventCode: item.eventCode};
 
         // concurrency has been limited to 50 coz AWS lambda invocation limit = 100
       }, {concurrency: 50})
@@ -80,6 +83,7 @@ class MovieDataUpdater {
           obj.TrailerBgUrl = YoutubeController.getWideThumbnailUrl(videoId);
         }
 
+        obj.Language = obj.Language.split(' ')[0]; // removes suffixes like English (3D)
         obj.cityCode = cityCode;
         return obj;
       });

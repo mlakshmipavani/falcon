@@ -8,6 +8,8 @@ class BotMovieRoutes {
 
   static setup(app) {
     app.get({path: '/bot/@moviesnow/getmovies', version: apiVersion.v1}, getMovies);
+    app.get({path: '/bot/@moviesnow/getcities', version: apiVersion.v1}, getCities);
+    app.get({path: '/bot/@moviesnow/getlanguages', version: apiVersion.v1}, getLanguages);
   }
 }
 
@@ -31,6 +33,26 @@ function getMovies(req, res) {
       //noinspection JSUnresolvedFunction
       res.setHeader('Cache-Control', 'private, max-age=3600'); // 1hr
       res.json(movies);
+    })
+    .catch(err => res.send(err));
+}
+
+function getCities(req, res) {
+  return MovieController.getCites()
+    .then(cities => {
+      //noinspection JSUnresolvedFunction
+      res.setHeader('Cache-Control', 'private, max-age=3600'); // 1hr
+      res.json(cities);
+    })
+    .catch(err => res.send(err));
+}
+
+function getLanguages(req, res) {
+  return MovieController.getLanguages()
+    .then(languages => {
+      //noinspection JSUnresolvedFunction
+      res.setHeader('Cache-Control', 'private, max-age=3600'); // 1hr
+      res.json(languages);
     })
     .catch(err => res.send(err));
 }

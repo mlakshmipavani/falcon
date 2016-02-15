@@ -14,6 +14,16 @@ class BotMovieDao {
     return DaoHelper.movies.find({Language: {$in: langArr}, cityCode}).toArray();
   }
 
+  static getCities() {
+    return DaoHelper.bmsCities.find()
+      .project({SubRegionCode: 1, SubRegionName: 1, isTopCity: 1})
+      .toArray();
+  }
+
+  static getLanguages() {
+    return DaoHelper.movies.distinct('Language', {});
+  }
+
   static storeCities(/*Array<BmsCity>*/ cities) {
     return DaoHelper.bmsCities.deleteMany({})
       .then(() => DaoHelper.bmsCities.insertMany(cities));
