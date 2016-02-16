@@ -1,146 +1,165 @@
 'use strict';
 
-var Promise = require('bluebird');
-var request = require('request-promise');
-var _object = require('lodash/object');
-var config = require('../config/config.js');
+const Promise = require('bluebird');
+const request = require('request-promise');
+const _object = require('lodash/object');
+const config = require('../config/config.js');
+const Utils = require('../utils/Utils.js');
 
 const baseUrl = config.uber.baseUrl;
 const headers = {Authorization: 'Token jNWXqEXTsHSsBfH0fB-yxG8mw42I_YeQh0OoTDwp'};
 
 class UberController {
 
-  static getCabs(/* float */ latitude, /* float */ longitude) {
-    var promises = [this._estimateTime(latitude, longitude),
-      this._estimatePrice(latitude, longitude)];
-    return Promise.all(promises).reduce((finalObj, eachObj) => {
-      var output;
-      if ('times' in eachObj) {
-        let times = eachObj.times;
-        output = this._parseTimeResult(times);
-
-      } else if ('prices' in eachObj) {
-        //noinspection JSUnresolvedVariable
-        let prices = eachObj.prices;
-        output = this._parsePriceResult(prices);
-      }
-
-      return _object.defaultsDeep(finalObj, output);
-    }, {}).then(this._filterInvalidOutput).then(this._convertToArray);
+  /**
+   * Gets uber cabs around a given lat/lng
+   * @param latitude
+   * @param longitude
+   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, fare}}
+   */
+  static getCabs(/*number*/ latitude, /*number*/ longitude) {
+    return Promise.join(
+      this._getCabTypes(latitude, longitude),
+      this._estimateTime(latitude, longitude),
+      this._estimatePrice(latitude, longitude),
+      (/*{products}*/ products, /*{times}*/ times, /*{prices}*/ prices) => {
+        return this._getCabsCallback(products.products, times.times, prices.prices);
+      });
   }
 
   /**
-   * Parse the estimate cab pricing output got from uber server
-   * @param priceResult response from uber
-   * @returns {{}}
+   * This callback is called when cabTypes, cab timings and cab prices have been fetched from Uber servers
+   * @param cabTypesArr An array of cab types
+   * @param times An array of cab timings
+   * @param prices An array of cab prices
+   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, fare}}
+   * @private
    */
-  static _parsePriceResult(/* Array<{display_name, estimate, product_id, surge_multiplier}>*/
-                           priceResult) {
-    var finalObj = {};
-    for (let cab of priceResult) {
-      let productId = cab.product_id;// jscs:ignore
-      finalObj[productId] = finalObj[productId] || {};
-      finalObj[productId].name = cab.display_name;// jscs:ignore
-      finalObj[productId].fare = cab.estimate;
-      finalObj[productId].surgeMultiplier = cab.surge_multiplier;// jscs:ignore
-      finalObj[productId].surgeFixed = 0;
+  static _getCabsCallback(/*Array<{product_id, price_details, display_name}>*/ cabTypesArr,
+                          /*Array<{product_id, estimate}>*/ times,
+                          /*Array<{product_id, surge_multiplier}>*/ prices) {
+    let cabs = Utils.getObjectFromArray(cabTypesArr, 'product_id');
+    for (let eachTime of times) {
+      const productId = eachTime.product_id;
+      cabs[productId].eta = eachTime.estimate / 60; // converts eta into minutes
     }
 
-    return finalObj;
+    for (let eachPrice of prices) {
+      const productId = eachPrice.product_id;
+      cabs[productId].surgeMultiplier = eachPrice.surge_multiplier;
+      cabs[productId].surgeFixed = 0;
+    }
+
+    cabs = _object.values(cabs);
+    cabs.forEach(UberController._calculateFare);
+    cabs = cabs.map(UberController._keepOnlyRequiredFields)
+      .filter(cab => cab.eta && cab.fare); // filter out cabs that don't have eta or fare
+    return cabs;
   }
 
   /**
-   * Parse the estimate cab time output got from uber server
-   * @param timeResult response from uber
-   * @returns {{}}
+   * Calculates an estimated fare a cab and attaches the fare field to it
+   * @param {{price_details: {cost_per_minute, minimum, cost_per_distance, base}, surgeMultiplier}} cab
+   * @private
    */
-  static _parseTimeResult(/* Array<{display_name, estimate, product_id}> */ timeResult) {
-    var finalObj = {};
-    for (let cab of timeResult) {
-      let productId = cab.product_id;// jscs:ignore
-      finalObj[productId] = finalObj[productId] || {};
-      finalObj[productId].name = cab.display_name;// jscs:ignore
-      finalObj[productId].eta = cab.estimate;
-    }
+  static _calculateFare(cab) {
+    const fareBreakUp = cab.price_details;
+    const calculate = (time) => {
+      return (fareBreakUp.base + (fareBreakUp.cost_per_distance * 5)
+        + (time * fareBreakUp.cost_per_minute)) * cab.surgeMultiplier;
+    };
 
-    return finalObj;
+    const minTime = 10; // Going @ 30Km/hr it would take 10 mins to travel 5Km
+    const maxTime = 20; // Going @ 15Km/hr it would take 20 mins to travel 5Km
+    const minFare = calculate(minTime);
+    const maxFare = calculate(maxTime);
+
+    //noinspection JSUndefinedPropertyAssignment
+    cab.fare = `₹${minFare}-${maxFare}`;
   }
 
-  //noinspection Eslint
+  /**
+   * Get the type of uber cabs available at a given lat/lng
+   * @param latitude latitude of the user
+   * @param longitude longitude of the user
+   * @returns {Promise}
+   */
+  static _getCabTypes(/*number*/ latitude, /*number*/ longitude) {
+    const reqOptions = this._getOptionsForCabTypes(latitude, longitude);
+    return request(reqOptions);
+  }
+
   /**
    * Get the estimated time of uber cabs at a given lat/lng
    * @param latitude latitude of the user
    * @param longitude longitude of the user
    * @returns {Promise}
    */
-  static _estimateTime(latitude, longitude) {
-    var reqOptions = this._getOptionsForTime(latitude, longitude);
+  static _estimateTime(/*number*/ latitude, /*number*/ longitude) {
+    const reqOptions = this._getOptionsForTime(latitude, longitude);
     return request(reqOptions);
   }
 
-  //noinspection Eslint
-  static _getOptionsForTime(start_latitude, start_longitude) {// jscs:ignore
-    //noinspection Eslint
+  /**
+   * Get the estimated time of uber cabs at a given lat/lng
+   * @param latitude latitude of the user
+   * @param longitude longitude of the user
+   * @returns {Promise}
+   */
+  static _estimatePrice(/*number*/ latitude, /*number*/ longitude) {
+    const reqOptions = this._getOptionsForPrice(latitude, longitude);
+    return request(reqOptions);
+  }
+
+  static _getOptionsForCabTypes(/*number*/ latitude, /*number*/ longitude) {
     return {
-      url: `${baseUrl}/estimates/time`,
+      url: `${baseUrl}/products`,
       headers,
-      qs: {start_latitude, start_longitude},// jscs:ignore
+      qs: {latitude, longitude},
       json: true
     };
   }
 
-  /**
-   * Gives an estimate price for a ride of approx 5Kms
-   * @param latitude Start latitude
-   * @param longitude Start Longitude
-   * @returns {Promise}
-   */
-  static _estimatePrice(latitude, longitude) {
-    var reqOptions = this._getOptionsForPrice(latitude, longitude);
-    return request(reqOptions);
+  static _getOptionsForTime(/*number*/ latitude, /*number*/ longitude) {
+    return {
+      url: `${baseUrl}/estimates/time`,
+      headers,
+      qs: {start_latitude: latitude, start_longitude: longitude},
+      json: true
+    };
   }
 
-  //noinspection Eslint
-  /**
-   * Returns the request options for making the http request
-   * @param latitude user provided latitude
-   * @param longitude user provided longitude
-   * @returns {{url: string, headers: {Authorization: string}, qs: {start_latitude: float,start_longitude: float, end_latitude: float, end_longitude: float}, json: boolean}}
-   * @private
-   */
-  static _getOptionsForPrice(latitude, longitude) {
-    //noinspection Eslint
+  static _getOptionsForPrice(/*number*/ latitude, /*number*/ longitude) {
     return {
       url: `${baseUrl}/estimates/price`,
       headers,
       qs: {
-        start_latitude: latitude, // jscs:ignore
-        start_longitude: longitude, // jscs:ignore
+        start_latitude: latitude,
+        start_longitude: longitude,
+
         // the 0.045 is a rough approximation for 5kms
-        end_latitude: latitude + 0.045, // jscs:ignore
-        end_longitude: longitude // jscs:ignore
+        end_latitude: latitude + 0.045,
+        end_longitude: longitude
       },
       json: true
     };
   }
 
   /**
-   * Remove all the cab outputs that don't have both eta and fare
-   * @returns {{}}
+   * Keeps only fields that are required by the client
+   * @param {{product_id, display_name, eta, surgeMultiplier, surgeFixed, fare}} cab
+   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, fare}}
+   * @private
    */
-  static _filterInvalidOutput(output) {
-    return _object.pick(output, value => value.eta && value.fare);
-  }
-
-  static _convertToArray(objOutput) {
-    var arr = [];
-    for (let key of Object.keys(objOutput)) {
-      let value = objOutput[key];
-      value.productId = key;
-      arr.push(value);
-    }
-
-    return arr;
+  static _keepOnlyRequiredFields(cab) {
+    const newCab = {};
+    newCab.productId = cab.product_id;
+    newCab.name = cab.display_name;
+    newCab.eta = cab.eta;
+    newCab.surgeMultiplier = cab.surgeMultiplier;
+    newCab.surgeFixed = cab.surgeFixed;
+    newCab.fare = cab.fare;
+    return newCab;
   }
 }
 

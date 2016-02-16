@@ -144,6 +144,4 @@ class OlaController {
   }
 }
 
-OlaController.getCabs(12.8947334, 77.6729643).then(console.log).catch(console.error);
-
 module.exports = OlaController;
