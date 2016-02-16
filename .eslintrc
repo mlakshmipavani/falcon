@@ -8,7 +8,7 @@
     "quote-props": [2, "as-needed"],
     "no-array-constructor": 1,
     "quotes": [1, "single"],
-    "max-len": [1, 100, 2], // 2 spaces per tab, max 80 chars per line
+    "max-len": [1, 100, 2, {"ignoreUrls": true, "ignoreComments": true}], // 2 spaces per tab, max 80 chars per line
     "no-inner-declarations": [1, "both"],
     "no-shadow-restricted-names": 1,
     "one-var": 0,
@@ -22,7 +22,7 @@
     "comma-style": [1, "last"],
     "semi": [1, "always"],
     "radix": 1,
-    "camelcase": 1,
+    "camelcase": [2, {"properties": "never"}],
     "new-cap": 1,
     "consistent-this": [1, "_this"],
     "func-names": 1
