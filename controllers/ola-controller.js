@@ -1,5 +1,6 @@
 'use strict';
 
+const util = require('util');
 const request = require('request-promise');
 const config = require('../config/config');
 const Utils = require('../utils/Utils');
@@ -19,7 +20,7 @@ class OlaController {
     //noinspection JSValidateTypes
     return this._queryOlaServer(latitude, longitude)
       .then(res => {
-        console.log(JSON.stringify(res, null, 2));
+        console.log(util.inspect(res, {depth: null}));
         return res;
       })
       .then(this._parseResult);
@@ -45,45 +46,85 @@ class OlaController {
    */
   static _parseResult(/*{categories, ride_estimate}*/ result) {
     const categories = result.categories;
-    let rideEstimates = result.ride_estimate; // jscs:ignore
-    rideEstimates = Utils.getObjectFromArray(rideEstimates, 'category');
 
-    return categories.reduce((cabs, /*{id, fare_breakup}*/ eachCategory) => {
-      const est = rideEstimates[eachCategory.id];
-
-      //noinspection JSUnresolvedVariable
+    return categories.reduce((cabs, /*{id, display_name, eta, fare_breakup}*/ eachCategory) => {
+      if (eachCategory.eta === -1) return cabs;
       let cab = {
-        name: eachCategory.display_name, // jscs:ignore
+        name: eachCategory.display_name,
         eta: eachCategory.eta,
-        fare: `₹${est.amount_min}-${est.amount_max}`, // jscs:ignore
         surgeMultiplier: 1, // default value
-        surgeFixed: 0,
+        surgeFixed: 0, // default value
         productId: eachCategory.id
       };
 
-      // if fare breakUp is available
-      if (eachCategory.fare_breakup) { // jscs:ignore
-        /*** @type {{surcharge}} */
-        const flatRate = eachCategory.fare_breakup.find((/*{type}*/ breakUp) => { // jscs:ignore
-          return breakUp.type === 'flat_rate'; // find the one with flat rate
-        });
-
-        // if it has a surgeCharge
-        if (flatRate && flatRate.surcharge && flatRate.surcharge.length > 0) {
-
-          // search for multiplier surcharge
-          const multiplier = flatRate.surcharge.find(surcharge => surcharge.type === 'multiplier');
-          if (multiplier) cab.surgeMultiplier = multiplier.value;
-
-          // search for fixed surcharge
-          const fixed = flatRate.surcharge.find(surcharge => surcharge.type === 'fixed');
-          if (fixed) cab.surgeFixed = fixed.value;
-        }
-      }
+      OlaController._parseFareBreakUp(cab, eachCategory.fare_breakup);
 
       cabs.push(cab);
       return cabs;
     }, []);
+  }
+
+  /**
+   * Parses the fare break-up given by ola and calculate an estimated fare for 5 km
+   * @param cab Cab object to which `fare` field will be attached
+   * @param fareBreakUp Fare breakup given by ola
+   * @private
+   */
+  static _parseFareBreakUp(cab, /*Array<{}>*/ fareBreakUp) {
+    // if fare breakUp is available
+    if (fareBreakUp) {
+      // find the one with flat rate
+      /**
+       * @type {{base_fare, cost_per_distance, ride_cost_per_minute, minimum_distance, surcharge}}
+       */
+      const flatRate = fareBreakUp.find((/*{type}*/breakUp) => breakUp.type === 'flat_rate');
+
+      // if it has a surgeCharge
+      if (flatRate && flatRate.surcharge && flatRate.surcharge.length > 0) {
+
+        // search for multiplier surcharge
+        const multiplier = flatRate.surcharge.find(surcharge => surcharge.type === 'multiplier');
+        if (multiplier) cab.surgeMultiplier = multiplier.value;
+
+        // search for fixed surcharge
+        const fixed = flatRate.surcharge.find(surcharge => surcharge.type === 'fixed');
+        if (fixed) cab.surgeFixed = fixed.value;
+      }
+
+      if (flatRate) {
+        const fare = OlaController._calculate5kmFare(flatRate.base_fare,
+          flatRate.minimum_distance, flatRate.cost_per_distance, flatRate.ride_cost_per_minute,
+          cab.surgeMultiplier, cab.surgeFixed);
+        cab.fare = `₹${fare.minFare}-${fare.maxFare}`;
+      }
+    }
+  }
+
+  /**
+   * Calculates the fare for a 5Km ride
+   * @param baseFare The minimum a user has to pay
+   * @param minDistance Distance compensated in the baseFare
+   * @param costPerDistance Cost per Km
+   * @param costPerMinute Cost per minute
+   * @param surgeMultiplier Surge rate multiplier
+   * @param surgeFixed Fixed amount surge
+   * @returns {{minFare: number, maxFare: number}}
+   */
+  static _calculate5kmFare(/*number|string*/ baseFare, /*number|string*/ minDistance,
+                           /*number|string*/ costPerDistance, /*number|string*/ costPerMinute,
+                           /*number*/ surgeMultiplier, /*number|string*/ surgeFixed) {
+    baseFare = parseInt(baseFare);
+    const calculate = (time) => {
+      return (surgeMultiplier *
+        (baseFare + (extraDistance * costPerDistance) + (time * costPerMinute))) + surgeFixed;
+    };
+
+    const extraDistance = Math.max(5 - minDistance, 0);
+    const minTime = 10; // Going @ 30Km/hr it would take 10 mins to travel 5Km
+    const maxTime = 20; // Going @ 15Km/hr it would take 20 mins to travel 5Km
+    const minFare = calculate(minTime);
+    const maxFare = calculate(maxTime);
+    return {minFare, maxFare};
   }
 
   /**
@@ -94,20 +135,15 @@ class OlaController {
    * @private
    */
   static _getOptions(/*number*/ latitude, /*number*/ longitude) {
-    //noinspection Eslint
     return {
       url: `${baseUrl}/products`,
       headers,
-      qs: {
-        pickup_lat: latitude, // jscs:ignore
-        pickup_lng: longitude, // jscs:ignore
-        // the 0.045 is a rough approximation for 5kms
-        drop_lat: latitude + 0.045, // jscs:ignore
-        drop_lng: longitude // jscs:ignore
-      },
+      qs: {pickup_lat: latitude, pickup_lng: longitude},
       json: true
     };
   }
 }
+
+OlaController.getCabs(12.8947334, 77.6729643).then(console.log).catch(console.error);
 
 module.exports = OlaController;
