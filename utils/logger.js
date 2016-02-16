@@ -1,7 +1,7 @@
 'use strict';
 
-var bunyan = require('bunyan');
-var config = require('../config/config');
+const bunyan = require('bunyan');
+const config = require('../config/config');
 
 /**
  * Exposes Bunyan Logger to the application
@@ -13,6 +13,6 @@ var config = require('../config/config');
 /**
  * @type {Logger}
  */
-var logger = bunyan.createLogger(config.bunyan);
+const logger = bunyan.createLogger(config.bunyan);
 
 module.exports = logger;

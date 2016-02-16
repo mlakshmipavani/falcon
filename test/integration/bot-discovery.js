@@ -1,25 +1,25 @@
 'use strict';
 
-var request = require('supertest-as-promised');
-var Promise = require('bluebird');
+const request = require('supertest-as-promised');
+const Promise = require('bluebird');
 
-var app = require('../../app');
-var mongodb = require('mongodb');
-var config = require('../../config/config.js');
-var UserDao = require('../../dao/user-dao.js');
-var BotDao = require('../../dao/bot-dao.js');
+const app = require('../../app');
+const mongodb = require('mongodb');
+const config = require('../../config/config');
+const UserDao = require('../../dao/user-dao');
+const BotDao = require('../../dao/bot-dao');
 
 describe('Bot Discovery', () => {
 
   const PORT = 3050;
   const mobNumber = '919033819605';
   const name = 'Jaydeep';
-  var token;
+  let token;
 
   const botHandles = ['@yo', '@copyCat', '@hello'];
   const botNames = ['Yo!', 'Copy Cat', 'Hello'];
 
-  var dbObj;
+  let dbObj;
 
   before(() => {
     return mongodb.MongoClient.connect(config.mongoUrl, {promiseLibrary: Promise})
@@ -53,7 +53,7 @@ describe('Bot Discovery', () => {
       .query({count: 3})
       .expect('Content-Type', /json/)
       .then((res) => {
-        var body = res.body;
+        const body = res.body;
         body.should.have.length(3);
       });
   });

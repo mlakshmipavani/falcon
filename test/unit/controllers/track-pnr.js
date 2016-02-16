@@ -93,21 +93,21 @@ describe('TrackPnrController', () => {
   });
 
   it('should get next schedule for checking pnr status from pnr api', () => {
-    let lessThan1Day = moment().add('22', 'hours').format('DD-MM-YYYY');
+    const lessThan1Day = moment().add('22', 'hours').format('DD-MM-YYYY');
     TrackPnrController._getNextSchedule(lessThan1Day).should.equal('in 30 minutes');
 
-    let moreThan1Day = moment().add('2', 'day').format('DD-MM-YYYY');
+    const moreThan1Day = moment().add('2', 'day').format('DD-MM-YYYY');
     TrackPnrController._getNextSchedule(moreThan1Day).should.equal('in 4 hours');
 
-    let moreThan2Day = moment().add('3', 'day').format('DD-MM-YYYY');
+    const moreThan2Day = moment().add('3', 'day').format('DD-MM-YYYY');
     TrackPnrController._getNextSchedule(moreThan2Day).should.equal('in 24 hours');
   });
 
   it('should check whether pnr status changed Or not', () => {
-    let passengerFromDB = Utils.cloneProperties(onePassengerConfirmed.passengers);
+    const passengerFromDB = Utils.cloneProperties(onePassengerConfirmed.passengers);
     passengerFromDB[0].currentStatus = 'RAC';
 
-    let passengerFormAPI = Utils.cloneProperties(onePassengerConfirmed.passengers);
+    const passengerFormAPI = Utils.cloneProperties(onePassengerConfirmed.passengers);
 
     //noinspection BadExpressionStatementJS
     TrackPnrController._isPassengersDetailSame(passengerFromDB, passengerFormAPI).should.be.false;
@@ -119,7 +119,7 @@ describe('TrackPnrController', () => {
   });
 
   it('should update pnr details in DB', () => {
-    let twoPassenger11Confirmed = Utils.cloneProperties(twoPassenger01Confirmed);
+    const twoPassenger11Confirmed = Utils.cloneProperties(twoPassenger01Confirmed);
     twoPassenger11Confirmed.passengers[1].currentStatus = 'CNF';
 
     return DaoHelper.pnrStatus.insertOne({

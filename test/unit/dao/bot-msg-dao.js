@@ -1,10 +1,10 @@
 'use strict';
 
-var Promise = require('bluebird');
-var mongodb = require('mongodb');
-var DaoHelper = require('../../../dao/dao-helper');
-var BotMsgDao = require('../../../dao/bot-msg-dao.js');
-var UserMsgDao = require('../../../dao/user-msg-dao.js');
+const Promise = require('bluebird');
+const mongodb = require('mongodb');
+const DaoHelper = require('../../../dao/dao-helper');
+const BotMsgDao = require('../../../dao/bot-msg-dao');
+const UserMsgDao = require('../../../dao/user-msg-dao');
 
 describe('BotMsgDao', () => {
 
@@ -16,7 +16,7 @@ describe('BotMsgDao', () => {
   });
 
   it('Inserts a bot sent msg into db', () => {
-    var userMsgId;
+    let userMsgId;
     UserMsgDao.insert(userMsg.mobNumber, userMsg.botHandle, userMsg.body)
       .then((/* UserMsg */ msg) => {
         userMsgId = msg._id.toString();
@@ -28,7 +28,7 @@ describe('BotMsgDao', () => {
   });
 
   it('Finds a msg using its _id', () => {
-    var botMsgId;
+    let botMsgId;
     return UserMsgDao.insert(userMsg.mobNumber, userMsg.botHandle, userMsg.body)
       .then((/* UserMsg */ msg) => {
         return BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, botMsg.body,
@@ -44,7 +44,7 @@ describe('BotMsgDao', () => {
   });
 
   it('Gets the last msg from MsgDao', () => {
-    let userMsgId = 'abcxyz';
+    const userMsgId = 'abcxyz';
     return BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, 'some random msg', userMsgId)
       .then(() => BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, botMsg.body, userMsgId))
       .then(() => BotMsgDao.getLastMsg(botMsg.mobNumber))

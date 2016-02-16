@@ -1,11 +1,11 @@
 'use strict';
 
-var ObjectID = require('mongodb').ObjectID;
+const ObjectID = require('mongodb').ObjectID;
 
-var DaoHelper = require('./dao-helper');
-var User = require('../models/user');
-var ErrorController = require('../controllers/error-controller.js');
-var crypto = require('crypto');
+const DaoHelper = require('./dao-helper');
+const User = require('../models/user');
+const ErrorController = require('../controllers/error-controller');
+const crypto = require('crypto');
 
 class UserDao {
 
@@ -47,8 +47,8 @@ class UserDao {
    * });
    */
   static findRegistered(numbers) {
-    var query = {mobNumber: {$in: numbers}};
-    var projection = {mobNumber: 1};
+    const query = {mobNumber: {$in: numbers}};
+    const projection = {mobNumber: 1};
     return DaoHelper.user.find(query, projection).toArray()
 
       // the above query gives [ { _id: 562d18ea7a79079cdf2295ec, mobNumber: '919033819605' }, .. ]
@@ -65,9 +65,8 @@ class UserDao {
    * @returns {Promise.<{_id, mobNumber}>}
    */
   static findUserWithToken(/* string */ mobNumber, /* string */ token) {
-    //noinspection Eslint
-    var query = {_id: ObjectID(token), mobNumber};
-    var projection = {mobNumber: 1}; // _id is included by default
+    const query = {_id: ObjectID(token), mobNumber};
+    const projection = {mobNumber: 1}; // _id is included by default
     return DaoHelper.user.find(query).project(projection).toArray()
       .then(userList => {
         if (!userList || userList.length === 0)
@@ -96,8 +95,8 @@ class UserDao {
    * UserDao.friendsAddHim('919033819605', ['919898020383', '919033309720']);
    */
   static friendsAddHim(him, friends) {
-    var query = {mobNumber: {$in: friends}};
-    var update = {$addToSet: {friends: him}};
+    const query = {mobNumber: {$in: friends}};
+    const update = {$addToSet: {friends: him}};
     return DaoHelper.user.updateMany(query, update);
   }
 
@@ -119,8 +118,8 @@ class UserDao {
    * });
    */
   static addContacts(mobNumber, contacts) {
-    var query = {mobNumber};
-    var update = {$addToSet: {contacts: {$each: contacts}}};
+    const query = {mobNumber};
+    const update = {$addToSet: {contacts: {$each: contacts}}};
     return DaoHelper.user.updateOne(query, update);
   }
 
@@ -130,9 +129,9 @@ class UserDao {
    * @param {string} newName
    */
   static updateName(mobNumber, newName) {
-    var query = {mobNumber};
-    var update = {name: newName};
-    var options = {returnOriginal: false};
+    const query = {mobNumber};
+    const update = {name: newName};
+    const options = {returnOriginal: false};
     return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
       .then(op => op.value);
   }
@@ -143,10 +142,10 @@ class UserDao {
    * @returns {Promise}
    */
   static updatehashId(userId) {
-    let hashOfId = crypto.createHash('sha512').update('' + userId).digest('base64').toString();
-    let query = {_id: userId};
-    let update = {hashOfId: hashOfId};
-    let options = {returnOriginal: false};
+    const hashOfId = crypto.createHash('sha512').update('' + userId).digest('base64').toString();
+    const query = {_id: userId};
+    const update = {hashOfId: hashOfId};
+    const options = {returnOriginal: false};
     return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
       .then(result => result.value);
   }
@@ -157,8 +156,8 @@ class UserDao {
    *  @returns {Promise}
    */
   static getUserIdsFromHashIds(hashOfIds) {
-    var query = {hashOfId: {$in: hashOfIds}};
-    var projection = {_id: 1};
+    const query = {hashOfId: {$in: hashOfIds}};
+    const projection = {_id: 1};
     return DaoHelper.user.find(query, projection)
       .toArray()
       .map(obj => obj._id);
@@ -175,7 +174,7 @@ class UserDao {
  * @private
  */
 function _newUser(mobNumber, name, countryCode) {
-  var newUserObj = User.getUserHash(mobNumber, name, countryCode);
+  const newUserObj = User.getUserHash(mobNumber, name, countryCode);
   return DaoHelper.user.insertOne(newUserObj);
 }
 

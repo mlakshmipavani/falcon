@@ -1,11 +1,11 @@
 'use strict';
 
-var Docker = require('dockerode');
-var stream = require('stream');
-var tar = require('tar-fs');
-var Promise = require('bluebird');
+const Docker = require('dockerode');
+const stream = require('stream');
+const tar = require('tar-fs');
+const Promise = require('bluebird');
 
-var docker = new Docker({
+const docker = new Docker({
   socketPath: '/var/run/docker.sock'
 });
 docker.buildImage = Promise.promisify(docker.buildImage);
@@ -74,7 +74,7 @@ class DockerUtils {
    * @returns {Promise.<T>}
    */
   static realTimeLogs(/*string*/ name) {
-    var logStream = new stream.PassThrough();
+    const logStream = new stream.PassThrough();
     logStream.on('data', (chunk) => console.log(chunk.toString().trim()));
 
     return this.getContainer(name)
@@ -106,13 +106,13 @@ class DockerUtils {
    * @returns {Promise}
    */
   static build(/*string*/ tag) {
-    var tarStream = tar.pack(process.cwd());
+    const tarStream = tar.pack(process.cwd());
 
     //noinspection JSCheckFunctionSignatures
     return docker.buildImage(tarStream, {t: tag})
       .then(output => {
         output.on('data', chunk => {
-          let log = JSON.parse(chunk);
+          const log = JSON.parse(chunk);
           process.stdout.write(log.stream);
         });
       });
@@ -148,7 +148,7 @@ class DockerUtils {
    * @returns {Promise<string>}
    */
   static tag(imageName, newRepo, newRepoTag) {
-    let image = docker.getImage(imageName);
+    const image = docker.getImage(imageName);
     image.tag = Promise.promisify(image.tag);
     return image.tag({repo: newRepo, tag: newRepoTag, force: true})
       .thenReturn(`${newRepo}:${newRepoTag}`);

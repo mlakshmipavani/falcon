@@ -1,7 +1,7 @@
 'use strict';
-var EnvVar = require('./gulp_utils/envvar');
-var Port = require('./gulp_utils/port');
-var config; // lazy load this module
+const EnvVar = require('./gulp_utils/envvar');
+const Port = require('./gulp_utils/port');
+let config; // lazy load this module
 
 class DockerConfig {
 
@@ -32,7 +32,7 @@ class DockerConfig {
   }
 
   get envVars() {
-    let vars = [];
+    const vars = [];
     let mongoUrl = config.mongoUrl;
     mongoUrl = mongoUrl.replace('localhost', 'mongodb');
     vars.push(new EnvVar('NODE_ENV', this.env));
@@ -47,7 +47,7 @@ class DockerConfig {
    * @returns {{Image, name, Env, ExposedPorts, HostConfig}}
    */
   get dockerodeCreateConfig() {
-    let specs = {
+    const specs = {
       Image: this.tag,
       name: this.name,
       Env: this.envVars.map(element => element.toString()),
@@ -74,31 +74,29 @@ class DockerConfig {
   }
 
   tutumConfig(/*string*/ username) {
-    var ports = this.ports.map(port => {
-      //noinspection Eslint
+    const ports = this.ports.map(port => {
       return {
         protocol: port.protocol,
-        inner_port: port.innerPort,// jscs:ignore
-        outer_port: port.outerPort// jscs:ignore
+        inner_port: port.innerPort,
+        outer_port: port.outerPort
       };
     });
-    var envVars = this.envVars.map(envVar => {
+    const envVars = this.envVars.map(envVar => {
       return {key: envVar.key, value: envVar.value};
     });
 
-    //noinspection Eslint
     return {
       image: this.getTutumImage(username),
       name: this.name,
-      container_ports: ports,// jscs:ignore
-      container_envvars: envVars,// jscs:ignore
+      container_ports: ports,
+      container_envvars: envVars,
       autorestart: 'ALWAYS',
       tags: ['mainserver']
     };
   }
 
   tutumUpdateConfig(/*string*/ username) {
-    var updateConfig = this.tutumConfig(username);
+    const updateConfig = this.tutumConfig(username);
     delete updateConfig.name;
     return updateConfig;
   }

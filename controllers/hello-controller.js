@@ -81,7 +81,7 @@ class HelloController {
   }
 
   static _helloName(/*{entities: {contact: []}}*/ witResponse) {
-    let contactObj = witResponse.entities.contact;
+    const contactObj = witResponse.entities.contact;
     if (contactObj && contactObj.length > 0) return `hello ${contactObj[0].value}`;
     throw new Error(`Name Intent without name entity`);
   }
@@ -132,7 +132,7 @@ class HelloController {
    */
   static _getNameFromWitResponse(witResponse, text) {
     if (witResponse.entities) {
-      let contactObj = witResponse.entities.contact;
+      const contactObj = witResponse.entities.contact;
       if (contactObj && contactObj.length > 0) return contactObj[0].value;
     }
 

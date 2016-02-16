@@ -93,9 +93,7 @@ class PushController {
   static _getRequestOptionsForData(/*string*/ action, /*{}*/ data, /*Array<string>*/ playerIds) {
     const options = this._getBaseRequestOptions(playerIds);
     options.body.data = Object.assign(data, {action});
-
-    //noinspection Eslint
-    options.body.android_background_data = true;// jscs:ignore
+    options.body.android_background_data = true;
     return options;
   }
 

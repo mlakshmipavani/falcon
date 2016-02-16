@@ -1,15 +1,15 @@
 'use strict';
-var Agenda = require('agenda');
-var moment = require('moment');
+const Agenda = require('agenda');
+const moment = require('moment');
 const Promise = require('bluebird');
-var Utils = require('../../utils/Utils');
-var RailPnr = require('./rail-pnr-controller.js');
-var DaoHelper = require('../../dao/dao-helper.js');
-var config = require('../../config/config');
-const PushController = require('../push-controller.js');
+const Utils = require('../../utils/Utils');
+const RailPnr = require('./rail-pnr-controller');
+const DaoHelper = require('../../dao/dao-helper');
+const config = require('../../config/config');
+const PushController = require('../push-controller');
 
-var url = config.mongoUrl;
-var agenda = new Agenda({db: {address: url}});
+const url = config.mongoUrl;
+const agenda = new Agenda({db: {address: url}});
 
 // this is for testing purpose mocking api response
 //var pnrFromAPI = {
@@ -33,7 +33,7 @@ const taskName = 'trackPnr';
 
 agenda.define(taskName, (job, done) => {
 
-  let pnr = job.attrs.data.pnr;
+  const pnr = job.attrs.data.pnr;
 
   return RailPnr.getStatus(pnr)
     .then(pnrFromAPI => {
@@ -107,7 +107,7 @@ class TrackPnrController {
    */
   static _turnTrackingOnForPnr(/*String*/ userToken, /*String*/ pnr) {
     return RailPnr.getStatus(pnr).then(pnrFromAPI => {
-      let pnrDetail = {userTokens: [userToken], pnr: pnr, detail: pnrFromAPI};
+      const pnrDetail = {userTokens: [userToken], pnr: pnr, detail: pnrFromAPI};
       return DaoHelper.pnrStatus.insertOne(pnrDetail)
         .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
         .thenReturn(true);
@@ -157,8 +157,8 @@ class TrackPnrController {
    * @private
    */
   static _scheduleNextIfNeeded(pnr, pnrFromAPI) {
-    let boardingDate = pnrFromAPI.boardingDate;
-    let confirmed = this._isAllConfirmed(pnrFromAPI);
+    const boardingDate = pnrFromAPI.boardingDate;
+    const confirmed = this._isAllConfirmed(pnrFromAPI);
     if (!confirmed) this._schedule(boardingDate, pnr);
   }
 
@@ -173,9 +173,9 @@ class TrackPnrController {
 
     return this._getFromDB(pnr)
       .then(pnrFromDBArray => {
-        let passengersFromAPI = pnrFromAPI.passengers;
-        let passengersFromDB = pnrFromDBArray[0].detail.passengers;
-        let isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
+        const passengersFromAPI = pnrFromAPI.passengers;
+        const passengersFromDB = pnrFromDBArray[0].detail.passengers;
+        const isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
 
         if (!isSame) return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$set: {detail: pnrFromAPI}})
           .then(() => this._notifyAll(pnr, pnrFromAPI));
@@ -191,7 +191,7 @@ class TrackPnrController {
    * @private
    */
   static _isAllConfirmed(/*{passengers}*/ pnrDetail) {
-    let passengers = pnrDetail.passengers;
+    const passengers = pnrDetail.passengers;
     return passengers.every((passenger) => passenger.currentStatus === 'CNF');
   }
 
@@ -202,7 +202,7 @@ class TrackPnrController {
    * @private
    */
   static _schedule(/*String*/ boardingDate, /*String*/ pnr) {
-    let nextSchedule = this._getNextSchedule(boardingDate);
+    const nextSchedule = this._getNextSchedule(boardingDate);
     agenda.schedule(nextSchedule, taskName, {pnr: pnr});
   }
 
@@ -214,10 +214,10 @@ class TrackPnrController {
    */
   static _getNextSchedule(/*String*/ date) {
     let nextSchedule = 'in 5 minutes';
-    let now = moment();
+    const now = moment();
 
-    let boardingDate = moment(date, 'DD-MM-YYYY');
-    let difference = boardingDate.diff(now, 'hours');
+    const boardingDate = moment(date, 'DD-MM-YYYY');
+    const difference = boardingDate.diff(now, 'hours');
     if (difference < 48 && difference > 24) nextSchedule = 'in 4 hours';
     else if (difference >= 48) nextSchedule = 'in 24 hours';
     else if (difference <= 24) nextSchedule = 'in 30 minutes';

@@ -1,6 +1,6 @@
 'use strict';
 
-var BotDao = require('../dao/bot-dao.js');
+const BotDao = require('../dao/bot-dao');
 
 /**
  * All operations related to Bot Discovery and finding new bots go here

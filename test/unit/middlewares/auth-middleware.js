@@ -1,11 +1,11 @@
 'use strict';
 
-var mongodb = require('mongodb');
-var Promise = require('bluebird');
+const mongodb = require('mongodb');
+const Promise = require('bluebird');
 
-var Auth = require('../../../middlewares/auth-middleware');
-var config = require('../../../config/config.js');
-var UserDao = require('../../../dao/user-dao.js');
+const Auth = require('../../../middlewares/auth-middleware');
+const config = require('../../../config/config');
+const UserDao = require('../../../dao/user-dao');
 
 describe('Auth Middleware', () => {
 
@@ -14,8 +14,8 @@ describe('Auth Middleware', () => {
 
   const mobNumber = '919033819605';
   const name = 'Jaydeep';
-  var token;
-  var dbObj;
+  let token;
+  let dbObj;
 
   before(() => {
     return mongodb.MongoClient.connect(config.mongoUrl, {promiseLibrary: Promise})
@@ -43,7 +43,7 @@ describe('Auth Middleware', () => {
   });
 
   it('registered user should be able to access', done => {
-    var req = {url: '/newbots', username: mobNumber, authorization: {basic: {password: token}}};
+    const req = {url: '/newbots', username: mobNumber, authorization: {basic: {password: token}}};
     authMiddleware(req, undefined, err => {
       if (err) throw err;
       done();

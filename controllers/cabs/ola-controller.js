@@ -30,7 +30,7 @@ class OlaController {
    * @private
    */
   static _queryOlaServer(/*number*/ latitude, /*number*/ longitude) {
-    let reqOptions = this._getOptions(latitude, longitude);
+    const reqOptions = this._getOptions(latitude, longitude);
     return request(reqOptions);
   }
 
@@ -45,7 +45,7 @@ class OlaController {
 
     return categories.reduce((cabs, /*{id, display_name, eta, fare_breakup}*/ eachCategory) => {
       if (eachCategory.eta === -1) return cabs;
-      let cab = {
+      const cab = {
         name: eachCategory.display_name,
         eta: eachCategory.eta,
         surgeMultiplier: 1, // default value

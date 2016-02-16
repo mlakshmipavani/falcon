@@ -1,12 +1,12 @@
 'use strict';
 
-var apiVersion = require('../config/api-version');
-var UserDao = require('../dao/user-dao');
-var RegistrationRoutes = require('./registration-routes');
-var BotDiscoveryRoutes = require('./bot-discovery-routes');
-var BotMsgRoutes = require('./bot-msg-routes.js');
-var CabBotRoutes = require('./cab-bot-routes.js');
-var RailPnrRoutes = require('./railpnr-bot-routes.js');
+const apiVersion = require('../config/api-version');
+const UserDao = require('../dao/user-dao');
+const RegistrationRoutes = require('./registration-routes');
+const BotDiscoveryRoutes = require('./bot-discovery-routes');
+const BotMsgRoutes = require('./bot-msg-routes');
+const CabBotRoutes = require('./cab-bot-routes');
+const RailPnrRoutes = require('./railpnr-bot-routes');
 
 /**
  * A single point entry to all the routes in this server

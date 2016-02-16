@@ -1,14 +1,14 @@
 'use strict';
 
-var request = require('request-promise');
-var apiVersion = require('../config/api-version.js');
-var config = require('../config/config.js');
-var ErrorController = require('../controllers/error-controller.js');
-var BotMsgController = require('../controllers/bot-msg-controller.js');
-var UserMsgDao = require('../dao/user-msg-dao.js');
-var BotMsgDao = require('../dao/bot-msg-dao.js');
-var UserDao = require('../dao/user-dao.js');
-var ParseController = require('../controllers/parse-controller.js');
+const request = require('request-promise');
+const apiVersion = require('../config/api-version');
+const config = require('../config/config');
+const ErrorController = require('../controllers/error-controller');
+const BotMsgController = require('../controllers/bot-msg-controller');
+const UserMsgDao = require('../dao/user-msg-dao');
+const BotMsgDao = require('../dao/bot-msg-dao');
+const UserDao = require('../dao/user-dao');
+const ParseController = require('../controllers/parse-controller');
 
 /**
  * A route that forwards a message to the respective bot
@@ -22,13 +22,13 @@ class BotMsgRoutes {
       // error checking
       req.assert('botHandle', 'botHandle is a required param').notEmpty();
       req.assert('body', 'body is a required param').notEmpty();
-      let errors = req.validationErrors();
+      const errors = req.validationErrors();
       if (errors) return ErrorController.paramError(req, res, errors);
 
       //noinspection JSUnresolvedVariable
-      let botHandle = req.params.botHandle;
-      let body = req.params.body;
-      let mobNumber = req.username;
+      const botHandle = req.params.botHandle;
+      const body = req.params.body;
+      const mobNumber = req.username;
 
       return UserMsgDao.insert(mobNumber, botHandle, body)
         .then(/* UserMsg */ userMsgObj => res.json({_id: userMsgObj._id.toString()}));
@@ -40,8 +40,8 @@ class BotMsgRoutes {
       req.assert('msgId', 'msgId is a required param').notEmpty();
 
       //noinspection JSUnresolvedVariable
-      let msgId = req.params.msgId;
-      let mobNumber = req.username;
+      const msgId = req.params.msgId;
+      const mobNumber = req.username;
       let botHandle;
 
       return UserMsgDao.getMsg(msgId)
@@ -58,7 +58,7 @@ class BotMsgRoutes {
         .then((/* string */ botResponse) =>
           BotMsgDao.insert(mobNumber, botHandle, botResponse, msgId))
         .then(/* BotMsg */ doc => {
-          let response = {_id: doc._id, body: doc.body, createdAt: doc.createdAt.getTime()};
+          const response = {_id: doc._id, body: doc.body, createdAt: doc.createdAt.getTime()};
           res.json(response);
         }).catch(err => {
           if (err.message !== 'no bot response') throw err;
@@ -68,7 +68,7 @@ class BotMsgRoutes {
     //for bot pushing messages to user
     app.post({path: '/botPush', version: apiVersion.v1}, (req, res) => {
 
-      let hashOfIds = JSON.parse(req.body.hashOfIds);
+      const hashOfIds = JSON.parse(req.body.hashOfIds);
 
       UserDao.getUserIdsFromHashIds(hashOfIds).then(userIds => {
         ParseController.sendBotPushtoUsers(userIds, 'helelo')

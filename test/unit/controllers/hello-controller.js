@@ -243,5 +243,5 @@ describe('Hello Controller', () => {
     // execute
     return HelloController.reply(mobNumber, inputText)
       .should.eventually.equal(HelloController._sorryNoIdea);
-  })
+  });
 });

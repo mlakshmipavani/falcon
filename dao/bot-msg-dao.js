@@ -1,9 +1,9 @@
 'use strict';
 
-var ObjectID = require('mongodb').ObjectID;
+const ObjectID = require('mongodb').ObjectID;
 
-var DaoHelper = require('./dao-helper.js');
-var ErrorController = require('../controllers/error-controller.js');
+const DaoHelper = require('./dao-helper');
+const ErrorController = require('../controllers/error-controller');
 
 /**
  * For all the msgs sent by bots
@@ -20,7 +20,7 @@ class BotMsgDao {
    */
   static insert(/* string */ mobNumber, /* string */ botHandle, /* string */ body,
                 /* string */ msgId) {
-    var obj = {mobNumber, botHandle, body, createdAt: new Date(), userMsgId: msgId};
+    const obj = {mobNumber, botHandle, body, createdAt: new Date(), userMsgId: msgId};
     return DaoHelper.botMsg.insertOne(obj)
       .then(result => {
         if (result.insertedCount === 1) return result.ops[0];

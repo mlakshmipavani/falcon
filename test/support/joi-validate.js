@@ -1,6 +1,6 @@
 'use strict';
 
-var Joi = require('joi');
+const Joi = require('joi');
 
 /**
  * This class validates the responses received from the server
@@ -12,7 +12,7 @@ class JoiValidate {
    * @param {object} res Response object
    */
   static registerResponse(res) {
-    var schema = Joi.object().keys({
+    const schema = Joi.object().keys({
       token: Joi.string().length(24).required(),
       registered: Joi.object().pattern(/\d+/, Joi.string()),
       unRegistered: Joi.object().pattern(/\d+/, Joi.string())
@@ -27,7 +27,7 @@ class JoiValidate {
  * @private
  */
 function _validate(obj, schema) {
-  var result = Joi.validate(obj, schema);
+  const result = Joi.validate(obj, schema);
 
   //noinspection BadExpressionStatementJS
   result.should.validate;

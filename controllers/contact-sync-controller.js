@@ -1,19 +1,19 @@
 'use strict';
 
-var _obj = require('lodash/object');
-var libPhoneNumber = require('google-libphonenumber');
+const _obj = require('lodash/object');
+const libPhoneNumber = require('google-libphonenumber');
 
 //noinspection JSUnresolvedVariable
-var phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
+const phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
 
 //noinspection JSUnresolvedVariable
-var PhoneNumberType = libPhoneNumber.PhoneNumberType;
+const PhoneNumberType = libPhoneNumber.PhoneNumberType;
 
 //noinspection JSUnresolvedVariable
-var PhoneNumberFormat = libPhoneNumber.PhoneNumberFormat;
+const PhoneNumberFormat = libPhoneNumber.PhoneNumberFormat;
 
-var UserDao = require('../dao/user-dao.js');
-var UnRegisteredDao = require('../dao/unregistered-dao.js');
+const UserDao = require('../dao/user-dao.js');
+const UnRegisteredDao = require('../dao/unregistered-dao.js');
 
 /**
  * Takes care of syncing contacts
@@ -29,13 +29,13 @@ class ContactSyncController {
    */
   static sync(mobNumber, contacts, countryISO) {
     // <number, name> map with normalized numbers
-    var contactsNormalized = {};
+    const contactsNormalized = {};
 
     // normalize the numbers
     _obj.forIn(contacts, (name, number)=> { // value, key
       try {
-        let phoneNumber = phoneUtil.parse(number, countryISO);
-        let numberType = phoneUtil.getNumberType(phoneNumber);
+        const phoneNumber = phoneUtil.parse(number, countryISO);
+        const numberType = phoneUtil.getNumberType(phoneNumber);
         if (numberType === PhoneNumberType.MOBILE
           || numberType === PhoneNumberType.FIXED_LINE_OR_MOBILE) {
           let formatted = phoneUtil.format(phoneNumber, PhoneNumberFormat.E164);
@@ -50,12 +50,12 @@ class ContactSyncController {
     });
 
     // an array of only normalized numbers no names
-    let normalizedNumbers = Object.keys(contactsNormalized);
+    const normalizedNumbers = Object.keys(contactsNormalized);
     return UserDao.findRegistered(normalizedNumbers).then((registeredNumbers) => {
 
       // <number, name> map
-      let contactsRegistered = _obj.pick(contactsNormalized, registeredNumbers);
-      let contactsUnRegistered = _obj.omit(contactsNormalized, registeredNumbers);
+      const contactsRegistered = _obj.pick(contactsNormalized, registeredNumbers);
+      const contactsUnRegistered = _obj.omit(contactsNormalized, registeredNumbers);
 
       // write those registeredNumbers to db
       UserDao.friendsAddHim(mobNumber, registeredNumbers);
@@ -63,7 +63,7 @@ class ContactSyncController {
       // all the contacts that the user sees in recent chat
       UserDao.addContacts(mobNumber, registeredNumbers);
 
-      let unregistered = Object.keys(contactsUnRegistered);
+      const unregistered = Object.keys(contactsUnRegistered);
       if (unregistered.length !== 0) UnRegisteredDao.addAll(unregistered, mobNumber);
 
       return {registered: contactsRegistered, unRegistered: contactsUnRegistered};

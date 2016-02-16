@@ -1,7 +1,7 @@
 'use strict';
 
-var ApiVersion = require('../config/api-version.js');
-var RegistrationController = require('../controllers/registration-controller');
+const ApiVersion = require('../config/api-version');
+const RegistrationController = require('../controllers/registration-controller');
 
 /**
  * Sets up all the routes required for registration
@@ -22,13 +22,13 @@ class RegistrationRoutes {
  * `X-Verify-Credentials-Authorization`
  */
 function register(req, res) {
-  var url = req.header('X-Auth-Service-Provider');
-  var headers = req.header('X-Verify-Credentials-Authorization');
-  var name = req.params.name;
+  const url = req.header('X-Auth-Service-Provider');
+  const headers = req.header('X-Verify-Credentials-Authorization');
+  const name = req.params.name;
 
   //noinspection JSUnresolvedVariable
   const oneSignalUserId = req.params.oneSignalUserId;
-  var requestOptions = {url: url, headers: {Authorization: headers}, json: true};
+  const requestOptions = {url: url, headers: {Authorization: headers}, json: true};
 
   RegistrationController.register(name, requestOptions, oneSignalUserId)
     .then((response) => res.json(response))

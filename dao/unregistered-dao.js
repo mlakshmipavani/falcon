@@ -1,7 +1,7 @@
 'use strict';
 
-var DaoHelper = require('./dao-helper');
-var log = require('../utils/logger');
+const DaoHelper = require('./dao-helper');
+const log = require('../utils/logger');
 
 class UnRegisteredDao {
 
@@ -20,10 +20,10 @@ class UnRegisteredDao {
    * UnRegisteredDao.addAll(['919033819605', '919898020383'], '919409084835');
    */
   static addAll(unRegisteredList, registeredGuy) {
-    var bulk = DaoHelper.unRegistered.initializeUnorderedBulkOp();
-    var update = {notifyList: registeredGuy};
-    for (let number of unRegisteredList) {
-      let query = {mobNumber: number};
+    const bulk = DaoHelper.unRegistered.initializeUnorderedBulkOp();
+    const update = {notifyList: registeredGuy};
+    for (const number of unRegisteredList) {
+      const query = {mobNumber: number};
       bulk.find(query).upsert().updateOne({$addToSet: update});
     }
 
@@ -38,7 +38,7 @@ class UnRegisteredDao {
    * @param {string} unRegisteredGuy Mobile number of the unRegistered person
    */
   static getNotificationList(unRegisteredGuy) {
-    var query = {mobNumber: unRegisteredGuy};
+    const query = {mobNumber: unRegisteredGuy};
     return DaoHelper.unRegistered.find(query).limit(1).next()
       .then(doc => doc ? doc.notifyList : undefined);
   }

@@ -39,12 +39,12 @@ class UberController {
                           /*Array<{product_id, estimate}>*/ times,
                           /*Array<{product_id, surge_multiplier}>*/ prices) {
     let cabs = Utils.getObjectFromArray(cabTypesArr, 'product_id');
-    for (let eachTime of times) {
+    for (const eachTime of times) {
       const productId = eachTime.product_id;
       cabs[productId].eta = eachTime.estimate / 60; // converts eta into minutes
     }
 
-    for (let eachPrice of prices) {
+    for (const eachPrice of prices) {
       const productId = eachPrice.product_id;
       cabs[productId].surgeMultiplier = eachPrice.surge_multiplier;
       cabs[productId].surgeFixed = 0;

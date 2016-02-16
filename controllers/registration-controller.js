@@ -1,13 +1,13 @@
 'use strict';
 
-var request = require('request-promise');
-var libPhoneNumber = require('google-libphonenumber');
+const request = require('request-promise');
+const libPhoneNumber = require('google-libphonenumber');
 
 //noinspection JSUnresolvedVariable
-var phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
+const phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
 
 const UserDao = require('../dao/user-dao.js');
-const OneSignalDao = require('../dao/onesignal-dao.js');
+const OneSignalDao = require('../dao/onesignal-dao');
 
 class RegistrationController {
 
@@ -27,7 +27,7 @@ class RegistrationController {
 
     //noinspection JSUnresolvedFunction
     return request(requestOptions).then((oAuthRes) => {
-      let mobNumber = oAuthRes.phone_number; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+      const mobNumber = oAuthRes.phone_number;
       return _register(mobNumber, name, oneSignalUserId);
     });
 
@@ -43,8 +43,8 @@ class RegistrationController {
  * @private
  */
 function _register(mobNumber, name, /*string*/ oneSignalUserId) {
-  var phoneNumber = phoneUtil.parse(mobNumber, '');
-  var countryISO = phoneUtil.getRegionCodeForNumber(phoneNumber);
+  const phoneNumber = phoneUtil.parse(mobNumber, '');
+  const countryISO = phoneUtil.getRegionCodeForNumber(phoneNumber);
 
   // remove the leading +
   mobNumber = mobNumber.substr(1);

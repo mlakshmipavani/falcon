@@ -1,9 +1,9 @@
 'use strict';
 
-var util = require('util');
-var Errors = require('restify-errors');
+const util = require('util');
+const Errors = require('restify-errors');
 
-var log = require('../utils/logger');
+const log = require('../utils/logger');
 
 /**
  * Logs and returns errors to invalid api requests
@@ -18,7 +18,7 @@ class ErrorController {
    * @param errors Errors (found using restify-validator)
    */
   static paramError(req, res, errors) {
-    var errorStr = util.inspect(errors);
+    const errorStr = util.inspect(errors);
     log.error(`[ParamError] Path[${req.route.version}]:${req.route.path} -> ${errorStr}`);
 
     //noinspection JSUnresolvedFunction

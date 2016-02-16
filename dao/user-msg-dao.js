@@ -1,9 +1,9 @@
 'use strict';
 
-var ObjectID = require('mongodb').ObjectID;
+const ObjectID = require('mongodb').ObjectID;
 
-var DaoHelper = require('./dao-helper.js');
-var ErrorController = require('../controllers/error-controller.js');
+const DaoHelper = require('./dao-helper');
+const ErrorController = require('../controllers/error-controller');
 
 class UserMsgDao {
 
@@ -15,7 +15,7 @@ class UserMsgDao {
    * @returns {Promise.<UserMsg>}
    */
   static insert(/* string */ mobNumber, /* string */ botHandle, /* string */ body) {
-    var obj = {mobNumber, botHandle, body, createdAt: new Date()};
+    const obj = {mobNumber, botHandle, body, createdAt: new Date()};
     return DaoHelper.userMsg.insertOne(obj)
       .then(result => {
         if (result.insertedCount === 1) return result.ops[0];

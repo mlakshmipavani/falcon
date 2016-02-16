@@ -1,10 +1,10 @@
 'use strict';
 
-var Promise = require('bluebird');
-var mongodb = require('mongodb');
+const Promise = require('bluebird');
+const mongodb = require('mongodb');
 
-var config = require('../config/config');
-var log = require('../utils/logger');
+const config = require('../config/config');
+const log = require('../utils/logger');
 
 mongodb.MongoClient.connect(config.mongoUrl, {promiseLibrary: Promise})
   .then((db) => DaoHelper.connected(db))

@@ -19,7 +19,7 @@ class Utils {
    */
   static getObjectFromArray(/*Array<{}>*/ arr, /*string*/ uniqueKey) {
     return arr.reduce((finalObj, eachObj) => {
-      let uniqueValue = eachObj[uniqueKey];
+      const uniqueValue = eachObj[uniqueKey];
       finalObj[uniqueValue] = eachObj;
       return finalObj;
     }, {});

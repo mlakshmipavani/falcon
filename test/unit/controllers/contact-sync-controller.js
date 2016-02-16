@@ -1,14 +1,14 @@
 'use strict';
 
-var Promise = require('bluebird');
-var mongodb = require('mongodb');
-var _obj = require('lodash/object');
+const Promise = require('bluebird');
+const mongodb = require('mongodb');
+const _obj = require('lodash/object');
 
-var config = require('../../../config/config');
-var DaoHelper = require('../../../dao/dao-helper');
-var ContactSyncController = require('../../../controllers/contact-sync-controller');
-var UserDao = require('../../../dao/user-dao');
-var UnRegisteredDao = require('../../../dao/unregistered-dao');
+const config = require('../../../config/config');
+const DaoHelper = require('../../../dao/dao-helper');
+const ContactSyncController = require('../../../controllers/contact-sync-controller');
+const UserDao = require('../../../dao/user-dao');
+const UnRegisteredDao = require('../../../dao/unregistered-dao');
 
 describe('ContactSyncController', () => {
 
@@ -23,8 +23,8 @@ describe('ContactSyncController', () => {
   });
 
   it('should return only unRegistered', () => {
-    var contacts = {};
-    for (let user of [user2, user3]) contacts[user.mobNumber] = user.name;
+    const contacts = {};
+    for (const user of [user2, user3]) contacts[user.mobNumber] = user.name;
 
     return ContactSyncController.sync(user1.mobNumber, contacts, countryIso)
       .should.eventually.deep.equal({registered: {}, unRegistered: contacts});
@@ -37,7 +37,7 @@ describe('ContactSyncController', () => {
         return UserDao.newUser(user2.mobNumber, user2.name, countryIso);
       })
       .then(() => {
-        let contacts = {};
+        const contacts = {};
         contacts[user1.mobNumber] = user1.name;
         return ContactSyncController.sync(user2.mobNumber, contacts, countryIso)
           .should.eventually.deep.equal({registered: contacts, unRegistered: {}});
@@ -45,11 +45,11 @@ describe('ContactSyncController', () => {
   });
 
   it('should return both', () => {
-    var contacts = {};
-    for (let user of [user1, user3]) contacts[user.mobNumber] = user.name;
+    const contacts = {};
+    for (const user of [user1, user3]) contacts[user.mobNumber] = user.name;
 
-    let expectReg = _obj.pick(contacts, user1.mobNumber);
-    let expectUnReg = _obj.pick(contacts, user3.mobNumber);
+    const expectReg = _obj.pick(contacts, user1.mobNumber);
+    const expectUnReg = _obj.pick(contacts, user3.mobNumber);
     return ContactSyncController.sync(user2.mobNumber, contacts, countryIso)
       .should.eventually.deep.equal({registered: expectReg, unRegistered: expectUnReg});
   });
@@ -77,7 +77,7 @@ describe('ContactSyncController', () => {
    * Thus user1 should have user2 in friends
    */
   it('friends should have added him', () => {
-    var query = {mobNumber: user1.mobNumber};
+    const query = {mobNumber: user1.mobNumber};
     return DaoHelper.user.find(query).limit(1).next()
       .then((/* User */ user) => user.friends.should.deep.equal([user2.mobNumber]));
   });
@@ -88,7 +88,7 @@ describe('ContactSyncController', () => {
    * Thus user2 should have user1 in his contacts
    */
   it('should have contacts', () => {
-    var query = {mobNumber: user2.mobNumber};
+    const query = {mobNumber: user2.mobNumber};
     return DaoHelper.user.find(query).limit(1).next()
       .then((/* User */ user) => user.contacts.should.deep.equal([user1.mobNumber]));
   });

@@ -1,7 +1,7 @@
 'use strict';
 
-var Bot = require('../models/bot.js');
-var DaoHelper = require('./dao-helper.js');
+const Bot = require('../models/bot');
+const DaoHelper = require('./dao-helper');
 
 class BotDao {
 
@@ -12,7 +12,7 @@ class BotDao {
    * @returns {Promise<Bot>}
    */
   static newBot(/* string */ handle, /* string */ name) {
-    var newBotObj = Bot.getBotHash(handle, name);
+    const newBotObj = Bot.getBotHash(handle, name);
     return DaoHelper.bot.insertOne(newBotObj);
   }
 

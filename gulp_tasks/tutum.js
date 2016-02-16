@@ -1,13 +1,13 @@
 'use strict';
 
-var gulp = require('gulp-help')(require('gulp'));
-var Tutum = require('tutum');
-var Promise = require('bluebird');
-var WebSocket = require('ws');
+const gulp = require('gulp-help')(require('gulp'));
+const Tutum = require('tutum');
+const Promise = require('bluebird');
+const WebSocket = require('ws');
 const spawn = require('child_process').spawn;
-var ENV = require('./gulp_utils/env');
-var dockerUtils = require('./docker-utils.js');
-var dockerConfig = require('./docker-config')(ENV.PROD_ENV);
+const ENV = require('./gulp_utils/env');
+const dockerUtils = require('./docker-utils');
+const dockerConfig = require('./docker-config')(ENV.PROD_ENV);
 require('dotenv').config();
 
 /**
@@ -15,8 +15,8 @@ require('dotenv').config();
  * [Note] : before creating this service you should hv pushed the image
  */
 gulp.task('tutum.create', 'Creates a service on tutum [It doesn\'t start the service]', () => {
-  let tutum = getTutum();
-  let username = assertEnvVar(process.env.TUTUM_USERNAME);
+  const tutum = getTutum();
+  const username = assertEnvVar(process.env.TUTUM_USERNAME);
   console.log('creating container . . .');
   return tutum.post('/service', dockerConfig.tutumConfig(username))
     .then(console.log);
@@ -27,8 +27,8 @@ gulp.task('tutum.create', 'Creates a service on tutum [It doesn\'t start the ser
  * Let's see you hv added a new env variable, this task will add that env var to the container
  */
 gulp.task('tutum.updateConfig', 'Update the container configuration on tutum & redeploy', () => {
-  let tutum = getTutum();
-  let username = assertEnvVar(process.env.TUTUM_USERNAME);
+  const tutum = getTutum();
+  const username = assertEnvVar(process.env.TUTUM_USERNAME);
   return getUuid()
     .then((/*string*/ uuid) =>
       tutum.patch(`/service/${uuid}`, dockerConfig.tutumUpdateConfig(username)))
@@ -42,7 +42,7 @@ gulp.task('tutum.updateConfig', 'Update the container configuration on tutum & r
  */
 gulp.task('tutum.start',
   'Starts the service on tutum [A service needs to be created first]', () => {
-    let tutum = getTutum();
+    const tutum = getTutum();
     return getUuid()
       .then((/*string*/ uuid) => tutum.post(`/service/${uuid}/start`))
       .then(console.log);
@@ -52,7 +52,7 @@ gulp.task('tutum.start',
  * Redeploys the container
  */
 gulp.task('tutum.redeploy', 'Redeploys the container on tutum', () => {
-  let tutum = getTutum();
+  const tutum = getTutum();
   return getUuid()
     .then((/*string*/ uuid) => tutum.post(`/service/${uuid}/redeploy`))
     .then(console.log);
@@ -62,14 +62,14 @@ gulp.task('tutum.redeploy', 'Redeploys the container on tutum', () => {
  * Pushes the image to Tutum private Repository
  */
 gulp.task('tutum.push', 'Pushes the image falcon:production to tutum', () => {
-  let tutumUsername = assertEnvVar(process.env.TUTUM_USERNAME);
-  let image = dockerConfig.getTutumImage(tutumUsername);
+  const tutumUsername = assertEnvVar(process.env.TUTUM_USERNAME);
+  const image = dockerConfig.getTutumImage(tutumUsername);
   const splits = image.split(':');
-  let imageName = splits[0];
-  let tag = splits[1];
+  const imageName = splits[0];
+  const tag = splits[1];
   return dockerUtils.tag(dockerConfig.tag, imageName, tag)
     .then((imageName) => {
-      let cmd = spawn('bash', ['-c', `docker push ${imageName}`]);
+      const cmd = spawn('bash', ['-c', `docker push ${imageName}`]);
       cmd.stdout.setEncoding('utf8');
       cmd.stdout.on('data', (data) => process.stdout.write(data));
       cmd.stderr.on('data', (data) => process.stderr.write(data));
@@ -80,10 +80,10 @@ gulp.task('tutum.push', 'Pushes the image falcon:production to tutum', () => {
 gulp.task('tutum.logs', 'Realtime logs directly from tutum', () => {
   getUuid()
     .then((/*string*/ uuid) => {
-      var user = assertEnvVar(process.env.TUTUM_USERNAME);
-      var token = assertEnvVar(process.env.TUTUM_USER_PUBLIC_TOKEN);
-      let url = `wss://stream.tutum.co/v1/service/${uuid}/logs?sid=${token}&user=${user}`;
-      let ws = new WebSocket(url);
+      const user = assertEnvVar(process.env.TUTUM_USERNAME);
+      const token = assertEnvVar(process.env.TUTUM_USER_PUBLIC_TOKEN);
+      const url = `wss://stream.tutum.co/v1/service/${uuid}/logs?sid=${token}&user=${user}`;
+      const ws = new WebSocket(url);
       ws.on('open', () => console.log('Connected'));
       ws.on('error', (message) => console.error('Error: %s', message));
       ws.on('message', (message) => {
@@ -100,7 +100,7 @@ gulp.task('tutum.logs', 'Realtime logs directly from tutum', () => {
  * @returns {Promise<string>}
  */
 function getUuid() {
-  let tutum = getTutum();
+  const tutum = getTutum();
   return tutum.get('/service', {name: dockerConfig.name})
     .then((/*{meta, objects}*/ res) => res.objects)
     .filter((/*{state}*/ service) => {
@@ -120,9 +120,9 @@ function getUuid() {
  * @returns {Tutum}
  */
 function getTutum() {
-  var username = assertEnvVar(process.env.TUTUM_USERNAME);
-  var apiKey = assertEnvVar(process.env.TUTUM_API_KEY);
-  var tutum = new Tutum({username, apiKey});
+  const username = assertEnvVar(process.env.TUTUM_USERNAME);
+  const apiKey = assertEnvVar(process.env.TUTUM_API_KEY);
+  const tutum = new Tutum({username, apiKey});
   tutum.get = Promise.promisify(tutum.get);
   tutum.post = Promise.promisify(tutum.post);
   tutum.patch = Promise.promisify(tutum.patch);

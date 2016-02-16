@@ -1,8 +1,8 @@
 'use strict';
 
-var apiVersion = require('../config/api-version.js');
-var ErrorController = require('../controllers/error-controller.js');
-var TrackPnr = require('../controllers/pnr-controllers/track-pnr.js');
+const apiVersion = require('../config/api-version');
+const ErrorController = require('../controllers/error-controller');
+const TrackPnr = require('../controllers/pnr-controllers/track-pnr');
 
 class RailPnrRoutes {
 
@@ -22,7 +22,7 @@ function getStatus(req, res) {
   req.assert('pnr', 'should contain only numbers').isNumeric();
   req.assert('pnr', 'should be of length 10').len(10, 10);
 
-  let errors = req.validationErrors();
+  const errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 
   //noinspection JSUnresolvedVariable
@@ -34,34 +34,34 @@ function getStatus(req, res) {
 }
 
 function trackPnr(req, res) {
-  let userToken = req.authorization.basic.password;
+  const userToken = req.authorization.basic.password;
 
   // error checking
   req.assert('pnr', 'PNR is a required param').notEmpty();
   req.assert('pnr', 'should contain only numbers').isNumeric();
   req.assert('pnr', 'should be of length 10').len(10, 10);
 
-  let errors = req.validationErrors();
+  const errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 
-  let pnr = req.params.pnr;
+  const pnr = req.params.pnr;
   return TrackPnr.startTracking(userToken, pnr)
     .then(result => res.send({success: true}))
     .catch(err => res.send(err));
 }
 
 function stopTrackingPnr(req, res) {
-  let userToken = req.authorization.basic.password;
+  const userToken = req.authorization.basic.password;
 
   // error checking
   req.assert('pnr', 'PNR is a required param').notEmpty();
   req.assert('pnr', 'should contain only numbers').isNumeric();
   req.assert('pnr', 'should be of length 10').len(10, 10);
 
-  let errors = req.validationErrors();
+  const errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 
-  let pnr = req.params.pnr;
+  const pnr = req.params.pnr;
   return TrackPnr.stopTracking(userToken, pnr)
     .then(result => res.send({success: true}))
     .catch(err => res.send(err));

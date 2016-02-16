@@ -1,16 +1,16 @@
 'use strict';
 
-var restify = require('restify');
-var restifyValidator = require('restify-validator');
-var Promise = require('bluebird');
+const restify = require('restify');
+const restifyValidator = require('restify-validator');
+const Promise = require('bluebird');
 
-var Routes = require('./routes/routes');
-var ApiVersion = require('./config/api-version');
-var config = require('./config/config.js');
-var log = require('./utils/logger');
-var authMiddleware = require('./middlewares/auth-middleware');
+const Routes = require('./routes/routes');
+const ApiVersion = require('./config/api-version');
+const config = require('./config/config.js');
+const log = require('./utils/logger');
+const authMiddleware = require('./middlewares/auth-middleware');
 
-var app = restify.createServer({
+const app = restify.createServer({
   name: config.appName,
   version: ApiVersion.v1
 });

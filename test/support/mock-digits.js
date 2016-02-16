@@ -1,16 +1,15 @@
 'use strict';
 
-var restify = require('restify');
-var Promise = require('bluebird');
+const restify = require('restify');
+const Promise = require('bluebird');
 
-var mockDigits = restify.createServer({});
+const mockDigits = restify.createServer({});
 
 mockDigits.use(restify.bodyParser({
   mapParams: true
 }));
 
-//noinspection Eslint
-mockDigits.get('/', (req, res) => res.json({phone_number: '+919033819605'}));// jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+mockDigits.get('/', (req, res) => res.json({phone_number: '+919033819605'}));
 
 // promisify the listen function
 mockDigits.listen = Promise.promisify(mockDigits.listen);

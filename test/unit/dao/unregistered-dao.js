@@ -1,11 +1,11 @@
 'use strict';
 
-var Promise = require('bluebird');
-var mongodb = require('mongodb');
+const Promise = require('bluebird');
+const mongodb = require('mongodb');
 
-var DaoHelper = require('../../../dao/dao-helper');
-var UserDao = require('../../../dao/user-dao');
-var UnRegisteredDao = require('../../../dao/unregistered-dao.js');
+const DaoHelper = require('../../../dao/dao-helper');
+const UserDao = require('../../../dao/user-dao');
+const UnRegisteredDao = require('../../../dao/unregistered-dao');
 
 describe('unregisteredDao', () => {
 
@@ -22,7 +22,7 @@ describe('unregisteredDao', () => {
 
     return UserDao.newUser(user1.mobNumber, user1.name, countryIso)
       .then(() => {
-        var unRegList = [user2.mobNumber, user3.mobNumber];
+        const unRegList = [user2.mobNumber, user3.mobNumber];
         return UnRegisteredDao.addAll(unRegList, user1.mobNumber);
       })
       .then(() => {
@@ -34,10 +34,10 @@ describe('unregisteredDao', () => {
   });
 
   it('users to be notified when unregistered contact registers', () => {
-    var unRegNum = user2.mobNumber;
+    const unRegNum = user2.mobNumber;
     return UnRegisteredDao.getNotificationList(unRegNum)
       .then(() => {
-        let query = {mobNumber: unRegNum};
+        const query = {mobNumber: unRegNum};
         return DaoHelper.unRegistered.find(query).limit(1).next()
           .then(doc => doc ? doc.notifyList : undefined)
           .should.eventually.deep.equal([user1.mobNumber]);

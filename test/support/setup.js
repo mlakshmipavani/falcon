@@ -2,11 +2,11 @@
 
 process.env.NODE_ENV = 'test';
 
-let Promise = require('bluebird');
-let mongodb = require('mongodb');
-let chai = require('chai');
-let chaiAsPromised = require('chai-as-promised');
-let config = require('../../config/config.js');
+const Promise = require('bluebird');
+const mongodb = require('mongodb');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const config = require('../../config/config');
 
 // configure chai
 global.should = chai.should();

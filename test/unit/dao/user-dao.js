@@ -1,10 +1,10 @@
 'use strict';
 
-var Promise = require('bluebird');
-var mongodb = require('mongodb');
+const Promise = require('bluebird');
+const mongodb = require('mongodb');
 
-var DaoHelper = require('../../../dao/dao-helper');
-var UserDao = require('../../../dao/user-dao');
+const DaoHelper = require('../../../dao/dao-helper');
+const UserDao = require('../../../dao/user-dao');
 
 describe('UserDao', () => {
 
@@ -21,11 +21,11 @@ describe('UserDao', () => {
   it('creates a new user', () => {
     return UserDao.newUser(user1.mobNumber, user1.name, countryIso)
       .then(() => {
-        let query = {mobNumber: user1.mobNumber};
+        const query = {mobNumber: user1.mobNumber};
         return DaoHelper.user.find(query).toArray()
           .then((/* Array<User> */ docs) => {
             docs.should.have.length(1);
-            let user = docs[0];
+            const user = docs[0];
             user.mobNumber.should.equal(user1.mobNumber);
             user.name.should.equal(user1.name);
           });
@@ -33,14 +33,14 @@ describe('UserDao', () => {
   });
 
   it('creates an existing user', () => {
-    var newName = 'New Jaydeep';
+    const newName = 'New Jaydeep';
     return UserDao.newUser(user1.mobNumber, newName, countryIso)
       .then(() => {
-        let query = {mobNumber: user1.mobNumber};
+        const query = {mobNumber: user1.mobNumber};
         return DaoHelper.user.find(query).toArray()
           .then((/* Array<User> */ docs) => {
             docs.should.have.length(1);
-            let user = docs[0];
+            const user = docs[0];
             user.mobNumber.should.equal(user1.mobNumber);
             user.name.should.equal(newName);
           });
@@ -48,7 +48,7 @@ describe('UserDao', () => {
   });
 
   it('finds registered users from a list', () => {
-    var numbers = [user1, user2, user3].map((/* User */ user) => user.mobNumber);
+    const numbers = [user1, user2, user3].map((/* User */ user) => user.mobNumber);
     return UserDao.findRegistered(numbers).should.eventually.deep.equal([user1.mobNumber]);
   });
 
@@ -57,13 +57,13 @@ describe('UserDao', () => {
     return UserDao.newUser(user2.mobNumber, user2.name, countryIso)
       .then(() => {
         // actual test
-        let numbers = [user1.mobNumber, user2.mobNumber];
+        const numbers = [user1.mobNumber, user2.mobNumber];
         return UserDao.friendsAddHim(user3.mobNumber, numbers)
           .then(() => {
-            let query = {mobNumber: {$in: numbers}};
+            const query = {mobNumber: {$in: numbers}};
             return DaoHelper.user.find(query).toArray()
               .then((/* Array<User> */ docs) => {
-                for (let user of docs) {
+                for (const user of docs) {
                   user.friends.should.have.length(1);
                   user.friends[0].should.equal(user3.mobNumber);
                 }
@@ -73,7 +73,7 @@ describe('UserDao', () => {
   });
 
   it('should add contacts', () => {
-    var numbers = [user2.mobNumber, user3.mobNumber];
+    const numbers = [user2.mobNumber, user3.mobNumber];
     return UserDao.addContacts(user1.mobNumber, numbers)
       .then(() => {
         return DaoHelper.user.find({mobNumber: user1.mobNumber}).limit(1).next()
@@ -82,7 +82,7 @@ describe('UserDao', () => {
   });
 
   it('updates name', () => {
-    var latestName = 'Latest Jaydeep';
+    const latestName = 'Latest Jaydeep';
     return UserDao.updateName(user1.mobNumber, latestName)
       .then(() => {
         return DaoHelper.user.find({mobNumber: user1.mobNumber}).limit(1).next()
@@ -93,7 +93,7 @@ describe('UserDao', () => {
   it('should get userIds from given hashIds', () => {
     return UserDao.newUser(user1.mobNumber, user1.name, countryIso)
       .then(user => {
-        let _Id = user._id;
+        const _Id = user._id;
         UserDao.getUserIdsFromHashIds([user.hashOfId])
           .then(userId => userId[0].should.deep.equal(_Id));
       });

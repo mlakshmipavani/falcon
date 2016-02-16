@@ -4,8 +4,8 @@
  * A helper class that helps to send notifications through parse
  */
 
-var Parse = require('parse/node').Parse;
-var log = require('../utils/logger').child({
+const Parse = require('parse/node').Parse;
+const log = require('../utils/logger').child({
   module: 'parsepush'
 });
 
@@ -16,7 +16,7 @@ Parse.initialize(
   'PeQzYq2UOustwR5TwHkIPyCcLXnU3uUBH8vAJgRJ' // javaScriptKey
 );
 
-let pushCallbacks = {
+const pushCallbacks = {
   success: () => log.debug('parse success'),
   error: (error) => log.error('parse error', error)
 };
@@ -72,7 +72,7 @@ class ParseController {
    * @returns {Parse.Promise}
    */
   static sendBotPushtoUsers(userTokens, msg) {
-    let channels = userTokens.map(token => `user_${token}`);
+    const channels = userTokens.map(token => `user_${token}`);
     return Parse.Push.send({
       channels: channels,
       data: Object.assign({action: 'com.stayyolo.PUSH.BOT_PUSH'}, msg)
@@ -86,7 +86,7 @@ class ParseController {
    * @returns {*}
    */
   static pushPnrUpdate(userTokens, pnrStatus) {
-    let channels = userTokens.map(token => `user_${token}`);
+    const channels = userTokens.map(token => `user_${token}`);
     return Parse.Push.send({
         channels: channels,
         data: Object.assign({action: 'com.stayyolo.PUSH.ON_PNR_TRACK_UPDATE'}, pnrStatus)

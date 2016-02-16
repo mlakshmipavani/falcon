@@ -1,8 +1,8 @@
 'use strict';
 
-var ApiVersion = require('../config/api-version');
-var BotDiscoveryController = require('../controllers/bot-discovery-controller');
-var ErrorController = require('../controllers/error-controller');
+const ApiVersion = require('../config/api-version');
+const BotDiscoveryController = require('../controllers/bot-discovery-controller');
+const ErrorController = require('../controllers/error-controller');
 
 /**
  * Sets up all the routes required for bot discovery
@@ -22,7 +22,7 @@ function newBots(req, res) {
   req.assert('count', 'count is a required param').notEmpty();
   req.assert('count', 'count should be an integer').isInt();
 
-  let errors = req.validationErrors();
+  const errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 
   BotDiscoveryController.getNew(parseInt(req.params.count))

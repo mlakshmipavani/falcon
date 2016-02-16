@@ -1,10 +1,10 @@
 'use strict';
 
-var request = require('supertest-as-promised');
+const request = require('supertest-as-promised');
 
-var app = require('../../app');
-var mockDigits = require('./../support/mock-digits');
-var JoiValidate = require('./../support/joi-validate.js');
+const app = require('../../app');
+const mockDigits = require('./../support/mock-digits');
+const JoiValidate = require('./../support/joi-validate');
 
 describe('Registration', () => {
 

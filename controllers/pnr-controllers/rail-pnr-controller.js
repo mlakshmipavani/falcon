@@ -12,17 +12,17 @@
  * the 4 numeric digits in the url also change sometimes, so that's the second thing to check when
  * things go south. This url is also present in the form returned by /valid.php
  */
-var cheerio = require('cheerio');
-var request = require('request-promise');
-var config = require('../../config/config.js');
+const cheerio = require('cheerio');
+const request = require('request-promise');
+const config = require('../../config/config');
 
 //noinspection Eslint
 const options = {
   url: config.railway.pnrUrl,
   form: {
-    lccp_pnrno1: 0,// jscs:ignore
-    lccp_cap_value: 24357,// jscs:ignore
-    lccp_capinp_value: 24357// jscs:ignore
+    lccp_pnrno1: 0,
+    lccp_cap_value: 24357,
+    lccp_capinp_value: 24357
   },
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -39,8 +39,7 @@ class RailPnrController {
    * @returns {{}}
    */
   static getStatus(/* string */ pnr) {
-    //noinspection Eslint
-    options.form.lccp_pnrno1 = pnr;// jscs:ignore
+    options.form.lccp_pnrno1 = pnr;
     return request.post(options)
       .then(this._parseHtml);
   }
@@ -52,11 +51,11 @@ class RailPnrController {
    * @private
    */
   static _parseHtml(/* string */ html) {
-    var $ = cheerio.load(html);
-    var getText = (node) => $(node).text().trim();
-    let dataArr = $('.table_border_both').toArray();
-    var obj = {};
-    var i = 0;
+    const $ = cheerio.load(html);
+    const getText = (node) => $(node).text().trim();
+    const dataArr = $('.table_border_both').toArray();
+    const obj = {};
+    let i = 0;
     obj.trainNumber = getText(dataArr[i++]);
     obj.trainName = getText(dataArr[i++]);
     obj.boardingDate = getText(dataArr[i++]);
@@ -68,7 +67,7 @@ class RailPnrController {
     obj.passengers = [];
 
     while (getText(dataArr[i]).startsWith('Passenger')) {
-      let passenger = {};
+      const passenger = {};
       passenger.name = getText(dataArr[i++]);
       passenger.bookingStatus = getText(dataArr[i++]);
       passenger.currentStatus = getText(dataArr[i++]);
