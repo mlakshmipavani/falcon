@@ -3,8 +3,8 @@
 const Promise = require('bluebird');
 const request = require('request-promise');
 const _object = require('lodash/object');
-const config = require('../config/config.js');
-const Utils = require('../utils/Utils.js');
+const config = require('../../config/config');
+const Utils = require('../../utils/Utils');
 
 const baseUrl = config.uber.baseUrl;
 const headers = {Authorization: 'Token jNWXqEXTsHSsBfH0fB-yxG8mw42I_YeQh0OoTDwp'};
@@ -65,8 +65,9 @@ class UberController {
   static _calculateFare(cab) {
     const fareBreakUp = cab.price_details;
     const calculate = (time) => {
-      return (fareBreakUp.base + (fareBreakUp.cost_per_distance * 5)
+      const fare = (fareBreakUp.base + (fareBreakUp.cost_per_distance * 5)
         + (time * fareBreakUp.cost_per_minute)) * cab.surgeMultiplier;
+      return Math.round(fare);
     };
 
     const minTime = 10; // Going @ 30Km/hr it would take 10 mins to travel 5Km

@@ -2,8 +2,8 @@
 
 const util = require('util');
 const request = require('request-promise');
-const config = require('../config/config');
-const Utils = require('../utils/Utils');
+const config = require('../../config/config');
+const Utils = require('../../utils/Utils');
 
 const baseUrl = config.ola.baseUrl;
 const headers = {'X-APP-TOKEN': config.ola.token};
@@ -19,10 +19,6 @@ class OlaController {
   static getCabs(/*number*/ latitude, /*number*/ longitude) {
     //noinspection JSValidateTypes
     return this._queryOlaServer(latitude, longitude)
-      .then(res => {
-        console.log(util.inspect(res, {depth: null}));
-        return res;
-      })
       .then(this._parseResult);
   }
 
@@ -115,8 +111,9 @@ class OlaController {
                            /*number*/ surgeMultiplier, /*number|string*/ surgeFixed) {
     baseFare = parseInt(baseFare);
     const calculate = (time) => {
-      return (surgeMultiplier *
+      const fare = (surgeMultiplier *
         (baseFare + (extraDistance * costPerDistance) + (time * costPerMinute))) + surgeFixed;
+      return Math.round(fare);
     };
 
     const extraDistance = Math.max(5 - minDistance, 0);

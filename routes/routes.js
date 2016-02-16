@@ -5,7 +5,7 @@ var UserDao = require('../dao/user-dao');
 var RegistrationRoutes = require('./registration-routes');
 var BotDiscoveryRoutes = require('./bot-discovery-routes');
 var BotMsgRoutes = require('./bot-msg-routes.js');
-var UberBotRoutes = require('./uber-bot-routes.js');
+var CabBotRoutes = require('./cab-bot-routes.js');
 var RailPnrRoutes = require('./railpnr-bot-routes.js');
 
 /**
@@ -32,7 +32,7 @@ class Routes {
     RegistrationRoutes.setup(app);
     BotDiscoveryRoutes.setup(app);
     BotMsgRoutes.setup(app);
-    UberBotRoutes.setup(app);
+    CabBotRoutes.setup(app);
     RailPnrRoutes.setup(app);
   }
 }
