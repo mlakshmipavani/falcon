@@ -14,7 +14,7 @@ class OlaController {
    * Higher level method to get Ola cabs data
    * @param latitude Pickup latitude
    * @param longitude Pickup longitude
-   * @returns {Array<{name, eta, fare, surgeMultiplier, surgeFixed, productId}>}
+   * @returns {Array<{name, eta, minFare, maxFare, surgeMultiplier, surgeFixed, productId}>}
    */
   static getCabs(/*number*/ latitude, /*number*/ longitude) {
     //noinspection JSValidateTypes
@@ -45,6 +45,7 @@ class OlaController {
 
     return categories.reduce((cabs, /*{id, display_name, eta, fare_breakup}*/ eachCategory) => {
       if (eachCategory.eta === -1) return cabs;
+      if (eachCategory.id === 'auto') return cabs; // we don't want Auto-rickshaw results
       const cab = {
         name: eachCategory.display_name,
         eta: eachCategory.eta,
@@ -91,7 +92,8 @@ class OlaController {
         const fare = OlaController._calculate5kmFare(flatRate.base_fare,
           flatRate.minimum_distance, flatRate.cost_per_distance, flatRate.ride_cost_per_minute,
           cab.surgeMultiplier, cab.surgeFixed);
-        cab.fare = `₹${fare.minFare}-${fare.maxFare}`;
+        cab.minFare = fare.minFare;
+        cab.maxFare = fare.maxFare;
       }
     }
   }

@@ -6,7 +6,7 @@ const UberController = require('../controllers/cabs/uber-controller');
 const OlaController = require('../controllers/cabs/ola-controller');
 const CabController = require('../controllers/cabs/cab-controller');
 
-class UberBotRoutes {
+class CabBotRoutes {
 
   static setup(app) {
     app.get({path: '/bot/@ubercabs/getcabs', version: apiVersion.v1}, getUberCabs);
@@ -71,4 +71,4 @@ function validateRequest(req) {
   return req.validationErrors();
 }
 
-module.exports = UberBotRoutes;
+module.exports = CabBotRoutes;

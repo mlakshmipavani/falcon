@@ -27,7 +27,8 @@ describe('Cab controller', () => {
         eta: 1,
         surgeMultiplier: 1.2,
         surgeFixed: 0,
-        fare: '₹96-108',
+        minFare: 96,
+        maxFare: 108,
         provider: 'uber'
       },
       {
@@ -36,7 +37,8 @@ describe('Cab controller', () => {
         eta: 2,
         surgeMultiplier: 1,
         surgeFixed: 0,
-        fare: '₹90-100',
+        minFare: 90,
+        maxFare: 100,
         provider: 'uber'
       },
       {
@@ -45,7 +47,8 @@ describe('Cab controller', () => {
         surgeMultiplier: 1,
         surgeFixed: 0,
         productId: 'mini',
-        fare: '₹100-110',
+        minFare: 100,
+        maxFare: 110,
         provider: 'ola'
       },
       {
@@ -54,7 +57,8 @@ describe('Cab controller', () => {
         surgeMultiplier: 1,
         surgeFixed: 0,
         productId: 'sedan',
-        fare: '₹123-133',
+        minFare: 123,
+        maxFare: 133,
         provider: 'ola'
       },
       {
@@ -63,7 +67,8 @@ describe('Cab controller', () => {
         surgeMultiplier: 1.2,
         surgeFixed: 0,
         productId: 'prime',
-        fare: '₹149-161',
+        minFare: 149,
+        maxFare: 161,
         provider: 'ola'
       }];
 

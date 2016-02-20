@@ -15,7 +15,7 @@ class UberController {
    * Gets uber cabs around a given lat/lng
    * @param latitude
    * @param longitude
-   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, fare}}
+   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, minFare, maxFare}}
    */
   static getCabs(/*number*/ latitude, /*number*/ longitude) {
     return Promise.join(
@@ -32,7 +32,7 @@ class UberController {
    * @param cabTypesArr An array of cab types
    * @param times An array of cab timings
    * @param prices An array of cab prices
-   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, fare}}
+   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, minFare, maxFare}}
    * @private
    */
   static _getCabsCallback(/*Array<{product_id, price_details, display_name}>*/ cabTypesArr,
@@ -53,7 +53,7 @@ class UberController {
     cabs = _object.values(cabs);
     cabs.forEach(UberController._calculateFare);
     cabs = cabs.map(UberController._keepOnlyRequiredFields)
-      .filter(cab => cab.eta && cab.fare); // filter out cabs that don't have eta or fare
+      .filter(cab => cab.eta && cab.minFare && cab.maxFare); // filter out cabs that don't have eta or fare
     return cabs;
   }
 
@@ -72,11 +72,8 @@ class UberController {
 
     const minTime = 10; // Going @ 30Km/hr it would take 10 mins to travel 5Km
     const maxTime = 20; // Going @ 15Km/hr it would take 20 mins to travel 5Km
-    const minFare = calculate(minTime);
-    const maxFare = calculate(maxTime);
-
-    //noinspection JSUndefinedPropertyAssignment
-    cab.fare = `₹${minFare}-${maxFare}`;
+    cab.minFare = calculate(minTime);
+    cab.maxFare = calculate(maxTime);
   }
 
   /**
@@ -148,8 +145,8 @@ class UberController {
 
   /**
    * Keeps only fields that are required by the client
-   * @param {{product_id, display_name, eta, surgeMultiplier, surgeFixed, fare}} cab
-   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, fare}}
+   * @param {{product_id, display_name, eta, surgeMultiplier, surgeFixed, minFare, maxFare}} cab
+   * @returns {{productId, name, eta, surgeMultiplier, surgeFixed, minFare, maxFare}}
    * @private
    */
   static _keepOnlyRequiredFields(cab) {
@@ -159,7 +156,8 @@ class UberController {
     newCab.eta = cab.eta;
     newCab.surgeMultiplier = cab.surgeMultiplier;
     newCab.surgeFixed = cab.surgeFixed;
-    newCab.fare = cab.fare;
+    newCab.minFare = cab.minFare;
+    newCab.maxFare = cab.maxFare;
     return newCab;
   }
 }

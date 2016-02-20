@@ -23,7 +23,8 @@ describe('Ola Controller', () => {
         surgeMultiplier: 1,
         surgeFixed: 0,
         productId: 'mini',
-        fare: '₹100-110'
+        minFare: 100,
+        maxFare: 110
       },
       {
         name: 'Sedan',
@@ -31,7 +32,8 @@ describe('Ola Controller', () => {
         surgeMultiplier: 1,
         surgeFixed: 0,
         productId: 'sedan',
-        fare: '₹123-133'
+        minFare: 123,
+        maxFare: 133
       },
       {
         name: 'Prime',
@@ -39,7 +41,8 @@ describe('Ola Controller', () => {
         surgeMultiplier: 1.2,
         surgeFixed: 0,
         productId: 'prime',
-        fare: '₹149-161'
+        minFare: 149,
+        maxFare: 161
       }];
 
     // execute

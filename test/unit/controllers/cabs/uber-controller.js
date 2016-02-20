@@ -13,7 +13,8 @@ describe('UberController', () => {
     {
       name: 'uberGO',
       eta: 1,
-      fare: '₹96-108',
+      minFare: 96,
+      maxFare: 108,
       surgeMultiplier: 1.2,
       surgeFixed: 0,
       productId: 'db6779d6-d8da-479f-8ac7-8068f4dade6f'
@@ -21,7 +22,8 @@ describe('UberController', () => {
     {
       name: 'uberX',
       eta: 2,
-      fare: '₹90-100',
+      minFare: 90,
+      maxFare: 100,
       surgeMultiplier: 1,
       surgeFixed: 0,
       productId: '0dfc35e0-b4be-49a1-b1bf-0bc7217e4b58'
