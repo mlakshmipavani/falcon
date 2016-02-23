@@ -9,8 +9,15 @@ const CabController = require('../controllers/cabs/cab-controller');
 class CabBotRoutes {
 
   static setup(app) {
+    // uber
     app.get({path: '/bot/@ubercabs/getcabs', version: apiVersion.v1}, getUberCabs);
+
+    // ola
     app.get({path: '/bot/@olacabs/getcabs', version: apiVersion.v1}, getOlaCabs);
+    app.post({path: '/bot/@olacabs/authtoken', version: apiVersion.v1}, olaAccessToken);
+    app.post({path: '/bot/@olacabs/book', version: apiVersion.v1}, bookOlaCab);
+
+    // general
     app.get({path: '/bot/@cabs/getcabs', version: apiVersion.v1}, getCabs);
   }
 }
@@ -54,6 +61,43 @@ function getUberCabs(req, res) {
 
   return UberController.getCabs(lat, lng)
     .then(response => res.json(response))
+    .catch(err => res.send(err));
+}
+
+/**
+ * It stores the Ola Access Token given by the ser
+ */
+function olaAccessToken(req, res) {
+  req.assert('access_token', 'Ola Access Token should not be empty').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  const accessToken = req.params.access_token;
+  const userToken = req.authorization.basic.password;
+  return OlaController.storeOlaAccessToken(userToken, accessToken)
+    .then(() => res.json({success: true}));
+}
+
+/**
+ * Books an Ola Cab
+ */
+function bookOlaCab(req, res) {
+  validateRequest(req);
+  req.assert('cab_type', 'Cab Type is a required param').notEmpty();
+  req.assert('cab_type', 'Cab Type should be one of [mini, sedan, prime]')
+    .isIn(['mini', 'sedan', 'prime']);
+  const errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  /** @type {{lat, lng, cab_type}} */
+  const params = req.params;
+  const lat = params.lat;
+  const lng = params.lng;
+  const cabType = params.cab_type;
+  const userToken = req.authorization.basic.password;
+
+  return OlaController.book(userToken, lat, lng, cabType)
+    .then(bookedResult => res.json(bookedResult))
     .catch(err => res.send(err));
 }
 

@@ -163,6 +163,29 @@ class UserDao {
       .map(obj => obj._id);
   }
 
+  /**
+   * Store the ola Access token given after user logged in to Ola A/c
+   * @param userToken The User token (_id) in our db
+   * @param olaAccessToken
+   * @returns {Promise}
+   */
+  static storeOlaAccessToken(/*string*/ userToken, /*string*/ olaAccessToken) {
+    const query = {_id: ObjectID(userToken)};
+    const update = {olaAccessToken};
+    return DaoHelper.user.updateOne(query, {$set: update});
+  }
+
+  /**
+   * Returns OlaAccess token associated with a user
+   * @param userToken The User token (_id) in our db
+   * @returns {Promise.<string>}
+   */
+  static getOlaAccessToken(/*string*/ userToken) {
+    const query = {_id: ObjectID(userToken)};
+    const projection = {olaAccessToken: 1};
+    return DaoHelper.user.find(query, projection).next().then(userObj => userObj.olaAccessToken);
+  }
+
 }
 
 /**

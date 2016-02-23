@@ -32,9 +32,11 @@ config.uber.baseUrl = process.env.NODE_ENV === 'test' ? 'http://localhost:5001'
  * Ola Api
  */
 config.ola = {};
-config.ola.baseUrl = process.env.NODE_ENV === 'test' ? 'http://sandbox-t.olacabs.com/v1' :
+config.ola.sandboxUrl = 'http://sandbox-t.olacabs.com/v1';
+config.ola.sandboxToken = '3fc98f5c4e5343f4adfe28bd8a75d51f';
+config.ola.baseUrl = process.env.NODE_ENV === 'test' ? config.ola.sandboxUrl :
   'https://devapi.olacabs.com/v1';
-config.ola.token = process.env.NODE_ENV === 'test' ? '3fc98f5c4e5343f4adfe28bd8a75d51f' :
+config.ola.token = process.env.NODE_ENV === 'test' ? config.ola.sandboxToken :
   'fc3de0a97c3a4937aca2b9f9f2f52ed7';
 
 /**

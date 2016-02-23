@@ -4,6 +4,7 @@ const util = require('util');
 const request = require('request-promise');
 const config = require('../../config/config');
 const Utils = require('../../utils/Utils');
+const UserDao = require('../../dao/user-dao');
 
 const baseUrl = config.ola.baseUrl;
 const headers = {'X-APP-TOKEN': config.ola.token};
@@ -20,6 +21,44 @@ class OlaController {
     //noinspection JSValidateTypes
     return this._queryOlaServer(latitude, longitude)
       .then(this._parseResult);
+  }
+
+  /**
+   * Stores the Ola Access token provided by the user
+   * @param userToken The user token in our db (_id of the user)
+   * @param olaAccessToken The token got after the user logged in to Ola
+   * @returns {Promise}
+   */
+  static storeOlaAccessToken(/*string*/ userToken, /*string*/ olaAccessToken) {
+    return UserDao.storeOlaAccessToken(userToken, olaAccessToken);
+  }
+
+  /**
+   * Books an Ola Cab
+   * @param userToken The user token (_id) of the user
+   * @param lat Pickup Latitude
+   * @param lng Pickup Longitude
+   * @param cabType The type of cab to book (mini, sedan, etc.)
+   * @returns {Promise}
+   */
+  static book(/*string*/ userToken, /*number*/ lat, /*number*/ lng, /*string*/ cabType) {
+    return UserDao.getOlaAccessToken(userToken)
+      .then(olaToken => this._bookWithOlaAccessToken(lat, lng, cabType, olaToken));
+  }
+
+  /**
+   * Sends a request to Ola servers to book the cab
+   * @param lat Pickup Latitude
+   * @param lng Pickup Longitude
+   * @param cabType The type of cab to book (mini, sedan, etc.)
+   * @param olaAccessToken Access token provided by ola after user logged in
+   * @returns {Promise}
+   * @private
+   */
+  static _bookWithOlaAccessToken(/*number*/ lat, /*number*/ lng, /*string*/ cabType,
+                                 /*string*/ olaAccessToken) {
+    const options = this._getOptionsToBook(lat, lng, cabType, olaAccessToken);
+    return request(options);
   }
 
   /**
@@ -124,6 +163,36 @@ class OlaController {
     const minFare = calculate(minTime);
     const maxFare = calculate(maxTime);
     return {minFare, maxFare};
+  }
+
+  /**
+   * Returns the options to be used by request to book a cab
+   * @param lat Pickup Latitude
+   * @param lng Pickup Longitude
+   * @param cabType The type of cab to book (mini, sedan, etc.)
+   * @param olaAccessToken Access token provided by ola after user logged in
+   * @returns {{url: *, headers: *, qs: {pickup_lat: number, pickup_lng: number, pickup_mode: string, category: string}, json: boolean}}
+   * @private
+   */
+  static _getOptionsToBook(/*number*/ lat, /*number*/ lng, /*string*/ cabType,
+                           /*string*/ olaAccessToken) {
+    let rootUrl = baseUrl;
+    let localHeaders = headers;
+    if (process.env.NODE_ENV !== 'production') {
+      rootUrl = config.ola.sandboxUrl;
+      lat = 12.950072; // sandbox api only works for these co-ordinates
+      lng = 77.642684;
+      cabType = 'sedan'; // sandbox api only works for sedan
+      localHeaders = {'X-APP-TOKEN': config.ola.sandboxToken};
+    }
+
+    const bookingHeaders = Object.assign({Authorization: `Bearer ${olaAccessToken}`}, localHeaders);
+    return {
+      url: `${rootUrl}/bookings/create`,
+      headers: bookingHeaders,
+      qs: {pickup_lat: lat, pickup_lng: lng, pickup_mode: 'NOW', category: cabType},
+      json: true
+    };
   }
 
   /**

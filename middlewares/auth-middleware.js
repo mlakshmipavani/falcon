@@ -14,6 +14,7 @@ module.exports = () => {
 
     // register doesn't require any auth
     if (pathname === '/register') return next();
+    if (pathname === '/@olacabs/authtoken') return next(); // used as a redirect uri in ola integration
 
     // if authorization.basic is undefined, return error
     if (!req.authorization || !req.authorization.basic || req.username === 'anonymous') {
