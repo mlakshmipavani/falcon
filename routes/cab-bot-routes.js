@@ -5,6 +5,9 @@ const ErrorController = require('../controllers/error-controller');
 const UberController = require('../controllers/cabs/uber-controller');
 const OlaController = require('../controllers/cabs/ola-controller');
 const CabController = require('../controllers/cabs/cab-controller');
+const log = require('../utils/logger').child({
+  module: 'cab-bot-routes'
+});
 
 class CabBotRoutes {
 
@@ -16,6 +19,7 @@ class CabBotRoutes {
     app.get({path: '/bot/@olacabs/getcabs', version: apiVersion.v1}, getOlaCabs);
     app.post({path: '/bot/@olacabs/authtoken', version: apiVersion.v1}, olaAccessToken);
     app.post({path: '/bot/@olacabs/book', version: apiVersion.v1}, bookOlaCab);
+    app.post({path: '/bot/@olacabs/cancel', version: apiVersion.v1}, cancelOlaCab);
 
     // general
     app.get({path: '/bot/@cabs/getcabs', version: apiVersion.v1}, getCabs);
@@ -99,6 +103,28 @@ function bookOlaCab(req, res) {
   return OlaController.book(userToken, lat, lng, cabType)
     .then(bookedResult => res.json(bookedResult))
     .catch(err => res.send(err));
+}
+
+/**
+ * Cancels an Ola Booking
+ */
+function cancelOlaCab(req, res) {
+  req.assert('crn', 'CRN is  required param').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  /** @type {{crn}} */
+  const params = req.params;
+  const crn = params.crn;
+  const userToken = req.authorization.basic.password;
+
+  return OlaController.cancel(userToken, crn)
+    .then((/*{status, reason, text}*/ result) => {
+      if (result.status === 'FAILURE' && result.reason !== 'BOOKING_ALREADY_CANCELLED') {
+        log.warn({data: result}, 'Ola booking cancel failed');
+        res.json({success: false, error: result.text});
+      } else res.json({success: true});
+    }).catch(err => res.send(err));
 }
 
 function validateRequest(req) {
