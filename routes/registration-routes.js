@@ -11,28 +11,20 @@ const RegistrationController = require('../controllers/registration-controller')
 class RegistrationRoutes {
 
   static setup(app) {
-    app.post({path: '/register', version: ApiVersion.v1}, register);
+    app.post({path: '/login', version: ApiVersion.v1}, login);
   }
 
 }
 
-/**
- * A user can register using this route
- * [Note] : if it's a development environment send the mobile number in header
- * `X-Verify-Credentials-Authorization`
- */
-function register(req, res) {
-  const url = req.header('X-Auth-Service-Provider');
-  const headers = req.header('X-Verify-Credentials-Authorization');
-  const name = req.params.name;
+function login(req, res) {
+  /** @type {{google_id_token, one_signal_user_id}} */
+  const params = req.params;
+  const googleIdToken = params.google_id_token;
+  const oneSignalUserId = params.one_signal_user_id;
 
-  //noinspection JSUnresolvedVariable
-  const oneSignalUserId = req.params.oneSignalUserId;
-  const requestOptions = {url: url, headers: {Authorization: headers}, json: true};
-
-  RegistrationController.register(name, requestOptions, oneSignalUserId)
-    .then((response) => res.json(response))
-    .catch((err) => console.log(err));
+  return RegistrationController.login(googleIdToken, oneSignalUserId)
+    .then(response => res.json(response))
+    .catch(err => res.send(err));
 }
 
 module.exports = RegistrationRoutes;

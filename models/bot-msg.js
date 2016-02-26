@@ -8,7 +8,7 @@ class BotMsg {
    */
   constructor(/* Object */ hash) {
     this.__id = hash._id;
-    this._mobNumber = hash.mobNumber;
+    this._socialId = hash.mobNumber;
     this._botHandle = hash.botHandle;
     this._body = hash.body;
     this._userMsgId = hash.userMsgId;
@@ -19,8 +19,8 @@ class BotMsg {
     return this.__id;
   }
 
-  get mobNumber() {
-    return this._mobNumber;
+  get socialId() {
+    return this._socialId;
   }
 
   get botHandle() {

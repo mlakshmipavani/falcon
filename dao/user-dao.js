@@ -6,6 +6,9 @@ const DaoHelper = require('./dao-helper');
 const User = require('../models/user');
 const ErrorController = require('../controllers/error-controller');
 const crypto = require('crypto');
+const log = require('../utils/logger').child({
+  module: 'user-dao'
+});
 
 class UserDao {
 
@@ -13,25 +16,22 @@ class UserDao {
    * Creates a new user in db
    * If a user with that mobile number already exists then it returns the same
    * @flow
-   * @param {string} mobNumber
-   * @param {string} name
-   * @param {string} countryCode
+   * @param socialId The unique Id from Google/Facebook to identify the user
+   * @param name The name of the use
+   * @param email If available, the email of the user
    * @returns {Promise<User>}
    */
-  static newUser(mobNumber, name, countryCode) {
-
-    // first try updating the name of the user
-    return UserDao.updateName(mobNumber, name)
-
-      // if the user exists then the nModified count will be 1}
-      .then(updatedUser => {
-        if (!updatedUser)
-          return _newUser(mobNumber, name, countryCode)
-            .then(result => result.ops[0])
-            .then(newUser => UserDao.updatehashId(newUser._id));
-        else
-          return updatedUser;
-      });
+  static newUser(/*string*/ socialId, /*string*/ name, /*string=*/ email) {
+    const newUserObj = {socialId, name, email};
+    return DaoHelper.user.findOneAndUpdate({socialId}, {$set: newUserObj}, {
+      upsert: true,
+      returnOriginal: false
+    }).then((/*{value, lastErrorObject, ok}*/ result) => {
+      if (result.ok === 1) return result.value;
+      const error = new Error('new user insertion not OK');
+      log.error(error, {data: result});
+      throw error;
+    });
   }
 
   /**
@@ -125,29 +125,15 @@ class UserDao {
 
   /**
    * Updates the name of a user
-   * @param {string} mobNumber
-   * @param {string} newName
+   * @param socialId
+   * @param newName
    */
-  static updateName(mobNumber, newName) {
-    const query = {mobNumber};
+  static updateName(/*string*/ socialId, /*string*/ newName) {
+    const query = {socialId};
     const update = {name: newName};
     const options = {returnOriginal: false};
     return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
       .then(op => op.value);
-  }
-
-  /**
-   * Update hashOfId of the user
-   * @param {ObjectID} userId
-   * @returns {Promise}
-   */
-  static updatehashId(userId) {
-    const hashOfId = crypto.createHash('sha512').update('' + userId).digest('base64').toString();
-    const query = {_id: userId};
-    const update = {hashOfId: hashOfId};
-    const options = {returnOriginal: false};
-    return DaoHelper.user.findOneAndUpdate(query, {$set: update}, options)
-      .then(result => result.value);
   }
 
   /**
@@ -186,19 +172,6 @@ class UserDao {
     return DaoHelper.user.find(query, projection).next().then(userObj => userObj.olaAccessToken);
   }
 
-}
-
-/**
- * This function without checking anything just inserts a new user object in db
- * @param {string} mobNumber
- * @param {string} name
- * @param {string} countryCode
- * @returns {Promise}
- * @private
- */
-function _newUser(mobNumber, name, countryCode) {
-  const newUserObj = User.getUserHash(mobNumber, name, countryCode);
-  return DaoHelper.user.insertOne(newUserObj);
 }
 
 module.exports = UserDao;

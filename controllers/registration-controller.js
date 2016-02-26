@@ -1,60 +1,40 @@
 'use strict';
 
 const request = require('request-promise');
-const libPhoneNumber = require('google-libphonenumber');
-
-//noinspection JSUnresolvedVariable
-const phoneUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
-
 const UserDao = require('../dao/user-dao.js');
 const OneSignalDao = require('../dao/onesignal-dao');
 
 class RegistrationController {
 
-  /**
-   * Registers and syncs contacts
-   * @param {string} name
-   * @param {object} requestOptions
-   * @param oneSignalUserId UserId provided by the OneSignal SDK on the device
-   * [NOTE] : if it's a development environment, send the mobile number in
-   * `requestOptions.headers.Authorization`
-   * @returns {Promise<{token, registered, unRegistered}>}
-   */
-  static register(/*string*/ name, requestOptions, /*string*/ oneSignalUserId) {
-
-    if (process.env.NODE_ENV === 'development')
-      return _register(requestOptions.headers.Authorization, name, oneSignalUserId);
-
-    //noinspection JSUnresolvedFunction
-    return request(requestOptions).then((oAuthRes) => {
-      const mobNumber = oAuthRes.phone_number;
-      return _register(mobNumber, name, oneSignalUserId);
-    });
-
+  static login(/*string*/ googleIdToken, /*string*/ oneSignalUserId) {
+    return this._login(googleIdToken)
+      .then((/*{aud, sub, email, given_name, name}*/ result) => {
+        const socialId = result.sub;
+        const name = result.given_name || result.name;
+        return UserDao.newUser(socialId, name, result.email);
+      })
+      .then((/*User*/ userObj) => userObj._id.toString())
+      .then((/*string*/ token) => OneSignalDao.map(token, oneSignalUserId).thenReturn({token}));
   }
-}
 
-/**
- * An internal method that puts the user in the db
- * @param {string} mobNumber Mobile number of the user registering (with +91)
- * @param {string} name Name of the user
- * @param oneSignalUserId UserId provided by the OneSignal SDK on the device
- * @returns {Promise<{token, registered, unRegistered}>}
- * @private
- */
-function _register(mobNumber, name, /*string*/ oneSignalUserId) {
-  const phoneNumber = phoneUtil.parse(mobNumber, '');
-  const countryISO = phoneUtil.getRegionCodeForNumber(phoneNumber);
+  /**
+   * Queries Google servers for user details in exchange for googleIdToken
+   * @param googleIdToken
+   * @returns {Promise}
+   * @private
+   */
+  static _login(/*string*/ googleIdToken) {
+    const options = this._getOptionsToLogin(googleIdToken);
+    return request(options);
+  }
 
-  // remove the leading +
-  mobNumber = mobNumber.substr(1);
-
-  return UserDao.newUser(mobNumber, name, countryISO)
-    .then((/* User */ user) => {
-      if (user.name !== name) UserDao.updateName(user._id.toString(), name);
-      return user._id.toString();
-    })
-    .then((/*string*/token) => OneSignalDao.map(token, oneSignalUserId).thenReturn({token}));
+  static _getOptionsToLogin(/*string*/ googleIdToken) {
+    return {
+      url: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
+      qs: {id_token: googleIdToken},
+      json: true
+    };
+  }
 }
 
 module.exports = RegistrationController;

@@ -17,7 +17,7 @@ class UnRegistered {
    * @param {Array<string>} notifyList
    */
   constructor(mobNumber, notifyList) {
-    this._mobNumber = mobNumber;
+    this._socialId = mobNumber;
     this._notifyList = notifyList;
   }
 
@@ -25,8 +25,8 @@ class UnRegistered {
    * Key
    * @returns {string}
    */
-  get mobNumber() {
-    return this._mobNumber;
+  get socialId() {
+    return this._socialId;
   }
 
   /**
