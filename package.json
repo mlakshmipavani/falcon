@@ -29,7 +29,6 @@
     "moment": "2.11.2",
     "mongodb": "2.1.7",
     "node-wit": "2.0.0",
-    "parse": "1.7.1",
     "request-promise": "2.0.1",
     "restify": "4.0.4",
     "restify-errors": "4.2.0",
