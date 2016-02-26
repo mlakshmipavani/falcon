@@ -12,7 +12,7 @@ describe('Auth Middleware', () => {
   //noinspection Eslint
   var authMiddleware = Auth();
 
-  const mobNumber = '919033819605';
+  const socialId = '919033819605';
   const name = 'Jaydeep';
   let token;
   let dbObj;
@@ -22,14 +22,14 @@ describe('Auth Middleware', () => {
       .then(db => dbObj = db)
       .then((db) => db.dropDatabase())
       .then(() => { // insert new user
-        return UserDao.newUser(mobNumber, name, 'IN');
+        return UserDao.newUser(socialId, name, 'IN');
       })
       .then(userObj => token = userObj._id.toString())
       .catch((err) => console.log(`Error mongodb : ${err}`));
   });
 
-  it('should allow /register to pass', done => {
-    authMiddleware({url: '/register'}, undefined, (err) => {
+  it('should allow /login to pass', done => {
+    authMiddleware({url: '/login'}, undefined, (err) => {
       if (!err) return done();
       throw err;
     });
@@ -43,7 +43,7 @@ describe('Auth Middleware', () => {
   });
 
   it('registered user should be able to access', done => {
-    const req = {url: '/newbots', username: mobNumber, authorization: {basic: {password: token}}};
+    const req = {url: '/newbots', username: socialId, authorization: {basic: {password: token}}};
     authMiddleware(req, undefined, err => {
       if (err) throw err;
       done();

@@ -9,7 +9,7 @@ const StaticResponses = require('../../../controllers/wit.ai/static-responses.js
 
 describe('Hello Controller', () => {
 
-  const mobNumber = '919033819605';
+  const socialId = '919033819605';
 
   before(() => Promise.delay(100).then(() => DaoHelper.db.dropDatabase()));
 
@@ -23,7 +23,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._introPlusAskName);
   });
 
@@ -34,7 +34,7 @@ describe('Hello Controller', () => {
 
     // execute
     const inputText = 'asdfljasdf';
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._sorryNoIdea);
   });
 
@@ -46,10 +46,10 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // prepare
-    return BotMsgDao.insert(mobNumber, HelloController.handle, 'some randommsg', 'abcxyz')
+    return BotMsgDao.insert(socialId, HelloController.handle, 'some randommsg', 'abcxyz')
 
       // execute
-      .then(() => HelloController.reply(mobNumber, inputText))
+      .then(() => HelloController.reply(socialId, inputText))
       .should.eventually.equal(StaticResponses.hello);
   });
 
@@ -62,10 +62,10 @@ describe('Hello Controller', () => {
 
     // prepare
     return BotMsgDao.insert(
-      mobNumber, HelloController.handle, HelloController._introPlusAskName, 'abcxyz')
+      socialId, HelloController.handle, HelloController._introPlusAskName, 'abcxyz')
 
       // execute
-      .then(() => HelloController.reply(mobNumber, inputText))
+      .then(() => HelloController.reply(socialId, inputText))
       .should.eventually.equal(HelloController._tryToBeHelpful(inputText));
   });
 
@@ -84,8 +84,8 @@ describe('Hello Controller', () => {
 
     // execute
     return BotMsgDao.insert(
-      mobNumber, HelloController.handle, HelloController._introPlusAskName, 'abcxyz')
-      .then(() => HelloController.reply(mobNumber, inputText))
+      socialId, HelloController.handle, HelloController._introPlusAskName, 'abcxyz')
+      .then(() => HelloController.reply(socialId, inputText))
       .should.eventually.equal(HelloController._tryToBeHelpful(name));
   });
 
@@ -103,8 +103,8 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return BotMsgDao.insert(mobNumber, HelloController.handle, 'some random msg', 'abcxyz')
-      .then(() => HelloController.reply(mobNumber, inputText))
+    return BotMsgDao.insert(socialId, HelloController.handle, 'some random msg', 'abcxyz')
+      .then(() => HelloController.reply(socialId, inputText))
       .should.eventually.equal(`hello ${name}`);
   });
 
@@ -116,7 +116,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(StaticResponses.howAreYouIntentReply);
   });
 
@@ -128,7 +128,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(StaticResponses.thankYouIntentReply);
   });
 
@@ -145,7 +145,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._askNameAgain);
   });
 
@@ -157,10 +157,10 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // prepare
-    return BotMsgDao.insert(mobNumber, HelloController.handle, HelloController._askNameAgain, 'abc')
+    return BotMsgDao.insert(socialId, HelloController.handle, HelloController._askNameAgain, 'abc')
 
       // execute
-      .then(() => HelloController.reply(mobNumber, inputText))
+      .then(() => HelloController.reply(socialId, inputText))
       .should.eventually.equal(`hello ${inputText}`);
   });
 
@@ -178,10 +178,10 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // prepare
-    return BotMsgDao.insert(mobNumber, HelloController.handle, HelloController._askNameAgain, 'ab')
+    return BotMsgDao.insert(socialId, HelloController.handle, HelloController._askNameAgain, 'ab')
 
       // execute
-      .then(() => HelloController.reply(mobNumber, inputText))
+      .then(() => HelloController.reply(socialId, inputText))
       .should.eventually.equal(`hello ${name}`);
   });
 
@@ -193,7 +193,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._insultReply);
   });
 
@@ -205,7 +205,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal('k');
   });
 
@@ -217,7 +217,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._intro);
   });
 
@@ -229,7 +229,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._yup);
   });
 
@@ -241,7 +241,7 @@ describe('Hello Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return HelloController.reply(mobNumber, inputText)
+    return HelloController.reply(socialId, inputText)
       .should.eventually.equal(HelloController._sorryNoIdea);
   });
 });

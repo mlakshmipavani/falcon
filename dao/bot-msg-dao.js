@@ -12,15 +12,15 @@ class BotMsgDao {
 
   /**
    * Inserts a bot sent msg into db
-   * @param mobNumber Mobile number of the user to whom the msg is sent
+   * @param socialId Social Id of the user to whom the msg is sent
    * @param botHandle Handle of the bot from whom the msg is sent
    * @param body Actual msg body
    * @param msgId user msg id
    * @returns {Promise.<BotMsg>}
    */
-  static insert(/* string */ mobNumber, /* string */ botHandle, /* string */ body,
+  static insert(/* string */ socialId, /* string */ botHandle, /* string */ body,
                 /* string */ msgId) {
-    const obj = {mobNumber, botHandle, body, createdAt: new Date(), userMsgId: msgId};
+    const obj = {socialId, botHandle, body, createdAt: new Date(), userMsgId: msgId};
     return DaoHelper.botMsg.insertOne(obj)
       .then(result => {
         if (result.insertedCount === 1) return result.ops[0];
@@ -47,8 +47,8 @@ class BotMsgDao {
       });
   }
 
-  static getLastMsg(/*String*/ mobNumber) {
-    return DaoHelper.botMsg.find({mobNumber})
+  static getLastMsg(/*String*/ socialId) {
+    return DaoHelper.botMsg.find({socialId})
       .limit(1)
       .sort({$natural: -1})
       .toArray()

@@ -14,23 +14,23 @@ class HelloController {
 
   /**
    * Given an input, this bot responds to very simple queries
-   * @param mobNumber Mobile number of the user sending this msg
+   * @param socialId Social Id of the user sending this msg
    * @param text Msg body sent by the user
    * @returns {Promise.<string>}
    */
-  static reply(/*String*/ mobNumber, /*String*/ text) {
-    return Promise.all([WitController.getIntent(text), BotMsgDao.getLastMsg(mobNumber)])
+  static reply(/*String*/ socialId, /*String*/ text) {
+    return Promise.all([WitController.getIntent(text), BotMsgDao.getLastMsg(socialId)])
       .spread((/*{intent, confidence, entities}*/ witResponse, /*{body}*/ lastMsg) => {
 
         if (lastMsg && lastMsg.body === this._introPlusAskName) {
           let name = text;
           if (witResponse.intent === WitIntents.name)
             name = this._getNameFromWitResponse(witResponse, text);
-          this.storeName(mobNumber, name);
+          this.storeName(socialId, name);
           return this._tryToBeHelpful(name);
         } else if (lastMsg && lastMsg.body === this._askNameAgain) {
           const name = this._getNameFromWitResponse(witResponse, text);
-          this.storeName(mobNumber, name);
+          this.storeName(socialId, name);
           return `hello ${name}`;
         } else if (witResponse.intent === WitIntents.name) return this._helloName(witResponse);
         else if (witResponse.intent === WitIntents.hello && !lastMsg) return this._introPlusAskName;
@@ -141,12 +141,12 @@ class HelloController {
 
   /**
    * Stores the name provided by the user to hello bot
-   * @param mobNumber Mobile number of the user
+   * @param socialId Social Id of the user
    * @param name Name of the user
    * @returns {Promise<T>}
    */
-  static storeName(/*string*/ mobNumber, /*string*/ name) {
-    return UserDao.updateName(mobNumber, name);
+  static storeName(/*string*/ socialId, /*string*/ name) {
+    return UserDao.updateName(socialId, name);
   }
 
   /**

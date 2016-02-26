@@ -8,8 +8,8 @@ const UserMsgDao = require('../../../dao/user-msg-dao');
 
 describe('BotMsgDao', () => {
 
-  const botMsg = {mobNumber: '919663938598', botHandle: '@bot1', body: 'hi'};
-  const userMsg = {mobNumber: '919663938598', botHandle: '@bot1', body: 'hi bot'};
+  const botMsg = {socialId: '919663938598', botHandle: '@bot1', body: 'hi'};
+  const userMsg = {socialId: '919663938598', botHandle: '@bot1', body: 'hi bot'};
 
   before(() => {
     return Promise.delay(300).then(() => DaoHelper.db.dropDatabase());
@@ -17,10 +17,10 @@ describe('BotMsgDao', () => {
 
   it('Inserts a bot sent msg into db', () => {
     let userMsgId;
-    UserMsgDao.insert(userMsg.mobNumber, userMsg.botHandle, userMsg.body)
+    UserMsgDao.insert(userMsg.socialId, userMsg.botHandle, userMsg.body)
       .then((/* UserMsg */ msg) => {
         userMsgId = msg._id.toString();
-        return BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, botMsg.body, userMsgId);
+        return BotMsgDao.insert(botMsg.socialId, botMsg.botHandle, botMsg.body, userMsgId);
       })
       .then((/* BotMsg */ msg) => {
         return msg.userMsgId.toString().should.equal(userMsgId);
@@ -29,9 +29,9 @@ describe('BotMsgDao', () => {
 
   it('Finds a msg using its _id', () => {
     let botMsgId;
-    return UserMsgDao.insert(userMsg.mobNumber, userMsg.botHandle, userMsg.body)
+    return UserMsgDao.insert(userMsg.socialId, userMsg.botHandle, userMsg.body)
       .then((/* UserMsg */ msg) => {
-        return BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, botMsg.body,
+        return BotMsgDao.insert(botMsg.socialId, botMsg.botHandle, botMsg.body,
           msg._id.toString());
       })
       .then((/* BotMsg */ botMsg) => {
@@ -45,9 +45,9 @@ describe('BotMsgDao', () => {
 
   it('Gets the last msg from MsgDao', () => {
     const userMsgId = 'abcxyz';
-    return BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, 'some random msg', userMsgId)
-      .then(() => BotMsgDao.insert(botMsg.mobNumber, botMsg.botHandle, botMsg.body, userMsgId))
-      .then(() => BotMsgDao.getLastMsg(botMsg.mobNumber))
+    return BotMsgDao.insert(botMsg.socialId, botMsg.botHandle, 'some random msg', userMsgId)
+      .then(() => BotMsgDao.insert(botMsg.socialId, botMsg.botHandle, botMsg.body, userMsgId))
+      .then(() => BotMsgDao.getLastMsg(botMsg.socialId))
       .then((/*BotMsg*/ msg) => msg.body.should.equal(botMsg.body));
   });
 

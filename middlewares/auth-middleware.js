@@ -21,12 +21,12 @@ module.exports = () => {
       return ErrorController.notAuthorized(next);
     }
 
-    const mobNumber = req.username;
+    const socialId = req.username;
     const token = req.authorization.basic.password;
 
     // if token is not available, return error
     if (!token) return ErrorController.notAuthorized(next);
-    return UserDao.findUserWithToken(mobNumber, token)
+    return UserDao.findUserWithToken(socialId, token)
       .then(userObj => {
         req.password = token;
         return next();

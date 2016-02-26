@@ -32,10 +32,6 @@ class DaoHelper {
 
     //noinspection JSCheckFunctionSignatures
     /** @type {Collection} */
-    exports.unRegistered = db.collection('unregistered');
-
-    //noinspection JSCheckFunctionSignatures
-    /** @type {Collection} */
     exports.userMsg = db.collection('userMsg');
 
     //noinspection JSCheckFunctionSignatures

@@ -10,23 +10,21 @@ describe('UserDao', () => {
 
   const countryIso = 'IN';
 
-  const user1 = {mobNumber: '919033819605', name: 'Jaydeep'};
-  const user2 = {mobNumber: '917405484154', name: 'Parth'};
-  const user3 = {mobNumber: '919108648284', name: 'Airtel jaydp'};
+  const user1 = {socialId: '919033819605', name: 'Jaydeep'};
 
   before(() => {
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });
 
   it('creates a new user', () => {
-    return UserDao.newUser(user1.mobNumber, user1.name, countryIso)
+    return UserDao.newUser(user1.socialId, user1.name, countryIso)
       .then(() => {
-        const query = {mobNumber: user1.mobNumber};
+        const query = {socialId: user1.socialId};
         return DaoHelper.user.find(query).toArray()
           .then((/* Array<User> */ docs) => {
             docs.should.have.length(1);
             const user = docs[0];
-            user.mobNumber.should.equal(user1.mobNumber);
+            user.socialId.should.equal(user1.socialId);
             user.name.should.equal(user1.name);
           });
       });
@@ -34,68 +32,25 @@ describe('UserDao', () => {
 
   it('creates an existing user', () => {
     const newName = 'New Jaydeep';
-    return UserDao.newUser(user1.mobNumber, newName, countryIso)
+    return UserDao.newUser(user1.socialId, newName, countryIso)
       .then(() => {
-        const query = {mobNumber: user1.mobNumber};
+        const query = {socialId: user1.socialId};
         return DaoHelper.user.find(query).toArray()
           .then((/* Array<User> */ docs) => {
             docs.should.have.length(1);
             const user = docs[0];
-            user.mobNumber.should.equal(user1.mobNumber);
+            user.socialId.should.equal(user1.socialId);
             user.name.should.equal(newName);
           });
       });
   });
 
-  it('finds registered users from a list', () => {
-    const numbers = [user1, user2, user3].map((/* User */ user) => user.mobNumber);
-    return UserDao.findRegistered(numbers).should.eventually.deep.equal([user1.mobNumber]);
-  });
-
-  it('should add him as friend', () => {
-    // first create a new user
-    return UserDao.newUser(user2.mobNumber, user2.name, countryIso)
-      .then(() => {
-        // actual test
-        const numbers = [user1.mobNumber, user2.mobNumber];
-        return UserDao.friendsAddHim(user3.mobNumber, numbers)
-          .then(() => {
-            const query = {mobNumber: {$in: numbers}};
-            return DaoHelper.user.find(query).toArray()
-              .then((/* Array<User> */ docs) => {
-                for (const user of docs) {
-                  user.friends.should.have.length(1);
-                  user.friends[0].should.equal(user3.mobNumber);
-                }
-              });
-          });
-      });
-  });
-
-  it('should add contacts', () => {
-    const numbers = [user2.mobNumber, user3.mobNumber];
-    return UserDao.addContacts(user1.mobNumber, numbers)
-      .then(() => {
-        return DaoHelper.user.find({mobNumber: user1.mobNumber}).limit(1).next()
-          .then((/* User */ user) => user.contacts.should.deep.equal(numbers));
-      });
-  });
-
   it('updates name', () => {
     const latestName = 'Latest Jaydeep';
-    return UserDao.updateName(user1.mobNumber, latestName)
+    return UserDao.updateName(user1.socialId, latestName)
       .then(() => {
-        return DaoHelper.user.find({mobNumber: user1.mobNumber}).limit(1).next()
+        return DaoHelper.user.find({socialId: user1.socialId}).limit(1).next()
           .then((/* User */ user) => user.name.should.equal(latestName));
-      });
-  });
-
-  it('should get userIds from given hashIds', () => {
-    return UserDao.newUser(user1.mobNumber, user1.name, countryIso)
-      .then(user => {
-        const _Id = user._id;
-        UserDao.getUserIdsFromHashIds([user.hashOfId])
-          .then(userId => userId[0].should.deep.equal(_Id));
       });
   });
 });

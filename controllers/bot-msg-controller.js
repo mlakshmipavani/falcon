@@ -13,15 +13,15 @@ class BotMsgController {
 
   /**
    * Sends a msg to the bot in BotServer and gets the response
-   * @param mobNumber Mobile number of the user sending this request
+   * @param socialId Social Id of the user sending this request
    * @param botHandle Handle of the bot to send the msg to
    * @param body Actual msg content
    * @returns {Promise.<string>}
    */
-  static msg(/*String*/ mobNumber, /* string */ botHandle, /* string */ body) {
+  static msg(/*String*/ socialId, /* string */ botHandle, /* string */ body) {
     switch (botHandle) {
       case HelloController.handle:
-        return HelloController.reply(mobNumber, body);
+        return HelloController.reply(socialId, body);
       default:
         return Promise.reject(new Error('Unknown bot handle'));
     }

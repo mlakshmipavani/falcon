@@ -12,7 +12,7 @@ const BotDao = require('../../dao/bot-dao');
 describe('Bot Discovery', () => {
 
   const PORT = 3050;
-  const mobNumber = '919033819605';
+  const socialId = '919033819605';
   const name = 'Jaydeep';
   let token;
 
@@ -26,7 +26,7 @@ describe('Bot Discovery', () => {
       .then(db => dbObj = db)
       .then((db) => db.dropDatabase())
       .then(() => { // insert new user
-        return UserDao.newUser(mobNumber, name, 'IN');
+        return UserDao.newUser(socialId, name, 'IN');
       })
       .then(userObj => token = userObj._id.toString())
       .then(() => { // insert a few bots
@@ -49,7 +49,7 @@ describe('Bot Discovery', () => {
   it('gets the latest bots', () => {
     return request(`http://localhost:${PORT}`)
       .get('/newbots')
-      .auth(mobNumber, token)
+      .auth(socialId, token)
       .query({count: 3})
       .expect('Content-Type', /json/)
       .then((res) => {

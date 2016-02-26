@@ -8,7 +8,7 @@ const HelloController = require('../../../controllers/hello-controller.js');
 
 describe('Bot Msg Controller', () => {
 
-  const mobNumber = '919033819605';
+  const socialId = '919033819605';
 
   before(() => Promise.delay(100).then(() => DaoHelper.db.dropDatabase()));
 
@@ -28,12 +28,12 @@ describe('Bot Msg Controller', () => {
     WitController._captureTextIntent = () => Promise.resolve(witResponse);
 
     // execute
-    return BotMsgController.msg(mobNumber, HelloController.handle, inputText)
+    return BotMsgController.msg(socialId, HelloController.handle, inputText)
       .should.eventually.equal(`hello ${name}`);
   });
 
   it('throws error on unknown bot handle', () => {
-    return BotMsgController.msg(mobNumber, '@somerandombot', 'wat up!')
+    return BotMsgController.msg(socialId, '@somerandombot', 'wat up!')
       .should.be.rejected;
   });
 
