@@ -54,21 +54,11 @@ describe('Cab controller', () => {
       {
         name: 'Sedan',
         eta: 9,
-        surgeMultiplier: 1,
-        surgeFixed: 0,
-        productId: 'sedan',
-        minFare: 123,
-        maxFare: 133,
-        provider: 'ola'
-      },
-      {
-        name: 'Prime',
-        eta: 10,
         surgeMultiplier: 1.2,
         surgeFixed: 0,
-        productId: 'prime',
-        minFare: 149,
-        maxFare: 161,
+        productId: 'sedan',
+        minFare: 148,
+        maxFare: 160,
         provider: 'ola'
       }];
 
