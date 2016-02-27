@@ -69,8 +69,8 @@ class RailPnrController {
     while (getText(dataArr[i]).startsWith('Passenger')) {
       const passenger = {};
       passenger.name = getText(dataArr[i++]);
-      passenger.bookingStatus = getText(dataArr[i++]);
-      passenger.currentStatus = getText(dataArr[i++]);
+      passenger.bookingStatus = getText(dataArr[i++]).replace(/\s+/g, ' '); // replaces multiple spaces with one
+      passenger.currentStatus = getText(dataArr[i++]).replace(/\s+/g, ' ');
       obj.passengers.push(passenger);
     }
 

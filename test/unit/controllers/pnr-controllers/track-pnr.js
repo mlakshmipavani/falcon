@@ -1,13 +1,13 @@
 'use strict';
 
 const Promise = require('bluebird');
-const DaoHelper = require('../../../dao/dao-helper');
-const Utils = require('../../../utils/Utils');
+const DaoHelper = require('../../../../dao/dao-helper');
+const Utils = require('../../../../utils/Utils');
 
 const moment = require('moment');
-const TrackPnrController = require('../../../controllers/pnr-controllers/track-pnr');
-const RailPnrController = require('../../../controllers/pnr-controllers/rail-pnr-controller.js');
-const PushController = require('../../../controllers/push-controller');
+const TrackPnrController = require('../../../../controllers/pnr-controllers/track-pnr');
+const RailPnrController = require('../../../../controllers/pnr-controllers/rail-pnr-controller.js');
+const PushController = require('../../../../controllers/push-controller');
 
 describe('TrackPnrController', () => {
   const pnrConfirmed = '4528171237';
