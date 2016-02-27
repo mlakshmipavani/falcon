@@ -104,7 +104,6 @@ class PushController {
    * @private
    */
   static _getBaseRequestOptions(/*Array<string>*/ playerIds) {
-    //noinspection Eslint,Jscs
     return {
       method: 'POST',
       url: 'https://onesignal.com/api/v1/notifications',

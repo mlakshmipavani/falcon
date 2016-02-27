@@ -79,7 +79,9 @@ describe('TrackPnrController', () => {
       else if (pnr === pnrNotConfirmed)
         return Promise.resolve(onePassengerNotConfirmed);
     };
-    PushController.pushPnrUpdate = ()=> Promise.resolve();
+
+    PushController._pushData = (action, data, playerIds) =>
+      Promise.resolve({recipients: playerIds});
 
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });
