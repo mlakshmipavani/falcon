@@ -43,8 +43,8 @@ config.ola.token = process.env.NODE_ENV === 'test' ? config.ola.sandboxToken :
  * Pnr Api
  */
 config.railway = {};
-config.railway.pnrUrl = process.env.NODE_ENV === 'test' ? 'http://localhost:5001'
-  : 'http://www.indianrail.gov.in/cgi_bin/inet_pnstat_cgi_2484.cgi';
+config.railway.confirmtktApiUrl = 'http://api.confirmtkt.com/api/pnr/status/';
+config.railway.chkPnrStsIrctcApiUrl = 'http://api.checkpnrstatusirctc.in/pnrajax/pnr.php?pnrno=';
 
 /**
  * Wit.AI

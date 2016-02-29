@@ -13,3 +13,7 @@ node_modules
 coverage/
 
 .env
+
+# Personal files for testing
+playground.js
+test.js
