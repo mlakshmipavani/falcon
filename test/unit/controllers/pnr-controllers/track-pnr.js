@@ -1,5 +1,6 @@
 'use strict';
 
+const agenda = require('../../../../utils/agenda');
 const Promise = require('bluebird');
 const DaoHelper = require('../../../../dao/dao-helper');
 const Utils = require('../../../../utils/Utils');
@@ -178,4 +179,25 @@ describe('TrackPnrController', () => {
       .then(() => TrackPnrController.getStatusWithTrackingInfo(pnrConfirmed, userToken))
       .should.eventually.have.property('isTracked', true);
   });
+
+  it('should start tracking again if api response is undefined', () => {
+    let apiHitCount = 0;
+    let ScheduleCalled = false;
+    agenda.schedule = (nextSchedule, taskName, data) => {
+      if (taskName === 'trackAgain')
+        ScheduleCalled = true;
+    };
+
+    RailPnrController.getStatus = (pnr) => {
+      apiHitCount += 1;
+      if (apiHitCount <= 1)
+        return Promise.resolve(undefined);
+      else
+        return Promise.resolve(onePassengerNotConfirmed);
+    };
+
+    return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
+      .then(() => ScheduleCalled.should.be.true);
+  });
+
 });

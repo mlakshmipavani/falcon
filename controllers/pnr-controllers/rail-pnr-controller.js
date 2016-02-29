@@ -76,6 +76,9 @@ class RailPnrController {
 
     obj.bookingFare = getText(dataArr[i++]);
     obj.chartStatus = getText(dataArr[i]);
+
+    if (obj.trainNumber === '') return undefined;
+
     return obj;
   }
 }

@@ -1,15 +1,12 @@
 'use strict';
-const Agenda = require('agenda');
+
+const agenda = require('../../utils/agenda');
 const moment = require('moment');
 const Promise = require('bluebird');
 const Utils = require('../../utils/Utils');
 const RailPnr = require('./rail-pnr-controller');
 const DaoHelper = require('../../dao/dao-helper');
-const config = require('../../config/config');
 const PushController = require('../push-controller');
-
-const url = config.mongoUrl;
-const agenda = new Agenda({db: {address: url}});
 
 // this is for testing purpose mocking api response
 //var pnrFromAPI = {
@@ -30,11 +27,13 @@ const agenda = new Agenda({db: {address: url}});
 //};
 
 const taskName = 'trackPnr';
+const taskTrackAgain = 'trackAgain';
 
 agenda.define(taskName, (job, done) => {
 
   const pnr = job.attrs.data.pnr;
 
+  //noinspection JSUnresolvedFunction
   return RailPnr.getStatus(pnr)
     .then(pnrFromAPI => {
       //noinspection JSUnresolvedFunction
@@ -45,6 +44,12 @@ agenda.define(taskName, (job, done) => {
       return TrackPnrController._scheduleNextIfNeeded(pnr, pnrFromAPI);
     })
     .then(done);
+});
+
+agenda.define(taskTrackAgain, (job, done) => {
+  const userToken = job.attrs.data.userToken;
+  const pnr = job.attrs.data.pnr;
+  return TrackPnrController.startTracking(userToken, pnr).then(done);
 });
 
 agenda.on('ready', () => agenda.start());
@@ -76,8 +81,17 @@ class TrackPnrController {
   static startTracking(/*String*/ userToken, /*String*/ pnr) {
     return this._isTrackingPNR(pnr)
       .then(isTracking => {
-        if (isTracking) return this._turnTrackingOnForUser(userToken, pnr);
-        return this._turnTrackingOnForPnr(userToken, pnr);
+        let promiseResult;
+        if (isTracking)
+          promiseResult = this._turnTrackingOnForUser(userToken, pnr);
+        else
+          promiseResult = this._turnTrackingOnForPnr(userToken, pnr);
+
+        return promiseResult.tap((success) => {
+          if (!success) {
+            agenda.schedule('in 1 minute', taskTrackAgain, {userToken, pnr});
+          }
+        });
       });
   }
 
@@ -107,6 +121,7 @@ class TrackPnrController {
    */
   static _turnTrackingOnForPnr(/*String*/ userToken, /*String*/ pnr) {
     return RailPnr.getStatus(pnr).then(pnrFromAPI => {
+      if (!pnrFromAPI) return false;
       const pnrDetail = {userTokens: [userToken], pnr: pnr, detail: pnrFromAPI};
       return DaoHelper.pnrStatus.insertOne(pnrDetail)
         .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
@@ -218,9 +233,9 @@ class TrackPnrController {
 
     const boardingDate = moment(date, 'DD-MM-YYYY');
     const difference = boardingDate.diff(now, 'hours');
-    if (difference < 48 && difference > 24) nextSchedule = 'in 4 hours';
+    if (difference < 48 && difference >= 24) nextSchedule = 'in 4 hours';
     else if (difference >= 48) nextSchedule = 'in 24 hours';
-    else if (difference <= 24) nextSchedule = 'in 30 minutes';
+    else if (difference < 24) nextSchedule = 'in 30 minutes';
     return nextSchedule;
   }
 
