@@ -50,11 +50,24 @@ class OlaController {
    * Cancels an Ola Booking
    * @param userToken The user token (_id) of the user
    * @param crn The booking confirmation number given by Ola
-   * @returns {Promise.<string>}
+   * @returns {Promise}
    */
   static cancel(/*string*/ userToken, /*number*/ crn) {
     return UserDao.getOlaAccessToken(userToken)
       .then(olaToken => this._cancelWithOlaAccessToken(crn, olaToken));
+  }
+
+  /**
+   * Tracks an Ola Ride
+   * @param userToken The user token (_id) of the user
+   * @returns {Promise}
+   */
+  static trackRide(/*string*/ userToken) {
+    return UserDao.getOlaAccessToken(userToken)
+      .then(olaToken => this._trackWithOlaAccessToken(olaToken))
+      .then((/*{booking_status}*/response) => {
+        return {booking_status: response.booking_status};
+      });
   }
 
   /**
@@ -81,6 +94,17 @@ class OlaController {
    */
   static _cancelWithOlaAccessToken(/*number*/ crn, /*string*/ olaToken) {
     const options = this._getOptionsToCancel(crn, olaToken);
+    return request(options);
+  }
+
+  /**
+   * Sends a request to Ola servers to track the cab
+   * @param olaToken Access token provided by ola after user logged in
+   * @returns {Promise}
+   * @private
+   */
+  static _trackWithOlaAccessToken(/*string*/ olaToken) {
+    const options = this._getOptionsToTrackRide(olaToken);
     return request(options);
   }
 
@@ -219,7 +243,7 @@ class OlaController {
   }
 
   /**
-   * Returns the options to be used by request to cancel a cb
+   * Returns the options to be used by request to cancel a cab
    * @param crn The booking confirmation number given by Ola
    * @param olaAccessToken Access token provided by ola after user logged in
    * @returns {{url: *, headers: *, qs: {crn: number}, json: boolean}}
@@ -238,6 +262,28 @@ class OlaController {
       url: `${rootUrl}/bookings/cancel`,
       headers: bookingHeaders,
       qs: {crn},
+      json: true
+    };
+  }
+
+  /**
+   * Returns the options to be used by request to track a cab
+   * @param olaAccessToken Access token provided by ola after user logged in
+   * @returns {{url: *, headers: {}, json: boolean}}
+   * @private
+   */
+  static _getOptionsToTrackRide(/*string*/ olaAccessToken) {
+    let rootUrl = baseUrl;
+    let localHeaders = headers;
+    if (process.env.NODE_ENV !== 'production') {
+      rootUrl = config.ola.sandboxUrl;
+      localHeaders = {'X-APP-TOKEN': config.ola.sandboxToken};
+    }
+
+    localHeaders = Object.assign({Authorization: `Bearer ${olaAccessToken}`}, localHeaders);
+    return {
+      url: `${rootUrl}/bookings/track_ride`,
+      headers: localHeaders,
       json: true
     };
   }

@@ -20,6 +20,7 @@ class CabBotRoutes {
     app.post({path: '/bot/@olacabs/authtoken', version: apiVersion.v1}, olaAccessToken);
     app.post({path: '/bot/@olacabs/book', version: apiVersion.v1}, bookOlaCab);
     app.post({path: '/bot/@olacabs/cancel', version: apiVersion.v1}, cancelOlaCab);
+    app.get({path: '/bot/@olacabs/track_ride', version: apiVersion.v1}, trackOlaRide);
 
     // general
     app.get({path: '/bot/@cabs/getcabs', version: apiVersion.v1}, getCabs);
@@ -125,6 +126,16 @@ function cancelOlaCab(req, res) {
         res.json({success: false, error: result.text});
       } else res.json({success: true});
     }).catch(err => res.send(err));
+}
+
+/**
+ * Tracks an Ola Ride
+ */
+function trackOlaRide(req, res) {
+  const userToken = req.authorization.basic.password;
+  return OlaController.trackRide(userToken)
+    .then(response => res.json(response))
+    .catch(err => res.send(err));
 }
 
 function validateRequest(req) {

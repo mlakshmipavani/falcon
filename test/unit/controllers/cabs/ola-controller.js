@@ -149,6 +149,32 @@ describe('Ola Controller', () => {
       .then(output => output.should.deep.equal(result));
   });
 
+  it('verifies ride tracking', () => {
+    // mock
+    const result = {
+      status: 'SUCCESS',
+      request_type: 'TRACK_RIDE',
+      crn: '5298',
+      driver_lat: 12.950074,
+      driver_lng: 77.641727,
+      booking_status: 'CLIENT_LOCATED'
+    };
+    OlaController._trackWithOlaAccessToken = () => Promise.resolve(result);
+
+    // prepare
+    const socialId = 'sssId';
+    return UserDao.newUser(socialId, 'jaydp', 'jaydp17@gmail.com')
+      .then((/*User*/ userObj) => {
+        const userToken = userObj._id.toString();
+        return OlaController.storeOlaAccessToken(userToken, olaToken)
+          .thenReturn(userToken);
+      })
+
+      // execute
+      .then((/*string*/ token) => OlaController.trackRide(token))
+      .should.eventually.deep.equal({booking_status: 'CLIENT_LOCATED'});
+  });
+
   it('verifies options to cancel', () => {
     const crn = 1234;
     const expected = {
@@ -158,6 +184,16 @@ describe('Ola Controller', () => {
       json: true
     };
     const options = OlaController._getOptionsToCancel(crn, olaToken);
+    options.should.deep.equals(expected);
+  });
+
+  it('verifies the options to track a ride', () => {
+    const expected = {
+      url: config.ola.sandboxUrl + '/bookings/track_ride',
+      headers: {Authorization: `Bearer ${olaToken}`, 'X-APP-TOKEN': config.ola.sandboxToken},
+      json: true
+    };
+    const options = OlaController._getOptionsToTrackRide(olaToken);
     options.should.deep.equals(expected);
   });
 
