@@ -135,7 +135,17 @@ class TrackPnrController {
    * @param pnr
    */
   static stopTracking(/*String*/ userToken, /*String*/ pnr) {
-    return DaoHelper.pnrStatus.findOneAndUpdate({pnr: pnr}, {$pull: {userTokens: userToken}});
+    return DaoHelper.pnrStatus
+      .findOneAndUpdate({pnr: pnr}, {$pull: {userTokens: userToken}}, {returnOriginal: false})
+      .then(result => result.value)
+      .then((pnrFromDB) => {
+        if (pnrFromDB.userTokens.length === 0)
+          return DaoHelper.pnrStatus.deleteMany({pnr: pnr}).thenReturn(true);
+        return false;
+      })
+      .then((deleted) => {
+        if (deleted) return DaoHelper.agendaJobs.deleteMany({data: {pnr: pnr}});
+      });
   }
 
   /**
