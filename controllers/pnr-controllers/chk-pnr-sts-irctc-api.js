@@ -51,7 +51,7 @@ class ChkPnrStsApi {
       passenger.bookingStatus =
         xpath.select('//table[2]/tr[' + i + ']/td[2]', doc).toString().slice(4, -7);
       passenger.currentStatus =
-        xpath.select('//table[2]/tr[' + i + ']/td[3]', doc).toString().slice(4, -5);
+        xpath.select('//table[2]/tr[' + i + ']/td[3]', doc).toString().slice(4, -5).trim();
       obj.passengers.push(passenger);
     }
 

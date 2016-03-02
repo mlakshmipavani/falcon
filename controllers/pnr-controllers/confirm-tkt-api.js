@@ -13,7 +13,7 @@ class CrmTktApi {
   static getStatus(/*String*/ pnr) {
     const url = config.railway.confirmtktApiUrl + pnr;
 
-    return request.get(url)
+    return request.get({url, json: true})
       .then(this._extractPnrDetail);
   }
 
