@@ -30,11 +30,9 @@ describe('CrmTktApi', () => {
     chartStatus: 'Chart Not Prepared'
   };
 
-  it('should get the pnr status detials out of html', () => {
-    //noinspection JSAccessibilityCheck
-    const actualRes = CrmTktApi._extractPnrDetail(apiResponse);
-    const flag = JSON.stringify(actualRes) === JSON.stringify(expectedResponse);
-    return flag.should.be.true;
+  it('should get the pnr status details out of html', () => {
+    //noinspection JSAccessibilityCheck,JSUnresolvedVariable
+    return CrmTktApi._extractPnrDetail(apiResponse).should.deep.equal(expectedResponse);
   });
 });
 

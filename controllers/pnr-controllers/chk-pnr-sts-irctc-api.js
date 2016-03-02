@@ -27,20 +27,20 @@ class ChkPnrStsApi {
    * @private
    */
   static _extractPnrDetail(/*string*/ html) {
-    const doc = new Dom().parseFromString(html);
+    const doc = new Dom({locator: {}, errorHandler: {}}).parseFromString(html);
     const obj = {};
 
     obj.trainNumber = xpath.select('//table/h5[1]/a', doc).toString().slice(23, 28);
     if (obj.trainNumber === '')
       throw new Error('ChkPnrStsAPI unexpected response');
 
-    obj.trainName = xpath.select('//table/h5[2]', doc).toString().slice(33, -10);
-    obj.boardingDate = xpath.select('//table/h5[3]', doc).toString().slice(36, -10);
+    obj.trainName = xpath.select('//table/h5[2]', doc).toString().slice(24, -5);
+    obj.boardingDate = xpath.select('//table/h5[3]', doc).toString().slice(27, -5);
     obj.from = xpath.select('//table/h5[4]/a', doc).toString().slice(23, -4);
     obj.to = xpath.select('//table/h5[5]/a', doc).toString().slice(23, -4);
     obj.reservedUpto = xpath.select('//table/h5[6]/a', doc).toString().slice(23, -4);
     obj.boardingPoint = xpath.select('//table/h5[7]/a', doc).toString().slice(23, -4);
-    obj.class = xpath.select('//table/h5[8]', doc).toString().slice(28, -10);
+    obj.class = xpath.select('//table/h5[8]', doc).toString().slice(19, -5);
 
     const count = xpath.select('//table[2]/tr', doc).length - 2;
     obj.passengers = [];

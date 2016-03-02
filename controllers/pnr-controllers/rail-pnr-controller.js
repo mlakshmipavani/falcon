@@ -16,8 +16,12 @@ class RailPnrController {
    * @returns {Promise}
    */
   static getStatus(/*string*/ pnr) {
-    return Promise.any([ConfirmTktApi.getStatus(pnr), ChkPnrStsIrctcApi.getStatus(pnr)]).catch(e =>
-      log.error(e, 'Not able to get pnr status from either of API'));
+    return Promise.any([ConfirmTktApi.getStatus(pnr), ChkPnrStsIrctcApi.getStatus(pnr)])
+      .catch(error => {
+        if (process.env.NODE_ENV !== 'test')
+          log.error(error, 'Not able to get pnr status from either of API');
+        throw error;
+      });
   }
 }
 
