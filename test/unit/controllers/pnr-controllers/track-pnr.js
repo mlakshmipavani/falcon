@@ -166,7 +166,13 @@ describe('TrackPnrController', () => {
       .then(() => TrackPnrController.stopTracking(userToken, pnrConfirmed))
       .then(() => DaoHelper.pnrStatus.find({pnr: pnrConfirmed}).toArray())
       .spread(pnrStatus => pnrStatus.userTokens.indexOf(userToken) > -1)
-      .should.eventually.be.false;
+      .then(result => result.should.be.false)
+      .then(() => TrackPnrController.stopTracking('9990913081', pnrConfirmed))
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrConfirmed}).toArray())
+      .then(pnrStatusArray => pnrStatusArray.length.should.be.equal(0))
+      .then(() => DaoHelper.agendaJobs.find({data: {pnr: pnrConfirmed}}).toArray())
+      .then(pnrStatus => pnrStatus.length.should.be.equal(0));
+
   });
 
   it('gets pnr status with tracking info [false]', () => {
