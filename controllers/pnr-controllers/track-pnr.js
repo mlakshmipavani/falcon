@@ -187,10 +187,17 @@ class TrackPnrController {
   static _checkAndNotify(/*String*/ pnr, /*{passengers}*/ pnrFromAPI) {
 
     return this._getFromDB(pnr)
-      .then(pnrFromDBArray => {
+      .spread((/*{userTokens, detail}*/ pnrFromDB) => {
+
         const passengersFromAPI = pnrFromAPI.passengers;
-        const passengersFromDB = pnrFromDBArray[0].detail.passengers;
+
+        // TODO : change it to details
+        const passengersFromDB = pnrFromDB.detail.passengers;
         const isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
+
+        // tracking will always be on if notification is sent
+        // noinspection JSUndefinedPropertyAssignment
+        pnrFromAPI.isTracked = true;
 
         if (!isSame) return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$set: {detail: pnrFromAPI}})
           .then(() => this._notifyAll(pnr, pnrFromAPI));
