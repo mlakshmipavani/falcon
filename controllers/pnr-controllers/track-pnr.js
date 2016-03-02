@@ -52,6 +52,7 @@ agenda.define(taskTrackAgain, (job, done) => {
   return TrackPnrController.startTracking(userToken, pnr).then(done);
 });
 
+//noinspection JSUnresolvedFunction
 agenda.on('ready', () => agenda.start());
 
 class TrackPnrController {
@@ -88,9 +89,8 @@ class TrackPnrController {
           promiseResult = this._turnTrackingOnForPnr(userToken, pnr);
 
         return promiseResult.tap((success) => {
-          if (!success) {
+          if (!success)
             agenda.schedule('in 1 minute', taskTrackAgain, {userToken, pnr});
-          }
         });
       });
   }
@@ -232,6 +232,8 @@ class TrackPnrController {
     const now = moment();
 
     const boardingDate = moment(date, 'DD-MM-YYYY');
+
+    //noinspection JSUnresolvedFunction
     const difference = boardingDate.diff(now, 'hours');
     if (difference < 48 && difference >= 24) nextSchedule = 'in 4 hours';
     else if (difference >= 48) nextSchedule = 'in 24 hours';
@@ -273,7 +275,7 @@ class TrackPnrController {
       .spread(pnrStatus => {
         //noinspection JSUndefinedPropertyAssignment
         pnrFromAPI.pnr = pnr;
-        PushController.pushPnrUpdate(pnrFromAPI, pnrStatus.userTokens);
+        return PushController.pushPnrUpdate(pnrFromAPI, pnrStatus.userTokens);
       });
   }
 
