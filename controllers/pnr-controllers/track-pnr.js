@@ -122,7 +122,7 @@ class TrackPnrController {
   static _turnTrackingOnForPnr(/*String*/ userToken, /*String*/ pnr) {
     return RailPnr.getStatus(pnr).then(pnrFromAPI => {
       if (!pnrFromAPI) return false;
-      const pnrDetail = {userTokens: [userToken], pnr: pnr, detail: pnrFromAPI};
+      const pnrDetail = {userTokens: [userToken], pnr: pnr, details: pnrFromAPI};
       return DaoHelper.pnrStatus.insertOne(pnrDetail)
         .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
         .thenReturn(true);
@@ -197,19 +197,19 @@ class TrackPnrController {
   static _checkAndNotify(/*String*/ pnr, /*{passengers}*/ pnrFromAPI) {
 
     return this._getFromDB(pnr)
-      .spread((/*{userTokens, detail}*/ pnrFromDB) => {
+      .spread((/*{userTokens, details}*/ pnrFromDB) => {
 
         const passengersFromAPI = pnrFromAPI.passengers;
 
         // TODO : change it to details
-        const passengersFromDB = pnrFromDB.detail.passengers;
+        const passengersFromDB = pnrFromDB.details.passengers;
         const isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
 
         // tracking will always be on if notification is sent
         // noinspection JSUndefinedPropertyAssignment
         pnrFromAPI.isTracked = true;
 
-        if (!isSame) return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$set: {detail: pnrFromAPI}})
+        if (!isSame) return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$set: {details: pnrFromAPI}})
           .then(() => this._notifyAll(pnr, pnrFromAPI));
 
         return Promise.resolve();

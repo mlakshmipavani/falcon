@@ -128,14 +128,14 @@ describe('TrackPnrController', () => {
     return DaoHelper.pnrStatus.insertOne({
         userTokens: [userToken],
         pnr: pnrConfirmed,
-        detail: twoPassenger01Confirmed
+        details: twoPassenger01Confirmed
       })
       .then((result) => {
         if (!result.insertedCount) throw new Error('not inserted in DB');
       })
       .then(() => TrackPnrController._checkAndNotify(pnrConfirmed, twoPassenger11Confirmed))
       .then(() => DaoHelper.pnrStatus.find({pnr: pnrConfirmed}).toArray())
-      .spread(result => result.detail.passengers[1].currentStatus.should.be.equal('CNF'));
+      .spread(result => result.details.passengers[1].currentStatus.should.be.equal('CNF'));
   });
 
   it('should insert details in DB and start tracking', () => {
