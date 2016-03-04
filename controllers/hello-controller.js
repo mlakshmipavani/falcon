@@ -63,7 +63,7 @@ class HelloController {
    * @private
    */
   static get _intro() {
-    return `My name is HelloBot, I'm a built-in robot`;
+    return `My name is Yo, I'm a built-in robot`;
   }
 
   static get _introPlusAskName() {
