@@ -54,7 +54,7 @@ class HelloController {
    * @returns {string}
    */
   static get handle() {
-    return '@hello';
+    return '@yobot';
   }
 
   /**
@@ -156,7 +156,7 @@ class HelloController {
    */
   static get _sorryNoIdea() {
     return `Sorry, but I don't know what you're talking about\n` +
-      `I'm a really small hello bot programmed just to greet u`;
+      `I'm a really young bot, still learning to talk`;
   }
 
 }
