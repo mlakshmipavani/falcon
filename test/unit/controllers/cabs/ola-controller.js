@@ -206,4 +206,9 @@ describe('Ola Controller', () => {
     };
     OlaController._getOptions(latitude, longitude).should.deep.equal(expected);
   });
+
+  it('verifies invalid city result', () => {
+    const result = OlaController._parseResult({code: 'INVALID_CITY'});
+    return result.should.deep.equal([]);
+  });
 });

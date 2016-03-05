@@ -126,9 +126,11 @@ class OlaController {
    * @returns {Array<{name, eta, fare, surgeMultiplier, surgeFixed, productId}>}
    * @private
    */
-  static _parseResult(/*{categories, ride_estimate}*/ result) {
-    const categories = result.categories;
+  static _parseResult(/*{code, categories, ride_estimate}*/ result) {
+    // there are some places where Ola doesn't work
+    if (result.code === 'INVALID_CITY') return [];
 
+    const categories = result.categories;
     return categories.reduce((cabs, /*{id, display_name, eta, fare_breakup}*/ eachCategory) => {
       if (eachCategory.eta === -1) return cabs;
       if (eachCategory.id === 'auto') return cabs; // we don't want Auto-rickshaw results
