@@ -30,35 +30,39 @@ class ChkPnrStsApi {
     const doc = new Dom({locator: {}, errorHandler: {}}).parseFromString(html);
     const obj = {};
 
-    obj.trainNumber = xpath.select('//table/h5[1]/a', doc).toString().slice(23, 28);
+    obj.trainNumber = xpath.select('//table/h5[1]/a/text()', doc).toString().slice(0, 5).trim();
     if (obj.trainNumber === '')
       throw new Error('ChkPnrStsAPI unexpected response');
 
-    obj.trainName = xpath.select('//table/h5[2]', doc).toString().slice(24, -5);
-    obj.boardingDate = xpath.select('//table/h5[3]', doc).toString().slice(27, -5);
-    obj.from = xpath.select('//table/h5[4]/a', doc).toString().slice(23, -4);
-    obj.to = xpath.select('//table/h5[5]/a', doc).toString().slice(23, -4);
-    obj.reservedUpto = xpath.select('//table/h5[6]/a', doc).toString().slice(23, -4);
-    obj.boardingPoint = xpath.select('//table/h5[7]/a', doc).toString().slice(23, -4);
-    obj.class = xpath.select('//table/h5[8]', doc).toString().slice(19, -5);
+    obj.trainName = xpath.select('//table/h5[2]', doc).toString().slice(24, -5).trim();
+    obj.boardingDate = xpath.select('//table/h5[3]', doc).toString().slice(27, -5).trim();
+    obj.from = xpath.select('//table/h5[4]/a/text()', doc).toString().trim();
+    obj.to = xpath.select('//table/h5[5]/a/text()', doc).toString().trim();
+    obj.reservedUpto = xpath.select('//table/h5[6]/a/text()', doc).toString().trim();
+    obj.boardingPoint = xpath.select('//table/h5[7]/a/text()', doc).toString().trim();
+    obj.class = xpath.select('//table/h5[8]', doc).toString().slice(19, -5).trim();
 
-    const count = xpath.select('//table[2]/tr', doc).length - 2;
+    const tdCount = xpath.select('//table[2]/tr', doc).length;
     obj.passengers = [];
-    for (let i = 1; i <= count; i++) {
+    for (let i = 1; i <= tdCount; i++) {
       const passenger = {};
-      passenger.name =
-        xpath.select('//table[2]/tr[' + i + ']/td[1]', doc).toString().slice(14, -5);
-      passenger.bookingStatus =
-        xpath.select('//table[2]/tr[' + i + ']/td[2]', doc).toString().slice(4, -7);
-      passenger.currentStatus =
-        xpath.select('//table[2]/tr[' + i + ']/td[3]', doc).toString().slice(4, -5).trim();
-      obj.passengers.push(passenger);
+      const tdValue = xpath.select('//table[2]/tr[' + i + ']/td[1]/text()', doc).toString().trim();
+      const expectedTdValue = 'Passenger ' + i;
+      if (tdValue === expectedTdValue) {
+        passenger.name =
+          xpath.select('//table[2]/tr[' + i + ']/td[1]/text()', doc).toString().slice(10).trim();
+        passenger.bookingStatus =
+          xpath.select('//table[2]/tr[' + i + ']/td[2]/text()', doc).toString().trim();
+        passenger.currentStatus =
+          xpath.select('//table[2]/tr[' + i + ']/td[3]/text()', doc).toString().trim();
+        obj.passengers.push(passenger);
+      }
     }
 
     obj.bookingFare =
-      xpath.select('//table[2]/tr[' + (count + 1) + ']/td[2]', doc).toString().slice(4, -5);
+      xpath.select('//table[2]/tr[' + (tdCount - 1) + ']/td[2]/text()', doc).toString().trim();
     obj.chartStatus =
-      xpath.select('//table[2]/tr[' + (count + 2) + ']/td[2]', doc).toString().slice(5, -6);
+      xpath.select('//table[2]/tr[' + (tdCount) + ']/td[2]/text()', doc).toString().trim();
     return obj;
   }
 }
