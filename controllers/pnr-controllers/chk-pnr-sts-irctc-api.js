@@ -44,25 +44,36 @@ class ChkPnrStsApi {
 
     const tdCount = xpath.select('//table[2]/tr', doc).length;
     obj.passengers = [];
+
     for (let i = 1; i <= tdCount; i++) {
       const passenger = {};
       const tdValue = xpath.select('//table[2]/tr[' + i + ']/td[1]/text()', doc).toString().trim();
-      const expectedTdValue = 'Passenger ' + i;
-      if (tdValue === expectedTdValue) {
-        passenger.name =
-          xpath.select('//table[2]/tr[' + i + ']/td[1]/text()', doc).toString().slice(10).trim();
-        passenger.bookingStatus =
-          xpath.select('//table[2]/tr[' + i + ']/td[2]/text()', doc).toString().trim();
-        passenger.currentStatus =
-          xpath.select('//table[2]/tr[' + i + ']/td[3]/text()', doc).toString().trim();
-        obj.passengers.push(passenger);
+      const tdPassenger = 'Passenger ' + i;
+      const tdBookingFare = 'Total Booking Fare';
+      const tdChartStatus = 'Charting Status';
+      switch (tdValue) {
+        case tdPassenger:
+          passenger.name =
+            xpath.select('//table[2]/tr[' + i + ']/td[1]/text()', doc).toString().slice(10).trim();
+          passenger.bookingStatus =
+            xpath.select('//table[2]/tr[' + i + ']/td[2]/text()', doc).toString().trim();
+          passenger.currentStatus =
+            xpath.select('//table[2]/tr[' + i + ']/td[3]/text()', doc).toString().trim();
+          obj.passengers.push(passenger);
+          break;
+
+        case tdBookingFare:
+          obj.bookingFare =
+            xpath.select('//table[2]/tr[' + i + ']/td[2]/text()', doc).toString().trim();
+          break;
+
+        case tdChartStatus:
+          obj.chartStatus =
+            xpath.select('//table[2]/tr[' + i + ']/td[2]/text()', doc).toString().trim();
+          break;
       }
     }
 
-    obj.bookingFare =
-      xpath.select('//table[2]/tr[' + (tdCount - 1) + ']/td[2]/text()', doc).toString().trim();
-    obj.chartStatus =
-      xpath.select('//table[2]/tr[' + (tdCount) + ']/td[2]/text()', doc).toString().trim();
     return obj;
   }
 }
