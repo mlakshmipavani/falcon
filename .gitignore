@@ -17,3 +17,6 @@ coverage/
 # Personal files for testing
 playground.js
 test.js
+
+.mongo/
+production.yml
