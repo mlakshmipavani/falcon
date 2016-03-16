@@ -1,14 +1,16 @@
-mongodb:
-  image: mongo:3.2
-  volumes:
-    - '.mongo/data:/data/db'
+version: '2'
+services:
+  mongodb:
+    image: mongo:3.2
+    volumes:
+      - '.mongo/data:/data/db'
 
-falcon:
-  build: .
-  volumes:
-    - '.:/src:ro'
-  links:
-    - mongodb
-  environment:
-    NODE_ENV: development
-    MONGO_URL: mongodb://mongodb:27017/yolobots
+  falcon:
+    build: .
+    volumes:
+      - '.:/src:ro'
+    links:
+      - mongodb
+    environment:
+      NODE_ENV: development
+      MONGO_URL: mongodb://mongodb:27017/yolobots

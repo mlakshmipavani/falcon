@@ -1,5 +1,7 @@
-falcon:
-  image: docker.yolosfalcon.com/falcon
-  ports:
-    - 3000:3000
-    - 5000:5000
+version: '2'
+services:
+  falcon:
+    image: docker.yolosfalcon.com/falcon
+    ports:
+      - 3000:3000
+      - 5000:5000
