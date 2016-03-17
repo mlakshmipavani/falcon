@@ -7,6 +7,7 @@ const BotDiscoveryRoutes = require('./bot-discovery-routes');
 const BotMsgRoutes = require('./bot-msg-routes');
 const CabBotRoutes = require('./cab-bot-routes');
 const RailPnrRoutes = require('./railpnr-bot-routes');
+const BotMovieRoutes = require('./bot-movie-routes');
 
 /**
  * A single point entry to all the routes in this server
@@ -34,6 +35,7 @@ class Routes {
     BotMsgRoutes.setup(app);
     CabBotRoutes.setup(app);
     RailPnrRoutes.setup(app);
+    BotMovieRoutes.setup(app);
   }
 }
 

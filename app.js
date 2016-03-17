@@ -8,7 +8,9 @@ const Routes = require('./routes/routes');
 const ApiVersion = require('./config/api-version');
 const config = require('./config/config.js');
 const log = require('./utils/logger');
+
 const authMiddleware = require('./middlewares/auth-middleware');
+const requestIp = require('request-ip');
 
 const app = restify.createServer({
   name: config.appName,
@@ -23,6 +25,7 @@ app.use(restify.gzipResponse());
 app.use(restify.authorizationParser());
 app.use(authMiddleware());
 app.use(restifyValidator);
+app.use(requestIp.mw());
 
 Routes.setup(app);
 

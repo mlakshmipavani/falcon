@@ -49,5 +49,13 @@ class DaoHelper {
     //noinspection JSCheckFunctionSignatures
     /** @type {Collection} */
     exports.oneSignal = db.collection('oneSignal');
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.bmsCities = db.collection('bmsCities');
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.movies = db.collection('movies');
   }
 }

@@ -1,0 +1,3448 @@
+{
+  "BookMyShow": {
+    "Top Cities": [
+      {
+        "SubRegionCode": "MWEST",
+        "RegionCode": "MUMBAI",
+        "RegionName": "Mumbai",
+        "SubRegionName": "Mumbai: Western",
+        "RegionSeq": "1",
+        "SubRegionSeq": "1",
+        "RegionLat": "19.12175",
+        "RegionLong": "72.8504"
+      },
+      {
+        "SubRegionCode": "MCENT",
+        "RegionCode": "MUMBAI",
+        "RegionName": "Mumbai",
+        "SubRegionName": "Mumbai: South & Central",
+        "RegionSeq": "1",
+        "SubRegionSeq": "2",
+        "RegionLat": "19.0653",
+        "RegionLong": "72.87942"
+      },
+      {
+        "SubRegionCode": "THAN",
+        "RegionCode": "MUMBAI",
+        "RegionName": "Mumbai",
+        "SubRegionName": "Navi Mumbai",
+        "RegionSeq": "1",
+        "SubRegionSeq": "4",
+        "RegionLat": "19.1101",
+        "RegionLong": "73.0625"
+      },
+      {
+        "SubRegionCode": "KALYAN",
+        "RegionCode": "MUMBAI",
+        "RegionName": "Mumbai",
+        "SubRegionName": "Kalyan",
+        "RegionSeq": "1",
+        "SubRegionSeq": "7",
+        "RegionLat": "19.241201",
+        "RegionLong": "73.12906"
+      },
+      {
+        "SubRegionCode": "ULHA",
+        "RegionCode": "MUMBAI",
+        "RegionName": "Mumbai",
+        "SubRegionName": "Ulhasnagar",
+        "RegionSeq": "1",
+        "SubRegionSeq": "8",
+        "RegionLat": "19.2180",
+        "RegionLong": "73.1631"
+      },
+      {
+        "SubRegionCode": "DELHI",
+        "RegionCode": "NCR",
+        "RegionName": "National Capital Region (NCR)",
+        "SubRegionName": "Delhi",
+        "RegionSeq": "2",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.635308",
+        "RegionLong": "77.22496"
+      },
+      {
+        "SubRegionCode": "GURG",
+        "RegionCode": "NCR",
+        "RegionName": "National Capital Region (NCR)",
+        "SubRegionName": "Gurgaon",
+        "RegionSeq": "2",
+        "SubRegionSeq": "2",
+        "RegionLat": "28.449",
+        "RegionLong": "77.03"
+      },
+      {
+        "SubRegionCode": "NOIDA",
+        "RegionCode": "NCR",
+        "RegionName": "National Capital Region (NCR)",
+        "SubRegionName": "Noida",
+        "RegionSeq": "2",
+        "SubRegionSeq": "3",
+        "RegionLat": "28.539",
+        "RegionLong": "77.389"
+      },
+      {
+        "SubRegionCode": "GHAZ",
+        "RegionCode": "NCR",
+        "RegionName": "National Capital Region (NCR)",
+        "SubRegionName": "Ghaziabad",
+        "RegionSeq": "2",
+        "SubRegionSeq": "4",
+        "RegionLat": "28.682",
+        "RegionLong": "77.427"
+      },
+      {
+        "SubRegionCode": "KUND",
+        "RegionCode": "NCR",
+        "RegionName": "National Capital Region (NCR)",
+        "SubRegionName": "Kundli",
+        "RegionSeq": "2",
+        "SubRegionSeq": "5",
+        "RegionLat": "28.868860",
+        "RegionLong": "77.116706"
+      },
+      {
+        "SubRegionCode": "FARI",
+        "RegionCode": "NCR",
+        "RegionName": "National Capital Region (NCR)",
+        "SubRegionName": "Faridabad",
+        "RegionSeq": "2",
+        "SubRegionSeq": "99",
+        "RegionLat": "28.402",
+        "RegionLong": "77.323"
+      },
+      {
+        "SubRegionCode": "BANG",
+        "RegionCode": "BANG",
+        "RegionName": "Bengaluru",
+        "SubRegionName": "Bengaluru",
+        "RegionSeq": "3",
+        "SubRegionSeq": "1",
+        "RegionLat": "12.9715987",
+        "RegionLong": "77.5945627"
+      },
+      {
+        "SubRegionCode": "HYD",
+        "RegionCode": "HYD",
+        "RegionName": "Hyderabad",
+        "SubRegionName": "Hyderabad",
+        "RegionSeq": "4",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.385044",
+        "RegionLong": "78.486671"
+      },
+      {
+        "SubRegionCode": "AHD",
+        "RegionCode": "AHD",
+        "RegionName": "Ahmedabad",
+        "SubRegionName": "Ahmedabad",
+        "RegionSeq": "5",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.0395677",
+        "RegionLong": "72.5660045"
+      },
+      {
+        "SubRegionCode": "CHD",
+        "RegionCode": "CHD",
+        "RegionName": "Chandigarh",
+        "SubRegionName": "Chandigarh",
+        "RegionSeq": "5",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.7333148",
+        "RegionLong": "76.7794179"
+      },
+      {
+        "SubRegionCode": "CHEN",
+        "RegionCode": "CHEN",
+        "RegionName": "Chennai",
+        "SubRegionName": "Chennai",
+        "RegionSeq": "7",
+        "SubRegionSeq": "1",
+        "RegionLat": "13.056",
+        "RegionLong": "80.206"
+      },
+      {
+        "SubRegionCode": "PUNE",
+        "RegionCode": "PUNE",
+        "RegionName": "Pune",
+        "SubRegionName": "Pune",
+        "RegionSeq": "7",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.5204303",
+        "RegionLong": "73.8567437"
+      },
+      {
+        "SubRegionCode": "KOLK",
+        "RegionCode": "KOLK",
+        "RegionName": "Kolkata",
+        "SubRegionName": "Kolkata",
+        "RegionSeq": "8",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.641",
+        "RegionLong": "88.411"
+      },
+      {
+        "SubRegionCode": "JAIP",
+        "RegionCode": "JAIP",
+        "RegionName": "Jaipur",
+        "SubRegionName": "Jaipur",
+        "RegionSeq": "9",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.9124165",
+        "RegionLong": "75.7872879"
+      },
+      {
+        "SubRegionCode": "KOCH",
+        "RegionCode": "KOCH",
+        "RegionName": "Kochi",
+        "SubRegionName": "Kochi",
+        "RegionSeq": "9",
+        "SubRegionSeq": "1",
+        "RegionLat": "9.9312328",
+        "RegionLong": "76.2673041"
+      }
+    ],
+    "Other Cities": [
+      {
+        "SubRegionCode": "ABOR",
+        "RegionCode": "ABOR",
+        "RegionName": "Abohar",
+        "SubRegionName": "Abohar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ADIR",
+        "RegionCode": "ADPR",
+        "RegionName": "Adipur",
+        "SubRegionName": "Adipur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.073639",
+        "RegionLong": "70.090562"
+      },
+      {
+        "SubRegionCode": "AGAR",
+        "RegionCode": "AGAR",
+        "RegionName": "Agartala",
+        "SubRegionName": "Agartala",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.8333",
+        "RegionLong": "91.2667"
+      },
+      {
+        "SubRegionCode": "AGRA",
+        "RegionCode": "AGRA",
+        "RegionName": "Agra",
+        "SubRegionName": "Agra",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "27.1766701",
+        "RegionLong": "78.0080745"
+      },
+      {
+        "SubRegionCode": "AHMG",
+        "RegionCode": "AHMG",
+        "RegionName": "Ahmedgarh",
+        "SubRegionName": "Ahmedgarh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.678192",
+        "RegionLong": "75.827631"
+      },
+      {
+        "SubRegionCode": "AJMER",
+        "RegionCode": "AJMER",
+        "RegionName": "Ajmer",
+        "SubRegionName": "Ajmer",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.45",
+        "RegionLong": "74.64"
+      },
+      {
+        "SubRegionCode": "AKOL",
+        "RegionCode": "AKOL",
+        "RegionName": "Akola",
+        "SubRegionName": "Akola",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.70388",
+        "RegionLong": "76.997093"
+      },
+      {
+        "SubRegionCode": "ALI",
+        "RegionCode": "ALI",
+        "RegionName": "Aligarh",
+        "SubRegionName": "Aligarh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "27.89381",
+        "RegionLong": "78.068138"
+      },
+      {
+        "SubRegionCode": "AMAP",
+        "RegionCode": "AMAP",
+        "RegionName": "Amalapuram",
+        "SubRegionName": "Amalapuram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "AMB",
+        "RegionCode": "AMB",
+        "RegionName": "Ambala",
+        "SubRegionName": "Ambala",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.3781788",
+        "RegionLong": "76.7766974"
+      },
+      {
+        "SubRegionCode": "AMRA",
+        "RegionCode": "AMRA",
+        "RegionName": "Amravati",
+        "SubRegionName": "Amravati",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.938882",
+        "RegionLong": "77.780457"
+      },
+      {
+        "SubRegionCode": "AMRI",
+        "RegionCode": "AMRI",
+        "RegionName": "Amritsar",
+        "SubRegionName": "Amritsar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "31.6339793",
+        "RegionLong": "74.8722642"
+      },
+      {
+        "SubRegionCode": "AND",
+        "RegionCode": "AND",
+        "RegionName": "Anand",
+        "SubRegionName": "Anand",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.560869",
+        "RegionLong": "72.954773"
+      },
+      {
+        "SubRegionCode": "ANAN",
+        "RegionCode": "ANAN",
+        "RegionName": "Anantapur",
+        "SubRegionName": "Anantapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ANHL",
+        "RegionCode": "ANHL",
+        "RegionName": "Anchal",
+        "SubRegionName": "Anchal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ANGA",
+        "RegionCode": "ANGA",
+        "RegionName": "Angamaly",
+        "SubRegionName": "Angamaly",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ASANSOL",
+        "RegionCode": "ASANSOL",
+        "RegionName": "Asansol",
+        "SubRegionName": "Asansol",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "AKMP",
+        "RegionCode": "AKMP",
+        "RegionName": "Ashoknagar",
+        "SubRegionName": "Ashoknagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "24.577162",
+        "RegionLong": "77.731527"
+      },
+      {
+        "SubRegionCode": "ASIK",
+        "RegionCode": "ASIK",
+        "RegionName": "Asika",
+        "SubRegionName": "Asika",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "AURA",
+        "RegionCode": "AURA",
+        "RegionName": "Aurangabad",
+        "SubRegionName": "Aurangabad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "19.876",
+        "RegionLong": "75.349"
+      },
+      {
+        "SubRegionCode": "BLGT",
+        "RegionCode": "BLGT",
+        "RegionName": "Balaghat",
+        "SubRegionName": "Balaghat",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.9667",
+        "RegionLong": "80.3333"
+      },
+      {
+        "SubRegionCode": "BALA",
+        "RegionCode": "BLSR",
+        "RegionName": "Balasore",
+        "SubRegionName": "Balasore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.2960587",
+        "RegionLong": "85.8245398"
+      },
+      {
+        "SubRegionCode": "1",
+        "RegionCode": "BAL",
+        "RegionName": "Baloda Bazar",
+        "SubRegionName": "Baloda Bazar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BNGA",
+        "RegionCode": "BNGA",
+        "RegionName": "Banga",
+        "SubRegionName": "Banga",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "31.11",
+        "RegionLong": "75.59"
+      },
+      {
+        "SubRegionCode": "BARA",
+        "RegionCode": "BARA",
+        "RegionName": "Baramati",
+        "SubRegionName": "Baramati",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BRDL",
+        "RegionCode": "BRDL",
+        "RegionName": "Bardoli",
+        "SubRegionName": "Bardoli",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BARE",
+        "RegionCode": "BARE",
+        "RegionName": "Bareilly",
+        "SubRegionName": "Bareilly",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.3640",
+        "RegionLong": "79.4150"
+      },
+      {
+        "SubRegionCode": "BARI",
+        "RegionCode": "BARI",
+        "RegionName": "Baripada",
+        "SubRegionName": "Baripada",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BAR",
+        "RegionCode": "BAR",
+        "RegionName": "Barnala",
+        "SubRegionName": "Barnala",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BHAT",
+        "RegionCode": "BHAT",
+        "RegionName": "Bathinda",
+        "SubRegionName": "Bathinda",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.210994",
+        "RegionLong": "74.9454745"
+      },
+      {
+        "SubRegionCode": "BEAW",
+        "RegionCode": "BEAW",
+        "RegionName": "Beawar",
+        "SubRegionName": "Beawar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.101054",
+        "RegionLong": " 74.319248"
+      },
+      {
+        "SubRegionCode": "BELG",
+        "RegionCode": "BELG",
+        "RegionName": "Belgaum",
+        "SubRegionName": "Belgaum",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "15.85036",
+        "RegionLong": "74.504669"
+      },
+      {
+        "SubRegionCode": "BEHA",
+        "RegionCode": "BEHA",
+        "RegionName": "Berhampore",
+        "SubRegionName": "Berhampore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BETU",
+        "RegionCode": "BETU",
+        "RegionName": "Betul",
+        "SubRegionName": "Betul",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "78.0638116",
+        "RegionLong": "21.9194077"
+      },
+      {
+        "SubRegionCode": "BHRT",
+        "RegionCode": "BHRT",
+        "RegionName": "Bharatpur",
+        "SubRegionName": "Bharatpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "27.2180806",
+        "RegionLong": "77.4932885"
+      },
+      {
+        "SubRegionCode": "BHAR",
+        "RegionCode": "BHAR",
+        "RegionName": "Bharuch",
+        "SubRegionName": "Bharuch",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.7246442",
+        "RegionLong": "73.0022939"
+      },
+      {
+        "SubRegionCode": "BHNG",
+        "RegionCode": "BHNG",
+        "RegionName": "Bhavnagar",
+        "SubRegionName": "Bhavnagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.763997",
+        "RegionLong": "72.156404"
+      },
+      {
+        "SubRegionCode": "BHILAI",
+        "RegionCode": "BHILAI",
+        "RegionName": "Bhilai",
+        "SubRegionName": "Bhilai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.209545",
+        "RegionLong": "81.378813 "
+      },
+      {
+        "SubRegionCode": "BHIM",
+        "RegionCode": "BHIM",
+        "RegionName": "Bhimavaram",
+        "SubRegionName": "Bhimavaram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BHOP",
+        "RegionCode": "BHOP",
+        "RegionName": "Bhopal",
+        "SubRegionName": "Bhopal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.2599333",
+        "RegionLong": "77.412615"
+      },
+      {
+        "SubRegionCode": "BHUB",
+        "RegionCode": "BHUB",
+        "RegionName": "Bhubaneshwar",
+        "SubRegionName": "Bhubhaneshwar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.2960587",
+        "RegionLong": "85.8245398"
+      },
+      {
+        "SubRegionCode": "BHUV",
+        "RegionCode": "BHUV",
+        "RegionName": "Bhuvanagiri",
+        "SubRegionName": "Bhuvanagiri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BICG",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Bicholim ",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "15.378",
+        "RegionLong": "74.019"
+      },
+      {
+        "SubRegionCode": "BIDR",
+        "RegionCode": "BIDR",
+        "RegionName": "Bidar",
+        "SubRegionName": "Bidar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.920053",
+        "RegionLong": "77.519781"
+      },
+      {
+        "SubRegionCode": "BIJ",
+        "RegionCode": "BIJ",
+        "RegionName": "Bijnor",
+        "SubRegionName": "Bijnor",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.3724422",
+        "RegionLong": "78.1358472"
+      },
+      {
+        "SubRegionCode": "BIK",
+        "RegionCode": "BIK",
+        "RegionName": "Bikaner",
+        "SubRegionName": "Bikaner",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.009436",
+        "RegionLong": "73.300653"
+      },
+      {
+        "SubRegionCode": "BILA",
+        "RegionCode": "BILA",
+        "RegionName": "Bilaspur",
+        "SubRegionName": "Bilaspur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.082375",
+        "RegionLong": "82.155429"
+      },
+      {
+        "SubRegionCode": "BILI",
+        "RegionCode": "BILI",
+        "RegionName": "Bilimora",
+        "SubRegionName": "Bilimora",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BICH",
+        "RegionCode": "BICH",
+        "RegionName": "Biswanath Chariali",
+        "SubRegionName": "Biswanath Chariali",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BOKA",
+        "RegionCode": "BOKA",
+        "RegionName": "Bokaro",
+        "SubRegionName": "Bokaro",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BLPR",
+        "RegionCode": "BLPR",
+        "RegionName": "Bolpur",
+        "SubRegionName": "Bolpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.668370",
+        "RegionLong": "87.682201"
+      },
+      {
+        "SubRegionCode": "BURD",
+        "RegionCode": "BURD",
+        "RegionName": "Burdwan",
+        "SubRegionName": "Burdwan",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.23243",
+        "RegionLong": "87.863731"
+      },
+      {
+        "SubRegionCode": "CHAM",
+        "RegionCode": "CHAM",
+        "RegionName": "Champa",
+        "SubRegionName": "Champa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CHAN",
+        "RegionCode": "CHAN",
+        "RegionName": "Chandrapur",
+        "SubRegionName": "Chandrapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "19.95",
+        "RegionLong": "79.3"
+      },
+      {
+        "SubRegionCode": "CHID",
+        "RegionCode": "CHID",
+        "RegionName": "Chidambaram",
+        "SubRegionName": "Chidambaram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CHIK",
+        "RegionCode": "CHIK",
+        "RegionName": "Chikkaballapur",
+        "SubRegionName": "Chikkaballapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CHIR",
+        "RegionCode": "CHIR",
+        "RegionName": "Chirala",
+        "SubRegionName": "Chirala",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CWRJ",
+        "RegionCode": "CWRJ",
+        "RegionName": "Chirawa",
+        "SubRegionName": "Chirawa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "COIM",
+        "RegionCode": "COIM",
+        "RegionName": "Coimbatore",
+        "SubRegionName": "Coimbatore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "11.0168445",
+        "RegionLong": "76.9558321"
+      },
+      {
+        "SubRegionCode": "COBE",
+        "RegionCode": "COBE",
+        "RegionName": "Cooch Behar",
+        "SubRegionName": "Cooch Behar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CUDD",
+        "RegionCode": "CUDD",
+        "RegionName": "Cuddalore",
+        "SubRegionName": "Cuddalore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CMBM",
+        "RegionCode": "CMBM",
+        "RegionName": "Cumbum",
+        "SubRegionName": "Cumbum",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "CUTT",
+        "RegionCode": "CUTT",
+        "RegionName": "Cuttack",
+        "SubRegionName": "Cuttack",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DARJ",
+        "RegionCode": "DARJ",
+        "RegionName": "Darjeeling",
+        "SubRegionName": "Darjeeling",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "27.035718",
+        "RegionLong": "88.262358"
+      },
+      {
+        "SubRegionCode": "DAUS",
+        "RegionCode": "DAUS",
+        "RegionName": "Dausa",
+        "SubRegionName": "Dausa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.873968",
+        "RegionLong": "76.326712"
+      },
+      {
+        "SubRegionCode": "DAVA",
+        "RegionCode": "DAVA",
+        "RegionName": "Davangere",
+        "SubRegionName": "Davanagere",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "14.4663438",
+        "RegionLong": "75.9238397"
+      },
+      {
+        "SubRegionCode": "DEH",
+        "RegionCode": "DEH",
+        "RegionName": "Dehradun",
+        "SubRegionName": "Dehradun",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.3164945",
+        "RegionLong": "78.0321918"
+      },
+      {
+        "SubRegionCode": "DEVA",
+        "RegionCode": "DEVA",
+        "RegionName": "Devakottai",
+        "SubRegionName": "Devakottai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DEWAS",
+        "RegionCode": "DEWAS",
+        "RegionName": "Dewas",
+        "SubRegionName": "Dewas",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DHMT",
+        "RegionCode": "DHMT",
+        "RegionName": "Dhamtari",
+        "SubRegionName": "Dhamtari",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DHAN",
+        "RegionCode": "DHAN",
+        "RegionName": "Dhanbad(Jharkhand)",
+        "SubRegionName": "Dhanbad(Jharkhand)",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.7956531",
+        "RegionLong": "86.4303859"
+      },
+      {
+        "SubRegionCode": "DHLE",
+        "RegionCode": "DHLE",
+        "RegionName": "Dhule",
+        "SubRegionName": "Dhule",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DIB",
+        "RegionCode": "DIB",
+        "RegionName": "Dibrugarh",
+        "SubRegionName": "Dibrugarh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "27.4728327",
+        "RegionLong": "94.9119621"
+      },
+      {
+        "SubRegionCode": "DIND",
+        "RegionCode": "DIND",
+        "RegionName": "Dindigul",
+        "SubRegionName": "Dindigul",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DURG",
+        "RegionCode": "DURG",
+        "RegionName": "Durg",
+        "SubRegionName": "Durg",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.189367",
+        "RegionLong": "81.283039"
+      },
+      {
+        "SubRegionCode": "DURGA",
+        "RegionCode": "DURGA",
+        "RegionName": "Durgapur",
+        "SubRegionName": "Durgapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.48",
+        "RegionLong": "87.32"
+      },
+      {
+        "SubRegionCode": "EROD",
+        "RegionCode": "EROD",
+        "RegionName": "Erode",
+        "SubRegionName": "Erode",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "11.340399",
+        "RegionLong": "77.716942"
+      },
+      {
+        "SubRegionCode": "FASA",
+        "RegionCode": "FASA",
+        "RegionName": "Fatehgarh Sahib",
+        "SubRegionName": "Fatehgarh Sahib",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.647836",
+        "RegionLong": "76.388616"
+      },
+      {
+        "SubRegionCode": "FRZR",
+        "RegionCode": "FRZR",
+        "RegionName": "Firozpur",
+        "SubRegionName": "Firozpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GNAGAR",
+        "RegionCode": "GNAGAR",
+        "RegionName": "Gandhinagar",
+        "SubRegionName": "Gandhinagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.2248196",
+        "RegionLong": "72.6463769"
+      },
+      {
+        "SubRegionCode": "GAYA",
+        "RegionCode": "GAYA",
+        "RegionName": "Gaya",
+        "SubRegionName": "Gaya",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GOA",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Goa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "15.378",
+        "RegionLong": "74.019"
+      },
+      {
+        "SubRegionCode": "GOGA",
+        "RegionCode": "GOGA",
+        "RegionName": "Gogawa",
+        "SubRegionName": "Gogawa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GRKP",
+        "RegionCode": "GRKP",
+        "RegionName": "Gorakhpur",
+        "SubRegionName": "Gorakhpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.7605545",
+        "RegionLong": "83.3731675"
+      },
+      {
+        "SubRegionCode": "GDTM",
+        "RegionCode": "GDTM",
+        "RegionName": "Gudiyatham",
+        "SubRegionName": "Gudiyattam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GULB",
+        "RegionCode": "GULB",
+        "RegionName": "Gulbarga",
+        "SubRegionName": "Gulbarga",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.329731",
+        "RegionLong": "76.8342957"
+      },
+      {
+        "SubRegionCode": "GUNA",
+        "RegionCode": "GUNA",
+        "RegionName": "Guna",
+        "SubRegionName": "Guna",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GUND",
+        "RegionCode": "GUND",
+        "RegionName": "Gundlupet",
+        "SubRegionName": "Gundlupet",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GUNL",
+        "RegionCode": "GUNL",
+        "RegionName": "Guntakal",
+        "SubRegionName": "Guntakal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GUNT",
+        "RegionCode": "GUNT",
+        "RegionName": "Guntur",
+        "SubRegionName": "Guntur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.3008",
+        "RegionLong": "80.4428"
+      },
+      {
+        "SubRegionCode": "GUWA",
+        "RegionCode": "GUW",
+        "RegionName": "Guwahati",
+        "SubRegionName": "Guwahati",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.144435",
+        "RegionLong": "91.733179"
+      },
+      {
+        "SubRegionCode": "HAJI",
+        "RegionCode": "HAJI",
+        "RegionName": "Hajipur",
+        "SubRegionName": "Hajipur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "HALD",
+        "RegionCode": "HALD",
+        "RegionName": "Haldia",
+        "SubRegionName": "Haldia",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "HRDR",
+        "RegionCode": "HRDR",
+        "RegionName": "Haridwar",
+        "SubRegionName": "Haridwar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.9456906",
+        "RegionLong": "78.1642478"
+      },
+      {
+        "SubRegionCode": "HISR",
+        "RegionCode": "HISR",
+        "RegionName": "Hisar",
+        "SubRegionName": "Hisar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "HOSH",
+        "RegionCode": "HOSH",
+        "RegionName": "Hoshiarpur",
+        "SubRegionName": "Hoshiarpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "IDKI",
+        "RegionCode": "IDKI",
+        "RegionName": "Idukki",
+        "SubRegionName": "Idukki",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "INDA",
+        "RegionCode": "INDA",
+        "RegionName": "Indapur",
+        "SubRegionName": "Indapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "IND",
+        "RegionCode": "IND",
+        "RegionName": "Indore",
+        "SubRegionName": "Indore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.7287",
+        "RegionLong": "75.8654"
+      },
+      {
+        "SubRegionCode": "JALA",
+        "RegionCode": "JALA",
+        "RegionName": "Jalandhar",
+        "SubRegionName": "Jalandhar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "31.3260152",
+        "RegionLong": "75.5761829"
+      },
+      {
+        "SubRegionCode": "JALG",
+        "RegionCode": "JALG",
+        "RegionName": "Jalgaon",
+        "SubRegionName": "Jalgaon",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.998138",
+        "RegionLong": "75.567184"
+      },
+      {
+        "SubRegionCode": "JAM",
+        "RegionCode": "JAM",
+        "RegionName": "Jamnagar",
+        "SubRegionName": "Jamnagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.4707019",
+        "RegionLong": "70.05773"
+      },
+      {
+        "SubRegionCode": "JMDP",
+        "RegionCode": "JMDP",
+        "RegionName": "Jamshedpur",
+        "SubRegionName": "Jamshedpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.805235",
+        "RegionLong": "86.207356"
+      },
+      {
+        "SubRegionCode": "JANG",
+        "RegionCode": "JANG",
+        "RegionName": "Jangareddy Gudem",
+        "SubRegionName": "Jangareddy Gudem",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.122213",
+        "RegionLong": "81.292868"
+      },
+      {
+        "SubRegionCode": "JETP",
+        "RegionCode": "JETP",
+        "RegionName": "Jetpur",
+        "SubRegionName": "Jetpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.754354",
+        "RegionLong": "70.622134"
+      },
+      {
+        "SubRegionCode": "JHAJ",
+        "RegionCode": "JHAJ",
+        "RegionName": "Jhajjar",
+        "SubRegionName": "Jhajjar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "JNSI",
+        "RegionCode": "JNSI",
+        "RegionName": "Jhansi",
+        "SubRegionName": "Jhansi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "JIND",
+        "RegionCode": "JIND",
+        "RegionName": "Jind",
+        "SubRegionName": "Jind",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "JODH",
+        "RegionCode": "JODH",
+        "RegionName": "Jodhpur",
+        "SubRegionName": "Jodhpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.2389469",
+        "RegionLong": "73.0243094"
+      },
+      {
+        "SubRegionCode": "JUGH",
+        "RegionCode": "JUGH",
+        "RegionName": "Junagadh",
+        "SubRegionName": "Junagadh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KADI",
+        "RegionCode": "KADI",
+        "RegionName": "Kadi",
+        "SubRegionName": "Kadi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KAIT",
+        "RegionCode": "KAIT",
+        "RegionName": "Kaithal",
+        "SubRegionName": "Kaithal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.799904",
+        "RegionLong": "76.379271"
+      },
+      {
+        "SubRegionCode": "KAKI",
+        "RegionCode": "KAKI",
+        "RegionName": "Kakinada",
+        "SubRegionName": "Kakinada",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.945181",
+        "RegionLong": "82.238647"
+      },
+      {
+        "SubRegionCode": "KALA ",
+        "RegionCode": "KALA",
+        "RegionName": "Kalakkadu",
+        "SubRegionName": "Kalakkadu",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KALW",
+        "RegionCode": "KALW",
+        "RegionName": "Kalwakurthy",
+        "SubRegionName": "Kalwakurthy",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KALY",
+        "RegionCode": "KALY",
+        "RegionName": "Kalyani",
+        "SubRegionName": "Kalyani",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KANP",
+        "RegionCode": "KANP",
+        "RegionName": "Kanpur",
+        "SubRegionName": "Kanpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.4634",
+        "RegionLong": "80.3229"
+      },
+      {
+        "SubRegionCode": "KARIM",
+        "RegionCode": "KARIM",
+        "RegionName": "Karimnagar",
+        "SubRegionName": "Karimnagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KASG",
+        "RegionCode": "KASG",
+        "RegionName": "Kasgunj",
+        "SubRegionName": "Kasgunj",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KASH",
+        "RegionCode": "KASH",
+        "RegionName": "Kashipur",
+        "SubRegionName": "Kashipur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KATH",
+        "RegionCode": "KATH",
+        "RegionName": "Kathua",
+        "SubRegionName": "Kathua",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KVLI",
+        "RegionCode": "KVLI",
+        "RegionName": "Kavali",
+        "SubRegionName": "Kavali",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KAWA",
+        "RegionCode": "KAWA",
+        "RegionName": "Kawardha",
+        "SubRegionName": "Kawardha",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KESA",
+        "RegionCode": "KESA",
+        "RegionName": "Kesamudram",
+        "SubRegionName": "Kesamudram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KHAM",
+        "RegionCode": "KHAM",
+        "RegionName": "Khammam",
+        "SubRegionName": "Khammam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.2500",
+        "RegionLong": "80.1500"
+      },
+      {
+        "SubRegionCode": "KHAN",
+        "RegionCode": "KHAN",
+        "RegionName": "Khanna",
+        "SubRegionName": "Khanna",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KHED",
+        "RegionCode": "KHED",
+        "RegionName": "Khed",
+        "SubRegionName": "Khed",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KHOP",
+        "RegionCode": "KHOP",
+        "RegionName": "Khopoli",
+        "SubRegionName": "Khopoli",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KCHA",
+        "RegionCode": "KCHA",
+        "RegionName": "Kichha",
+        "SubRegionName": "Kichha",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KOLH",
+        "RegionCode": "KOLH",
+        "RegionName": "Kolhapur",
+        "SubRegionName": "Kolhapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.691308",
+        "RegionLong": "74.244866"
+      },
+      {
+        "SubRegionCode": "KNGN",
+        "RegionCode": "KNGN",
+        "RegionName": "Kondagaon",
+        "SubRegionName": "Kondagaon",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KCKA",
+        "RegionCode": "KCKA",
+        "RegionName": "Korutla",
+        "SubRegionName": "Korutla",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KOTA",
+        "RegionCode": "KOTA",
+        "RegionName": "Kota",
+        "SubRegionName": "Kota",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "25.1695114",
+        "RegionLong": "75.8539898"
+      },
+      {
+        "SubRegionCode": "KTYM",
+        "RegionCode": "KTYM",
+        "RegionName": "Kottayam",
+        "SubRegionName": "Kottayam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "9.591649",
+        "RegionLong": "76.522065"
+      },
+      {
+        "SubRegionCode": "KULU",
+        "RegionCode": "KULU",
+        "RegionName": "Kullu",
+        "SubRegionName": "Kullu",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "31.957851",
+        "RegionLong": "77.1094597"
+      },
+      {
+        "SubRegionCode": "KUMB",
+        "RegionCode": "KUMB",
+        "RegionName": "Kumbakonam",
+        "SubRegionName": "Kumbakonam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KURN",
+        "RegionCode": "KURN",
+        "RegionName": "Kurnool",
+        "SubRegionName": "Kurnool",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KURU",
+        "RegionCode": "KURU",
+        "RegionName": "Kurukshetra",
+        "SubRegionName": "Kurukshetra",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.9695121",
+        "RegionLong": "76.878282"
+      },
+      {
+        "SubRegionCode": "KTCH",
+        "RegionCode": "KTCH",
+        "RegionName": "Kutch",
+        "SubRegionName": "Kutch",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "LATU",
+        "RegionCode": "LAT",
+        "RegionName": "Latur",
+        "SubRegionName": "Latur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.399821",
+        "RegionLong": "76.559543"
+      },
+      {
+        "SubRegionCode": "LEHL",
+        "RegionCode": "LEHL",
+        "RegionName": "Leh",
+        "SubRegionName": "Leh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "LNVL",
+        "RegionCode": "LNVL",
+        "RegionName": "Lonavala",
+        "SubRegionName": "Lonavala",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.748101",
+        "RegionLong": "73.405629"
+      },
+      {
+        "SubRegionCode": "LUCK",
+        "RegionCode": "LUCK",
+        "RegionName": "Lucknow",
+        "SubRegionName": "Lucknow",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.8465108",
+        "RegionLong": "80.9466832"
+      },
+      {
+        "SubRegionCode": "LUDH",
+        "RegionCode": "LUDH",
+        "RegionName": "Ludhiana",
+        "SubRegionName": "Ludhiana",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.900965",
+        "RegionLong": "75.8572758"
+      },
+      {
+        "SubRegionCode": "MACH",
+        "RegionCode": "MACH",
+        "RegionName": "Macherla",
+        "SubRegionName": "Macherla",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MADU",
+        "RegionCode": "MADU",
+        "RegionName": "Madurai",
+        "SubRegionName": "Madurai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "9.9252007",
+        "RegionLong": "78.1197754"
+      },
+      {
+        "SubRegionCode": "MHAD",
+        "RegionCode": "MHAD",
+        "RegionName": "Mahad",
+        "SubRegionName": "Mahad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.109394",
+        "RegionLong": "73.418459"
+      },
+      {
+        "SubRegionCode": "MAHB",
+        "RegionCode": "MAHB",
+        "RegionName": "Mahbubnagar",
+        "SubRegionName": "Mahbubnagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MALE",
+        "RegionCode": "MALE",
+        "RegionName": "Malegaon",
+        "SubRegionName": "Malegaon",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.5505",
+        "RegionLong": "74.5309"
+      },
+      {
+        "SubRegionCode": "MALO",
+        "RegionCode": "MALO",
+        "RegionName": "Malout",
+        "SubRegionName": "Malout",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MANA",
+        "RegionCode": "MANA",
+        "RegionName": "Manali",
+        "SubRegionName": "Manali",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "32.2396325",
+        "RegionLong": "77.1887145"
+      },
+      {
+        "SubRegionCode": "MANG",
+        "RegionCode": "MANG",
+        "RegionName": "Mangaldoi",
+        "SubRegionName": "Mangaldoi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MLR",
+        "RegionCode": "MLR",
+        "RegionName": "Mangalore",
+        "SubRegionName": "Mangalore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "12.913790",
+        "RegionLong": "74.853977"
+      },
+      {
+        "SubRegionCode": "MANI",
+        "RegionCode": "MANI",
+        "RegionName": "Manipal",
+        "SubRegionName": "Manipal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "13.350338",
+        "RegionLong": "74.787312"
+      },
+      {
+        "SubRegionCode": "MNSA",
+        "RegionCode": "MNSA",
+        "RegionName": "Mansa",
+        "SubRegionName": "Mansa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MARG",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Margao",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "15.273862",
+        "RegionLong": "73.956808"
+      },
+      {
+        "SubRegionCode": "MARR",
+        "RegionCode": "MARR",
+        "RegionName": "Marripeda",
+        "SubRegionName": "Marripeda",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MVLR",
+        "RegionCode": "MVLR",
+        "RegionName": "Mavellikara",
+        "SubRegionName": "Mavellikara",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "9.250324",
+        "RegionLong": "76.539568"
+      },
+      {
+        "SubRegionCode": "MERT",
+        "RegionCode": "MERT",
+        "RegionName": "Meerut",
+        "SubRegionName": "Meerut",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.9844618",
+        "RegionLong": "77.7064137"
+      },
+      {
+        "SubRegionCode": "MOHL",
+        "RegionCode": "MOHL",
+        "RegionName": "Mohali",
+        "SubRegionName": "Mohali",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.705704",
+        "RegionLong": "76.721413"
+      },
+      {
+        "SubRegionCode": "MOMT",
+        "RegionCode": "MOMT",
+        "RegionName": "Mominpet",
+        "SubRegionName": "Mominpet",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MORA",
+        "RegionCode": "MORA",
+        "RegionName": "Moradabad",
+        "SubRegionName": "Moradabad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.8315925",
+        "RegionLong": "78.7782764"
+      },
+      {
+        "SubRegionCode": "MORI",
+        "RegionCode": "MORI",
+        "RegionName": "Morinda",
+        "SubRegionName": "Morinda",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MGSI",
+        "RegionCode": "MGSI",
+        "RegionName": "Mughalsarai",
+        "SubRegionName": "Mughalsarai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MKST",
+        "RegionCode": "MKST",
+        "RegionName": "Muktsar",
+        "SubRegionName": "Muktsar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MUZ",
+        "RegionCode": "MUZ",
+        "RegionName": "Muzaffarnagar",
+        "SubRegionName": "Muzaffarnagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MUZA",
+        "RegionCode": "MUZA",
+        "RegionName": "Muzaffarpur",
+        "SubRegionName": "Muzaffarpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.122272",
+        "RegionLong": "85.377883"
+      },
+      {
+        "SubRegionCode": "MYLA",
+        "RegionCode": "MYLA",
+        "RegionName": "Mylavaram",
+        "SubRegionName": "Mylavaram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MYS",
+        "RegionCode": "MYS",
+        "RegionName": "Mysore",
+        "SubRegionName": "Mysore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "12.2958104",
+        "RegionLong": "76.6393805"
+      },
+      {
+        "SubRegionCode": "NAGP",
+        "RegionCode": "NAGP",
+        "RegionName": "Nagpur",
+        "SubRegionName": "Nagpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.1458004",
+        "RegionLong": "79.0881546"
+      },
+      {
+        "SubRegionCode": "NAND",
+        "RegionCode": "NAND",
+        "RegionName": "Nanded",
+        "SubRegionName": "Nanded",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "19.153061",
+        "RegionLong": "77.305847"
+      },
+      {
+        "SubRegionCode": "NARY",
+        "RegionCode": "NARY",
+        "RegionName": "Narayankhed",
+        "SubRegionName": "Narayankhed",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "NARS",
+        "RegionCode": "NARS",
+        "RegionName": "Narsipatnam",
+        "SubRegionName": "Narsipatnam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "NASK",
+        "RegionCode": "NASK",
+        "RegionName": "Nashik",
+        "SubRegionName": "Nashik",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.0014",
+        "RegionLong": "73.7869"
+      },
+      {
+        "SubRegionCode": "NATH",
+        "RegionCode": "NATH",
+        "RegionName": "Natham",
+        "SubRegionName": "Natham",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "NAVN",
+        "RegionCode": "NAVN",
+        "RegionName": "Nawanshahr",
+        "SubRegionName": "Nawanshahr",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "31.124325",
+        "RegionLong": "76.114783"
+      },
+      {
+        "SubRegionCode": "NMCH",
+        "RegionCode": "NMCH",
+        "RegionName": "Neemuch",
+        "SubRegionName": "Neemuch",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "NIMA",
+        "RegionCode": "NIMA",
+        "RegionName": "Nimapara",
+        "SubRegionName": "Nimapara",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "NIZA",
+        "RegionCode": "NIZA",
+        "RegionName": "Nizamabad",
+        "SubRegionName": "Nizamabad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.6833",
+        "RegionLong": "78.1000"
+      },
+      {
+        "SubRegionCode": "ODDA",
+        "RegionCode": "ODDA",
+        "RegionName": "Oddanchatram",
+        "SubRegionName": "Oddanchatram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PALN",
+        "RegionCode": "PALN",
+        "RegionName": "Palanpur",
+        "SubRegionName": "Palanpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "24.171181",
+        "RegionLong": "72.438393"
+      },
+      {
+        "SubRegionCode": "PANA",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Panaji",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "15.491130",
+        "RegionLong": "73.828759"
+      },
+      {
+        "SubRegionCode": "PANI",
+        "RegionCode": "PAN",
+        "RegionName": "Panipat",
+        "SubRegionName": "Panipat",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.391126",
+        "RegionLong": "76.962233"
+      },
+      {
+        "SubRegionCode": "PARA",
+        "RegionCode": "PARA",
+        "RegionName": "Paratwada",
+        "SubRegionName": "Paratwada",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PARB",
+        "RegionCode": "PARB",
+        "RegionName": "Parbhani",
+        "SubRegionName": "Parbhani",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "19.261063",
+        "RegionLong": "76.775894"
+      },
+      {
+        "SubRegionCode": "PARI",
+        "RegionCode": "PARI",
+        "RegionName": "Parigi",
+        "SubRegionName": "Parigi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PRVT",
+        "RegionCode": "PRVT",
+        "RegionName": "Parvathipuram",
+        "SubRegionName": "Parvathipuram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PATA",
+        "RegionCode": "PATA",
+        "RegionName": "Patan",
+        "SubRegionName": "Patan",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.849204",
+        "RegionLong": "72.125502"
+      },
+      {
+        "SubRegionCode": "PATH",
+        "RegionCode": "PATH",
+        "RegionName": "Pathankot",
+        "SubRegionName": "Pathankot",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "32.2706402",
+        "RegionLong": "75.6425537"
+      },
+      {
+        "SubRegionCode": "PATI",
+        "RegionCode": "PATI",
+        "RegionName": "Patiala",
+        "SubRegionName": "Patiala",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.32062",
+        "RegionLong": "76.395126"
+      },
+      {
+        "SubRegionCode": "PATN",
+        "RegionCode": "PATN",
+        "RegionName": "Patna",
+        "SubRegionName": "Patna",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "25.61046",
+        "RegionLong": "85.141667"
+      },
+      {
+        "SubRegionCode": "PATR",
+        "RegionCode": "PATR",
+        "RegionName": "Patran",
+        "SubRegionName": "Patran",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PTMB",
+        "RegionCode": "PTMB",
+        "RegionName": "Pattambi",
+        "SubRegionName": "Pattambi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PEDA",
+        "RegionCode": "PEDA",
+        "RegionName": "Peddapalli",
+        "SubRegionName": "Peddapalli",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.6151",
+        "RegionLong": "79.3827"
+      },
+      {
+        "SubRegionCode": "PEN",
+        "RegionCode": "PEN",
+        "RegionName": "Pen",
+        "SubRegionName": "Pen",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.737532",
+        "RegionLong": "73.094415"
+      },
+      {
+        "SubRegionCode": "PEND",
+        "RegionCode": "PEND",
+        "RegionName": "Pendra",
+        "SubRegionName": "Pendra",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PHAL",
+        "RegionCode": "PHAL",
+        "RegionName": "Phaltan",
+        "SubRegionName": "Phaltan",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PILA",
+        "RegionCode": "PILA",
+        "RegionName": "Pilani",
+        "SubRegionName": "Pilani",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "POND",
+        "RegionCode": "POND",
+        "RegionName": "Pondicherry",
+        "SubRegionName": "Pondicherry",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "11.9310",
+        "RegionLong": "79.7852"
+      },
+      {
+        "SubRegionCode": "PRAT",
+        "RegionCode": "PRAT",
+        "RegionName": "Pratapgarh",
+        "SubRegionName": "Pratapgarh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PUDH",
+        "RegionCode": "PUDH",
+        "RegionName": "Pudhukottai",
+        "SubRegionName": "Pudhukottai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "10.379849",
+        "RegionLong": "78.822098"
+      },
+      {
+        "SubRegionCode": "PURI",
+        "RegionCode": "PURI",
+        "RegionName": "Puri",
+        "SubRegionName": "Puri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PURN",
+        "RegionCode": "PURN",
+        "RegionName": "Purnea",
+        "SubRegionName": "Purnea",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PURU",
+        "RegionCode": "PURU",
+        "RegionName": "Purulia",
+        "SubRegionName": "Purulia",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RAIG",
+        "RegionCode": "RAIG",
+        "RegionName": "Raigarh",
+        "SubRegionName": "Raigarh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RAIPUR",
+        "RegionCode": "RAIPUR",
+        "RegionName": "Raipur",
+        "SubRegionName": "Raipur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.2513844",
+        "RegionLong": "81.6296413"
+      },
+      {
+        "SubRegionCode": "RJMU",
+        "RegionCode": "RJMU",
+        "RegionName": "Rajahmundry",
+        "SubRegionName": "Rajahmundry",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RAJK",
+        "RegionCode": "RAJK",
+        "RegionName": "Rajkot",
+        "SubRegionName": "Rajkot",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.3038945",
+        "RegionLong": "70.8021599"
+      },
+      {
+        "SubRegionCode": "RJPA",
+        "RegionCode": "RJPA",
+        "RegionName": "Rajpipla",
+        "SubRegionName": "Rajpipla",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RAMP",
+        "RegionCode": "RAMP",
+        "RegionName": "Ramayampet",
+        "SubRegionName": "Ramayampet",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RANA",
+        "RegionCode": "RANA",
+        "RegionName": "Ranaghat",
+        "SubRegionName": "Ranaghat",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RANC",
+        "RegionCode": "RANC",
+        "RegionName": "Ranchi",
+        "SubRegionName": "Ranchi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.3440997",
+        "RegionLong": "85.309562"
+      },
+      {
+        "SubRegionCode": "RANI",
+        "RegionCode": "RANI",
+        "RegionName": "Ranipet",
+        "SubRegionName": "Ranipet ",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RATL",
+        "RegionCode": "RATL",
+        "RegionName": "Ratlam",
+        "SubRegionName": "Ratlam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.334332",
+        "RegionLong": "75.037394"
+      },
+      {
+        "SubRegionCode": "RATA",
+        "RegionCode": "RATN",
+        "RegionName": "Ratnagiri",
+        "SubRegionName": "Ratnagiri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RENU",
+        "RegionCode": "RENU",
+        "RegionName": "Renukoot",
+        "SubRegionName": "Renukoot",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "REWA",
+        "RegionCode": "REWA",
+        "RegionName": "Rewari",
+        "SubRegionName": "Rewari",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RKES",
+        "RegionCode": "RKES",
+        "RegionName": "Rishikesh",
+        "SubRegionName": "Rishikesh",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RSRA",
+        "RegionCode": "RSRA",
+        "RegionName": "Rishra",
+        "SubRegionName": "Rishra",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ROH",
+        "RegionCode": "ROH",
+        "RegionName": "Rohtak",
+        "SubRegionName": "Rohtak",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.892361",
+        "RegionLong": "76.59124"
+      },
+      {
+        "SubRegionCode": "ROOR",
+        "RegionCode": "ROOR",
+        "RegionName": "Roorkee",
+        "SubRegionName": "Roorkee",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RKOR",
+        "RegionCode": "RKOR",
+        "RegionName": "Rourkela",
+        "SubRegionName": "Rourkela",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.221935",
+        "RegionLong": "84.857382"
+      },
+      {
+        "SubRegionCode": "RUDP",
+        "RegionCode": "RUDP",
+        "RegionName": "Rudrapur",
+        "SubRegionName": "Rudrapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "28.979682",
+        "RegionLong": "79.400876"
+      },
+      {
+        "SubRegionCode": "RUPN",
+        "RegionCode": "RUPN",
+        "RegionName": "Rupnagar",
+        "SubRegionName": "Rupnagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "30.965950",
+        "RegionLong": "76.522522"
+      },
+      {
+        "SubRegionCode": "SAGA",
+        "RegionCode": "SAGA",
+        "RegionName": "Sagwara",
+        "SubRegionName": "Sagwara",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SAHA",
+        "RegionCode": "SAHA",
+        "RegionName": "Saharanpur",
+        "SubRegionName": "Saharanpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.9667",
+        "RegionLong": "77.55"
+      },
+      {
+        "SubRegionCode": "SALM",
+        "RegionCode": "SALM",
+        "RegionName": "Salem",
+        "SubRegionName": "Salem",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "11.6500",
+        "RegionLong": "78.1600"
+      },
+      {
+        "SubRegionCode": "SANG",
+        "RegionCode": "SANG",
+        "RegionName": "Sangli",
+        "SubRegionName": "Sangli",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.85438",
+        "RegionLong": "74.564171"
+      },
+      {
+        "SubRegionCode": "SANK",
+        "RegionCode": "SANK",
+        "RegionName": "Sankri",
+        "SubRegionName": "Sankri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SARA",
+        "RegionCode": "SARA",
+        "RegionName": "Sarangpur",
+        "SubRegionName": "Sarangpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SARN",
+        "RegionCode": "SARN",
+        "RegionName": "Sarni",
+        "SubRegionName": "Sarni",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.1012669",
+        "RegionLong": "78.1688619"
+      },
+      {
+        "SubRegionCode": "SATN",
+        "RegionCode": "SATN",
+        "RegionName": "Satna",
+        "SubRegionName": "Satna",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SKRP",
+        "RegionCode": "SKRP",
+        "RegionName": "Shankarpally",
+        "SubRegionName": "Shankarpally",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SHLG",
+        "RegionCode": "SHLG",
+        "RegionName": "Shillong",
+        "SubRegionName": "Shillong",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "25.577967",
+        "RegionLong": "91.893982"
+      },
+      {
+        "SubRegionCode": "SMLA",
+        "RegionCode": "SMLA",
+        "RegionName": "Shimla",
+        "SubRegionName": "Shimla",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "31.104605",
+        "RegionLong": "77.173424"
+      },
+      {
+        "SubRegionCode": "SHIV",
+        "RegionCode": "SHIV",
+        "RegionName": "Shivpuri",
+        "SubRegionName": "Shivpuri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SHUR",
+        "RegionCode": "SHUR",
+        "RegionName": "Shrirampur",
+        "SubRegionName": "Shrirampur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SIL",
+        "RegionCode": "SIL",
+        "RegionName": "Silchar",
+        "SubRegionName": "Silchar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "24.820142",
+        "RegionLong": "92.797995"
+      },
+      {
+        "SubRegionCode": "SILI",
+        "RegionCode": "SILI",
+        "RegionName": "Siliguri",
+        "SubRegionName": "Siliguri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "26.708698",
+        "RegionLong": "88.425536"
+      },
+      {
+        "SubRegionCode": "SISA",
+        "RegionCode": "SISA",
+        "RegionName": "Sirsa",
+        "SubRegionName": "Sirsa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.5333",
+        "RegionLong": "75.0167"
+      },
+      {
+        "SubRegionCode": "SHVG",
+        "RegionCode": "SHVG",
+        "RegionName": "Sivagangai",
+        "SubRegionName": "Sivagangai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SOLA",
+        "RegionCode": "SOLA",
+        "RegionName": "Solapur",
+        "SubRegionName": "Solapur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.659834",
+        "RegionLong": "75.906601"
+      },
+      {
+        "SubRegionCode": "RAIH",
+        "RegionCode": "RAIH",
+        "RegionName": "Sonipat",
+        "SubRegionName": "Sonipat",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SRIG",
+        "RegionCode": "SRIG",
+        "RegionName": "Sri Ganganagar",
+        "SubRegionName": "Sri Ganganagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "29.9167",
+        "RegionLong": "73.8833"
+      },
+      {
+        "SubRegionCode": "SRKL",
+        "RegionCode": "SRKL",
+        "RegionName": "Srikakulam",
+        "SubRegionName": "Srikakulam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SRNG",
+        "RegionCode": "SRNG",
+        "RegionName": "Srinagar",
+        "SubRegionName": "Srinagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SURT",
+        "RegionCode": "SURT",
+        "RegionName": "Surat",
+        "SubRegionName": "Surat",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "21.195",
+        "RegionLong": "72.819444"
+      },
+      {
+        "SubRegionCode": "SRDN",
+        "RegionCode": "SRDN",
+        "RegionName": "Surendranagar",
+        "SubRegionName": "Surendranagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SURY",
+        "RegionCode": "SURY",
+        "RegionName": "Suryapet",
+        "SubRegionName": "Suryapet",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "TAND",
+        "RegionCode": "TAND",
+        "RegionName": "Tandur",
+        "SubRegionName": "Tandur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "TENA",
+        "RegionCode": "TENA",
+        "RegionName": "Tenali",
+        "SubRegionName": "Tenali",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.243152",
+        "RegionLong": "80.639716"
+      },
+      {
+        "SubRegionCode": "TENK",
+        "RegionCode": "TENK",
+        "RegionName": "Tenkasi",
+        "SubRegionName": "Tenkasi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "8.959157",
+        "RegionLong": "77.312795"
+      },
+      {
+        "SubRegionCode": "THAL",
+        "RegionCode": "THAL",
+        "RegionName": "Thalayolaparambu",
+        "SubRegionName": "Thalayolaparambu",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "9.785442",
+        "RegionLong": "76.448922"
+      },
+      {
+        "SubRegionCode": "THRM",
+        "RegionCode": "THRM",
+        "RegionName": "Thirumalagiri",
+        "SubRegionName": "Thirumalagiri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "TINS",
+        "RegionCode": "TINS",
+        "RegionName": "Tinsukia",
+        "SubRegionName": "Tinsukia",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "27.489464",
+        "RegionLong": "95.360144"
+      },
+      {
+        "SubRegionCode": "TRCD",
+        "RegionCode": "TRCD",
+        "RegionName": "Tiruchendur",
+        "SubRegionName": "Tiruchendur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "TIRV",
+        "RegionCode": "TIRV",
+        "RegionName": "Tirunelveli",
+        "SubRegionName": "Tirunelveli",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "8.7300",
+        "RegionLong": "77.7000"
+      },
+      {
+        "SubRegionCode": "TIRP",
+        "RegionCode": "TIRP",
+        "RegionName": "Tirupur",
+        "SubRegionName": "Tirupur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "11.1085242",
+        "RegionLong": "77.3410656"
+      },
+      {
+        "SubRegionCode": "TRIC",
+        "RegionCode": "TRIC",
+        "RegionName": "Trichy",
+        "SubRegionName": "Trichy",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "10.8050",
+        "RegionLong": "78.6856"
+      },
+      {
+        "SubRegionCode": "TRIV",
+        "RegionCode": "TRIV",
+        "RegionName": "Trivandrum",
+        "SubRegionName": "Trivandrum",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "8.4875",
+        "RegionLong": "76.9525"
+      },
+      {
+        "SubRegionCode": "TUMK",
+        "RegionCode": "TUMK",
+        "RegionName": "Tumkur",
+        "SubRegionName": "Tumkur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "13.340138",
+        "RegionLong": "77.100098"
+      },
+      {
+        "SubRegionCode": "TTCN",
+        "RegionCode": "TTCN",
+        "RegionName": "Tuticorin",
+        "SubRegionName": "Tuticorin",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "UDAI",
+        "RegionCode": "UDAI",
+        "RegionName": "Udaipur",
+        "SubRegionName": "Udaipur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "24.58",
+        "RegionLong": "73.68"
+      },
+      {
+        "SubRegionCode": "UJJN",
+        "RegionCode": "UJJN",
+        "RegionName": "Ujjain",
+        "SubRegionName": "Ujjain",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "23.1828",
+        "RegionLong": "75.7772"
+      },
+      {
+        "SubRegionCode": "VAD",
+        "RegionCode": "VAD",
+        "RegionName": "Vadodara",
+        "SubRegionName": "Vadodara",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "22.3073095",
+        "RegionLong": "73.1810976"
+      },
+      {
+        "SubRegionCode": "VLSD",
+        "RegionCode": "VLSD",
+        "RegionName": "Valsad",
+        "SubRegionName": "Valsad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.610069",
+        "RegionLong": "72.925858"
+      },
+      {
+        "SubRegionCode": "VAPI",
+        "RegionCode": "VAPI",
+        "RegionName": "Vapi",
+        "SubRegionName": "Vapi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.371237",
+        "RegionLong": "72.90634"
+      },
+      {
+        "SubRegionCode": "VAR",
+        "RegionCode": "VAR",
+        "RegionName": "Varanasi",
+        "SubRegionName": "Varanasi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "25.3176452",
+        "RegionLong": "82.9739144"
+      },
+      {
+        "SubRegionCode": "VAGG",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Vasco Da Gama",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "15.386240",
+        "RegionLong": "73.844603"
+      },
+      {
+        "SubRegionCode": "VELL",
+        "RegionCode": "VELL",
+        "RegionName": "Vellore",
+        "SubRegionName": "Vellore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "12.9202",
+        "RegionLong": "79.1333"
+      },
+      {
+        "SubRegionCode": "VERU",
+        "RegionCode": "VERU",
+        "RegionName": "Vemulawada",
+        "SubRegionName": "Vemulawada",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "VIJA",
+        "RegionCode": "VIJA",
+        "RegionName": "Vijayawada",
+        "SubRegionName": "Vijayawada",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.5190",
+        "RegionLong": "80.6215"
+      },
+      {
+        "SubRegionCode": "VKBD",
+        "RegionCode": "VKBD",
+        "RegionName": "Vikarabad",
+        "SubRegionName": "Vikarabad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "VIZA",
+        "RegionCode": "VIZA",
+        "RegionName": "Vizag",
+        "SubRegionName": "Vizag",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "17.6868159",
+        "RegionLong": "83.2184815"
+      },
+      {
+        "SubRegionCode": "VIZI",
+        "RegionCode": "VIZI",
+        "RegionName": "Vizianagaram",
+        "SubRegionName": "Vizianagaram",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.107144",
+        "RegionLong": "83.392975"
+      },
+      {
+        "SubRegionCode": "WANA",
+        "RegionCode": "WANA",
+        "RegionName": "Wanaparthy",
+        "SubRegionName": "Wanaparthy",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "16.362514",
+        "RegionLong": "78.063183"
+      },
+      {
+        "SubRegionCode": "WAR",
+        "RegionCode": "WAR",
+        "RegionName": "Warangal",
+        "SubRegionName": "Warangal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "18.000055",
+        "RegionLong": "79.588167"
+      },
+      {
+        "SubRegionCode": "WARD",
+        "RegionCode": "WARD",
+        "RegionName": "Wardha",
+        "SubRegionName": "Wardha",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "20.745257",
+        "RegionLong": "78.600217"
+      },
+      {
+        "SubRegionCode": "YAMU",
+        "RegionCode": "YAMU",
+        "RegionName": "Yamunanagar",
+        "SubRegionName": "Yamunanagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "YAVA",
+        "RegionCode": "YAVA",
+        "RegionName": "Yavatmal",
+        "SubRegionName": "Yavatmal",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ZIRK",
+        "RegionCode": "ZIRK",
+        "RegionName": "Zirakpur",
+        "SubRegionName": "Zirakpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "1",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MARC",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Marcela",
+        "RegionSeq": "99",
+        "SubRegionSeq": "5",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "AHMED",
+        "RegionCode": "AHMED",
+        "RegionName": "Ahmednagar",
+        "SubRegionName": "Ahmednagar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "19.0800",
+        "RegionLong": "74.7300"
+      },
+      {
+        "SubRegionCode": "ALLH",
+        "RegionCode": "ALLH",
+        "RegionName": "Allahabad",
+        "SubRegionName": "Allahabad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "25.4358011",
+        "RegionLong": "81.846311"
+      },
+      {
+        "SubRegionCode": "ALWR",
+        "RegionCode": "ALWR",
+        "RegionName": "Alwar",
+        "SubRegionName": "Alwar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "27.5609324",
+        "RegionLong": "76.6250168"
+      },
+      {
+        "SubRegionCode": "ANKL",
+        "RegionCode": "ANKL",
+        "RegionName": "Ankleshwar",
+        "SubRegionName": "Ankleshwar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "ARUP",
+        "RegionCode": "ARUP",
+        "RegionName": "Aruppukottai",
+        "SubRegionName": "Aruppukottai",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "9.5100",
+        "RegionLong": "78.1000"
+      },
+      {
+        "SubRegionCode": "BEED",
+        "RegionCode": "BEED",
+        "RegionName": "Beed",
+        "SubRegionName": "Beed",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "18.9833",
+        "RegionLong": "75.7667"
+      },
+      {
+        "SubRegionCode": "BHIL",
+        "RegionCode": "BHIL",
+        "RegionName": "Bhilwara",
+        "SubRegionName": "Bhilwara ",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "BHWD",
+        "RegionCode": "BHWD",
+        "RegionName": "Bhiwadi",
+        "SubRegionName": "Bhiwadi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "28.214046",
+        "RegionLong": "76.843414"
+      },
+      {
+        "SubRegionCode": "BOIS",
+        "RegionCode": "BOIS",
+        "RegionName": "Boisar",
+        "SubRegionName": "Boisar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "19.8000",
+        "RegionLong": "72.7500"
+      },
+      {
+        "SubRegionCode": "CHIN",
+        "RegionCode": "CHIN",
+        "RegionName": "Chhindwara",
+        "SubRegionName": "Chhindwara",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "22.057314",
+        "RegionLong": "78.936020"
+      },
+      {
+        "SubRegionCode": "CHDM",
+        "RegionCode": "CHDM",
+        "RegionName": "Chinnamandem",
+        "SubRegionName": "Chinnamandem",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "DBBK",
+        "RegionCode": "DBBK",
+        "RegionName": "Dubbaka",
+        "SubRegionName": "Dubbaka",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GHAR\t",
+        "RegionCode": "GHAR",
+        "RegionName": "Ghazipur",
+        "SubRegionName": "Ghazipur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "GWAL",
+        "RegionCode": "GWAL",
+        "RegionName": "Gwalior",
+        "SubRegionName": "Gwalior",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "26.2182871",
+        "RegionLong": "78.1828308"
+      },
+      {
+        "SubRegionCode": "HUBL",
+        "RegionCode": "HUBL",
+        "RegionName": "Hubli",
+        "SubRegionName": "Hubli",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "15.3617",
+        "RegionLong": "75.0849"
+      },
+      {
+        "SubRegionCode": "HSND",
+        "RegionCode": "HSBD",
+        "RegionName": "Husnabad",
+        "SubRegionName": "Husnabad",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "JABL",
+        "RegionCode": "JABL",
+        "RegionName": "Jabalpur",
+        "SubRegionName": "Jabalpur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "23.1667",
+        "RegionLong": "79.95"
+      },
+      {
+        "SubRegionCode": "JPG",
+        "RegionCode": "JPG",
+        "RegionName": "Jalpaiguri",
+        "SubRegionName": "Jalpaiguri",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "JAMM",
+        "RegionCode": "JAMM",
+        "RegionName": "Jammu",
+        "SubRegionName": "Jammu",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "34.024288",
+        "RegionLong": "76.092468"
+      },
+      {
+        "SubRegionCode": "KARG",
+        "RegionCode": "KARG",
+        "RegionName": "Karunagapally",
+        "SubRegionName": "Karunagapally",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KATR",
+        "RegionCode": "KATR",
+        "RegionName": "Katra",
+        "SubRegionName": "Katra",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "32.991809",
+        "RegionLong": "74.932401"
+      },
+      {
+        "SubRegionCode": "KOLM",
+        "RegionCode": "KOLM",
+        "RegionName": "Kollam",
+        "SubRegionName": "Kollam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KRBA",
+        "RegionCode": "KRBA",
+        "RegionName": "Korba",
+        "SubRegionName": "Korba",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "KOTK",
+        "RegionCode": "KOTK",
+        "RegionName": "Kotkapura",
+        "SubRegionName": "Kotkapura",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MAND",
+        "RegionCode": "MAND",
+        "RegionName": "Mandapeta",
+        "SubRegionName": "Mandapeta",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MIHP",
+        "RegionCode": "MIHP",
+        "RegionName": "Mandi",
+        "SubRegionName": "Mandi",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MATH",
+        "RegionCode": "MATH",
+        "RegionName": "Mathura",
+        "SubRegionName": "Mathura",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "27.4924134",
+        "RegionLong": "77.673673"
+      },
+      {
+        "SubRegionCode": "MTPM",
+        "RegionCode": "MTPM",
+        "RegionName": "Mettuppalayam",
+        "SubRegionName": "Mettuppalayam",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "MOGA",
+        "RegionCode": "MOGA",
+        "RegionName": "Moga",
+        "SubRegionName": "Moga",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "30.8000",
+        "RegionLong": "75.1700"
+      },
+      {
+        "SubRegionCode": "NVSR",
+        "RegionCode": "NVSR",
+        "RegionName": "Navsari",
+        "SubRegionName": "Navsari",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "20.946849",
+        "RegionLong": "72.950914"
+      },
+      {
+        "SubRegionCode": "PALG",
+        "RegionCode": "PALG",
+        "RegionName": "Palghar",
+        "SubRegionName": "Palghar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "19.7019886",
+        "RegionLong": "72.7747325"
+      },
+      {
+        "SubRegionCode": "PLWA",
+        "RegionCode": "PLWA",
+        "RegionName": "Palvancha",
+        "SubRegionName": "Palvancha",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "PANJ",
+        "RegionCode": "GOA",
+        "RegionName": "Goa",
+        "SubRegionName": "Panjim",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "RWAA",
+        "RegionCode": "RWAA",
+        "RegionName": "Rewa",
+        "SubRegionName": "Rewa",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SNGO",
+        "RegionCode": "SNGO",
+        "RegionName": "Sangola",
+        "SubRegionName": "Sangola",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SEHO",
+        "RegionCode": "SEHO",
+        "RegionName": "Sehore",
+        "SubRegionName": "Sehore",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SEON",
+        "RegionCode": "SEON",
+        "RegionName": "Seoni",
+        "SubRegionName": "Seoni",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SDDP",
+        "RegionCode": "SDDP",
+        "RegionName": "Siddipet",
+        "SubRegionName": "Siddipet",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SIKR",
+        "RegionCode": "SIKR",
+        "RegionName": "Sikar",
+        "SubRegionName": "Sikar",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "SCO",
+        "RegionCode": "SCO",
+        "RegionName": "Solan",
+        "SubRegionName": "Solan",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "THSR",
+        "RegionCode": "THSR",
+        "RegionName": "Thrissur",
+        "SubRegionName": "Thrissur",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      },
+      {
+        "SubRegionCode": "UDGR",
+        "RegionCode": "UDGR",
+        "RegionName": "Udgir",
+        "SubRegionName": "Udgir",
+        "RegionSeq": "99",
+        "SubRegionSeq": "99",
+        "RegionLat": "",
+        "RegionLong": ""
+      }
+    ]
+  }
+}

@@ -59,6 +59,21 @@ config.oneSignal = {};
 config.oneSignal.appId = process.env.ONESIGNAL_APP_ID || '782fdeab-89df-4cbf-b875-2422ae3b276f';
 
 /**
+ * BookMyShow
+ */
+config.bookMyShow = {};
+config.bookMyShow.url = process.env.BOOK_MY_SHOW_URL || 'http://data-in.bookmyshow.com';
+
+/**
+ * AWS Lambda
+ */
+config.awsLambda = {};
+config.awsLambda.apiKey = process.env.AWS_LAMBDA_API_KEY ||
+  'nBWVBXBOPV6AYcdC8reQR8Z0twOwu0e9aYsrSlvJ';
+config.awsLambda.closestMaterialColorUrl = process.env.CLOSEST_MATERIAL_COLOR_URL ||
+  'https://iwwfzsbdy8.execute-api.us-east-1.amazonaws.com/prod/closest-material-color';
+
+/**
  * Export
  */
 module.exports = config;
