@@ -32,6 +32,15 @@ class BmsCity {
   get RegionLong() {
   }
 
+  set RegionLat(value) {
+  }
+
+  set RegionLong(value) {
+  }
+
+  set Location(value) {
+  }
+
   get isTopCity() {
   }
 }

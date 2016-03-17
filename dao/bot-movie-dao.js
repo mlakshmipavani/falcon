@@ -20,6 +20,18 @@ class BotMovieDao {
       .toArray();
   }
 
+  /**
+   * Returns the nearest BmsCity
+   * @param lat Latitude of the user
+   * @param lng Longitude of the user
+   * @returns {Promise<BmsCity>}
+   */
+  static getNearestCity(/*number*/ lat, /*number*/ lng) {
+    // in GeoPoint (data structure by MongoDB) always lng comes before lat
+    const query = {Location: {$near: {$geometry: {type: 'Point', coordinates: [lng, lat]}}}};
+    return DaoHelper.bmsCities.find(query).next();
+  }
+
   static getLanguages() {
     return DaoHelper.movies.distinct('Language', {});
   }
@@ -55,12 +67,15 @@ class BotMovieDao {
    * @param movieColors An array of colors mapped to eventCodes
    * @returns {Promise}
    */
-  static updateMovieColors(/*Array<{color, eventCode}>*/ movieColors) {
+  static updateMovieColors(/*Array<{color, eventCode, no_poster}>*/ movieColors) {
     var bulk = DaoHelper.movies.initializeUnorderedBulkOp();
     for (let mc of movieColors) {
       let query = {EventCode: mc.eventCode};
-      let update = {color: mc.color};
-      bulk.find(query).update({$set: update});
+      if (mc.no_poster) bulk.find(query).remove();
+      else {
+        let update = {color: mc.color};
+        bulk.find(query).update({$set: update});
+      }
     }
 
     return bulk.execute();

@@ -4,7 +4,7 @@ const request = require('request-promise');
 const _array = require('lodash/array');
 
 const config = require('../../config/config');
-const BookMyShowDao = require('../../dao/bot-bookmyshow-dao');
+const BookMyShowDao = require('../../dao/bot-movie-dao');
 const AwsLambda = require('../aws-lambda');
 const YoutubeController = require('../youtube-controller');
 const log = require('../../utils/logger').child({
@@ -19,6 +19,7 @@ class MovieDataUpdater {
 
   static update() {
     return this._getCityList()
+      .map(this._convertLatLngToGeoJSON)
       .then(BookMyShowDao.storeCities)
       .tap((/*{error}*/ result) => {
         if (result.error) {
@@ -137,6 +138,22 @@ class MovieDataUpdater {
     //noinspection JSUnresolvedFunction
     return request(options)
       .then((/*{BookMyShow:{arrEvent}}*/res) => res.BookMyShow.arrEvent);
+  }
+
+  /**
+   * MongoDb is much more efficient with co-ordinates if stored in GeoJSON format
+   * @param city The city to convert the co-ordinates
+   * @returns {BmsCity}
+   */
+  static _convertLatLngToGeoJSON(/*BmsCity*/ city) {
+    const lat = parseFloat(city.RegionLat);
+    const lng = parseFloat(city.RegionLong);
+    delete city.RegionLat;
+    delete city.RegionLong;
+
+    // in GeoJSON always use <lng, lat>
+    if (lat && lng) city.Location = {type: 'Point', coordinates: [lng, lat]};
+    return city;
   }
 
 }
