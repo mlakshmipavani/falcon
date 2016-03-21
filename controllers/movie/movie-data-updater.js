@@ -2,6 +2,7 @@
 
 const request = require('request-promise');
 const _array = require('lodash/array');
+const _object = require('lodash/object');
 
 const config = require('../../config/config');
 const BookMyShowDao = require('../../dao/bot-movie-dao');
@@ -37,7 +38,10 @@ class MovieDataUpdater {
 
         // concurrency has been limited to 50 coz AWS lambda invocation limit = 100
       }, {concurrency: 50})
-      .then(BookMyShowDao.updateMovieColors);
+      .then(BookMyShowDao.updateMovieColors)
+      .then(() => BookMyShowDao.getUniqueEventCodes())
+      .then(MovieDataUpdater._getRatings)
+      .then(BookMyShowDao.updateMovieRatings);
   }
 
   /**
@@ -71,9 +75,9 @@ class MovieDataUpdater {
   static _getMovieList(/*string*/ cityCode) {
     return this._queryForMovieList(cityCode)
       .map((/*BmsMovie*/ movie) => {
-        let obj = {};
-        const keys = ['EventCode', 'ImageCode', 'EventTitle', 'Ratings', 'GenreArray', 'Language',
-          'Length', 'TrailerURL', 'EventReleaseDate', 'FShareURL'];
+        const obj = {};
+        const keys = ['EventCode', 'ImageCode', 'EventTitle', 'GenreArray', 'Language', 'Length',
+          'TrailerURL', 'ReleaseDateCode', 'FShareURL'];
         keys.forEach(key => obj[key] = movie[key]);
         obj.PosterUrl = `http://in.bmscdn.com/events/Large/${movie.ImageCode}.jpg`;
         if (obj.TrailerURL) {
@@ -85,6 +89,34 @@ class MovieDataUpdater {
         obj.cityCode = cityCode;
         return obj;
       });
+  }
+
+  /**
+   * Get the avg rating of movies
+   * @param eventCodes Unique eventCodes of all the movies
+   * @returns {Promise}
+   */
+  static _getRatings(/*Array<string>*/ eventCodes) {
+    return MovieDataUpdater._queryForRatings(eventCodes)
+      .then((/*{}*/ ratings) => _object.mapValues(ratings, 'avgRating'));
+  }
+
+  /**
+   * Queries bookMyShow servers for movie ratings
+   * @param eventCodes Unique eventCodes of all the movies
+   * @returns {Promise<>}
+   */
+  static _queryForRatings(/*Array<String>*/ eventCodes) {
+    const data = {EventCodes: eventCodes};
+    const options = {
+      url: config.bookMyShow.ratingsUrl,
+      header: {'User-Agent': userAgent},
+      form: {data: JSON.stringify(data)},
+      json: true
+    };
+
+    return request.post(options)
+      .then((/*{ListingData}*/ res) => res.ListingData);
   }
 
   /**

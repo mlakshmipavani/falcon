@@ -1,5 +1,6 @@
 'use strict';
 
+const _object = require('lodash/object');
 const DaoHelper = require('./dao-helper');
 
 class BotMovieDao {
@@ -47,6 +48,14 @@ class BotMovieDao {
   }
 
   /**
+   * Get the event codes of Movies
+   * @returns {Promise<string>}
+   */
+  static getUniqueEventCodes() {
+    return DaoHelper.movies.distinct('EventCode', {});
+  }
+
+  /**
    * Returns a list of {eventCode, posterUrl}
    * Note: eventCode is unique
    * @returns {Promise<Array<{eventCode, posterUrl}>>}
@@ -78,6 +87,20 @@ class BotMovieDao {
       }
     }
 
+    return bulk.execute();
+  }
+
+  /**
+   * Stores the movie ratings
+   * @param ratings An object with eventCodes as the key and rating as the value
+   */
+  static updateMovieRatings(ratings) {
+    const bulk = DaoHelper.movies.initializeUnorderedBulkOp();
+    _object.forIn(ratings, (value, key) => {
+      const query = {EventCode: key};
+      const update = {rating: value};
+      bulk.find(query).update({$set: update});
+    });
     return bulk.execute();
   }
 }
