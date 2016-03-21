@@ -15,7 +15,7 @@ class MovieController {
     return GeoIp.getDetails(clientIp)
       .then(details => BotMovieDao.getNearestCity(details.latitude, details.longitude))
       .then((/*BmsCity*/city) => city.SubRegionCode)
-      .then((/*string*/ cityCode) => this._getMovies(langArr, cityCode));
+      .then((/*string*/ cityCode) => this._getMovies(langArr, 'BANG'));
   }
 
   static _getMovies(/*Array<string>*/ langArr, /*string*/ cityCode) {

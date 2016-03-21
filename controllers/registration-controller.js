@@ -3,6 +3,7 @@
 const request = require('request-promise');
 const UserDao = require('../dao/user-dao.js');
 const OneSignalDao = require('../dao/onesignal-dao');
+const ContactDao = require('../dao/contacts-dao');
 
 class RegistrationController {
 
@@ -15,6 +16,16 @@ class RegistrationController {
       })
       .then((/*User*/ userObj) => userObj._id.toString())
       .then((/*string*/ token) => OneSignalDao.map(token, oneSignalUserId).thenReturn({token}));
+  }
+
+  /**
+   * Stores contacts of the registered user so that they can later be used for marketing
+   * @param userToken Token of the user
+   * @param contacts Contacts that the user has sent
+   * @returns {Promise}
+     */
+  static saveContacts(/*string*/ userToken, /*Array<{email, name}>*/ contacts) {
+    return ContactDao.saveContacts(userToken, contacts);
   }
 
   /**
