@@ -3,6 +3,7 @@
 const apiVersion = require('../config/api-version');
 const ErrorController = require('../controllers/error-controller');
 const MovieController = require('../controllers/movie/movie-controller');
+const MovieBotDao = require('../dao/bot-movie-dao');
 
 class BotMovieRoutes {
 
@@ -10,6 +11,8 @@ class BotMovieRoutes {
     app.get({path: '/bot/@moviesnow/getmovies', version: apiVersion.v1}, getMovies);
     app.get({path: '/bot/@moviesnow/getcities', version: apiVersion.v1}, getCities);
     app.get({path: '/bot/@moviesnow/getlanguages', version: apiVersion.v1}, getLanguages);
+    if (process.env.NODE_ENV === 'development')
+      app.post({path: '/bot/@moviesnow/updateColor', version: apiVersion.v1}, updateColor);
   }
 }
 
@@ -53,6 +56,19 @@ function getLanguages(req, res) {
       res.json(languages);
     })
     .catch(err => res.send(err));
+}
+
+function updateColor(req, res) {
+  // error checking
+  req.check('eventCode', 'eventCode is required param').notEmpty();
+  req.check('color', 'color is a required param').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  const eventCode = req.params.eventCode;
+  const color = req.params.color;
+
+  return MovieBotDao.updateMovieColors([{eventCode, color}]);
 }
 
 module.exports = BotMovieRoutes;
