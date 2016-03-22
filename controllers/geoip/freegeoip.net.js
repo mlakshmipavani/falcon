@@ -1,8 +1,8 @@
 'use strict';
 
 const request = require('request-promise');
-var log = require('../../utils/logger').child({
-  module: 'geoip'
+const log = require('../../utils/logger').child({
+  module: 'FreeGeoIp'
 });
 
 /**
@@ -10,7 +10,7 @@ var log = require('../../utils/logger').child({
  * Note: the rate-limit for this service is 10K requests/hour
  * For more info: https://freegeoip.net/
  */
-class GeoIp {
+class FreeGeoIp {
 
   /**
    * Gets the GeoIp details related to a given IP address
@@ -36,9 +36,8 @@ class GeoIp {
   static getDetails(/*string*/ clientIp) {
     const options = this._getOptions(clientIp);
     return request(options)
-      .catch(err => {
-        log.error(err, `clientIp : ${clientIp}`);
-        throw err;
+      .then((/*{latitude, longitude}*/result) => {
+        return {latitude: result.latitude, longitude: result.longitude};
       });
   }
 
@@ -51,4 +50,4 @@ class GeoIp {
 
 }
 
-module.exports = GeoIp;
+module.exports = FreeGeoIp;

@@ -1,6 +1,6 @@
 'use strict';
 
-const GeoIp = require('../others/geoip');
+const GeoIp = require('../geoip/geoip');
 const BotMovieDao = require('../../dao/bot-movie-dao');
 
 class MovieController {
