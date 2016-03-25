@@ -44,7 +44,7 @@ config.ola.token = process.env.NODE_ENV === 'test' ? config.ola.sandboxToken :
  */
 config.railway = {};
 config.railway.confirmtktApiUrl = 'http://api.confirmtkt.com/api/pnr/status/';
-config.railway.chkPnrStsIrctcApiUrl = 'http://api.checkpnrstatusirctc.in/pnrajax/pnr.php?pnrno=';
+config.railway.chkPnrStsIrctcApiUrl = 'http://checkpnrstatusirctc.in/pnrajax/pnr.php?pnrno=';
 
 /**
  * Wit.AI

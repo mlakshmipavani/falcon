@@ -86,7 +86,14 @@ class TrackPnrController {
         if (isTracking)
           promiseResult = this._turnTrackingOnForUser(userToken, pnr);
         else
-          promiseResult = this._turnTrackingOnForPnr(userToken, pnr);
+          promiseResult = this._turnTrackingOnForPnr(userToken, pnr)
+            .catch(err => {
+              if (err.message === 'invalid Pnr') {
+                return DaoHelper.agendaJobs.removeMany({data: {pnr: pnr}})
+                  .then(() => DaoHelper.pnrStatus.removeMany({pnr}))
+                  .thenReturn(true);
+              }
+            });
 
         return promiseResult.tap((success) => {
           if (!success)

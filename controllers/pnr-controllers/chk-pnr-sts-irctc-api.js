@@ -28,8 +28,13 @@ class ChkPnrStsApi {
    */
   static _extractPnrDetail(/*string*/ html) {
     const doc = new Dom({locator: {}, errorHandler: {}}).parseFromString(html);
-    const obj = {};
 
+    const errorString = xpath.select('//div/text()', doc).toString();
+    const isInvalid = errorString.indexOf('invalid') > -1;
+    if (isInvalid)
+      throw new Error('invalid Pnr');
+
+    const obj = {};
     obj.trainNumber = xpath.select('//table/h5[1]/a/text()', doc).toString().slice(0, 5).trim();
     if (obj.trainNumber === '')
       throw new Error('ChkPnrStsAPI unexpected response');

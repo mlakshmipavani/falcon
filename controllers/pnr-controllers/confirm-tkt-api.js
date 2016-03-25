@@ -14,7 +14,7 @@ class CrmTktApi {
     const url = config.railway.confirmtktApiUrl + pnr;
 
     return request.get({url, json: true})
-      .then(this._extractPnrDetail);
+      .then(this._extractPnrDetail).timedOut(60000);
   }
 
   /**

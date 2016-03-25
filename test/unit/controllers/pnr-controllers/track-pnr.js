@@ -206,4 +206,14 @@ describe('TrackPnrController', () => {
       .then(() => ScheduleCalled.should.be.true);
   });
 
+  it('should not schedule for invalid pnr', () => {
+    let scheduleCalled = false;
+    agenda.schedule = (nextSchedule, taskName, data) => scheduleCalled = true;
+
+    RailPnrController.getStatus = (pnr) => Promise.reject(new Error('invalid Pnr'));
+
+    return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
+      .then(() => scheduleCalled.should.be.false);
+  });
+
 });
