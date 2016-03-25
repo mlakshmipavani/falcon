@@ -8,6 +8,7 @@ const Routes = require('./routes/routes');
 const ApiVersion = require('./config/api-version');
 const config = require('./config/config.js');
 const log = require('./utils/logger');
+const agenda = require('./utils/agenda');
 
 const authMiddleware = require('./middlewares/auth-middleware');
 const requestIp = require('request-ip');
@@ -38,5 +39,16 @@ if (process.env.NODE_ENV === 'test') {
 app.on('uncaughtException', (req, res, err) => {
   log.fatal(`error : ${JSON.stringify(err)}`);
 });
+
+//noinspection JSUnresolvedFunction
+agenda.on('ready', () => agenda.start());
+
+// stop agenda before exiting
+function gracefullyStop() {
+  agenda.stop(() => process.exit(0));
+}
+
+process.on('SIGTERM', gracefullyStop);
+process.on('SIGINT', gracefullyStop);
 
 module.exports = app;

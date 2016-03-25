@@ -52,9 +52,6 @@ agenda.define(taskTrackAgain, (job, done) => {
   return TrackPnrController.startTracking(userToken, pnr).then(done);
 });
 
-//noinspection JSUnresolvedFunction
-agenda.on('ready', () => agenda.start());
-
 class TrackPnrController {
 
   /**
