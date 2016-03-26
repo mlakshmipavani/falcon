@@ -151,26 +151,26 @@ describe('TrackPnrController', () => {
   });
 
   it('should start tracking already tracking pnr for different user ', () => {
-    return TrackPnrController.startTracking(userToken, pnrConfirmed)
-      .then(() => TrackPnrController.startTracking('9990913081', pnrConfirmed))
+    return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
+      .then(() => TrackPnrController.startTracking('9990913081', pnrNotConfirmed))
       .then(result => result.should.be.true)
-      .then(() => DaoHelper.pnrStatus.find({pnr: pnrConfirmed}).toArray())
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrNotConfirmed}).toArray())
       .spread(pnrStatus => pnrStatus.userTokens)
       .then(userTokens => userTokens.indexOf('9990913081') > -1)
       .should.eventually.be.true;
   });
 
   it('should stop tracking for user', () => {
-    return TrackPnrController.startTracking(userToken, pnrConfirmed)
-      .then(() => TrackPnrController.startTracking('9990913081', pnrConfirmed))
-      .then(() => TrackPnrController.stopTracking(userToken, pnrConfirmed))
-      .then(() => DaoHelper.pnrStatus.find({pnr: pnrConfirmed}).toArray())
+    return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
+      .then(() => TrackPnrController.startTracking('9990913081', pnrNotConfirmed))
+      .then(() => TrackPnrController.stopTracking(userToken, pnrNotConfirmed))
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrNotConfirmed}).toArray())
       .spread(pnrStatus => pnrStatus.userTokens.indexOf(userToken) > -1)
       .then(result => result.should.be.false)
-      .then(() => TrackPnrController.stopTracking('9990913081', pnrConfirmed))
-      .then(() => DaoHelper.pnrStatus.find({pnr: pnrConfirmed}).toArray())
+      .then(() => TrackPnrController.stopTracking('9990913081', pnrNotConfirmed))
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrNotConfirmed}).toArray())
       .then(pnrStatusArray => pnrStatusArray.length.should.be.equal(0))
-      .then(() => DaoHelper.agendaJobs.find({data: {pnr: pnrConfirmed}}).toArray())
+      .then(() => DaoHelper.agendaJobs.find({data: {pnr: pnrNotConfirmed}}).toArray())
       .then(pnrStatus => pnrStatus.length.should.be.equal(0));
 
   });
@@ -181,8 +181,8 @@ describe('TrackPnrController', () => {
   });
 
   it('gets pnr status with tracking info [true]', () => {
-    return TrackPnrController.startTracking(userToken, pnrConfirmed)
-      .then(() => TrackPnrController.getStatusWithTrackingInfo(pnrConfirmed, userToken))
+    return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
+      .then(() => TrackPnrController.getStatusWithTrackingInfo(pnrNotConfirmed, userToken))
       .should.eventually.have.property('isTracked', true);
   });
 
@@ -197,7 +197,7 @@ describe('TrackPnrController', () => {
     RailPnrController.getStatus = (pnr) => {
       apiHitCount += 1;
       if (apiHitCount <= 1)
-        return Promise.resolve(undefined);
+        return Promise.reject(new Error('api not working'));
       else
         return Promise.resolve(onePassengerNotConfirmed);
     };
@@ -207,13 +207,42 @@ describe('TrackPnrController', () => {
   });
 
   it('should not schedule for invalid pnr', () => {
-    let scheduleCalled = false;
-    agenda.schedule = (nextSchedule, taskName, data) => scheduleCalled = true;
-
     RailPnrController.getStatus = (pnr) => Promise.reject(new Error('invalid Pnr'));
 
     return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
-      .then(() => scheduleCalled.should.be.false);
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrNotConfirmed}).toArray())
+      .then(pnrStatusArray => pnrStatusArray.length.should.be.equal(0))
+      .then(() => DaoHelper.agendaJobs.find({data: {pnr: pnrNotConfirmed}}).toArray())
+      .then(pnrStatus => pnrStatus.length.should.be.equal(0));
+
+    //.then(() => scheduleCalled.should.be.false);
+  });
+
+  it('should stop and remove pnr from pnrstatus and agendaJobs', () => {
+    let flag = true;
+    RailPnrController.getStatus = (pnr) => {
+      if (flag) {
+        flag = false;
+        return Promise.resolve(onePassengerNotConfirmed);
+      } else
+        return Promise.resolve(onePassengerConfirmed);
+    };
+
+    return TrackPnrController.startTracking(userToken, pnrNotConfirmed)
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrNotConfirmed}).toArray())
+      .tap(console.log)
+      .tap(pnrstatus => console.log(pnrstatus[0].details.passengers))
+      .then(pnrStatusArray => pnrStatusArray.length.should.not.be.equal(0))
+      .then(() => DaoHelper.agendaJobs.find({data: {pnr: pnrNotConfirmed}}).toArray())
+      .then(result => result.length.should.not.be.equal(0))
+        .tap(console.log('haleo'))
+
+      // checks whether pnr is removed from pnrStatus and agendaJobs after pnr is confirmed
+      .then(() => TrackPnrController._trackPnr(pnrNotConfirmed))
+      .then(() => DaoHelper.pnrStatus.find({pnr: pnrNotConfirmed}).toArray())
+      .then(pnrStatusArray => pnrStatusArray.length.should.be.equal(0))
+      .then(() => DaoHelper.agendaJobs.find({data: {pnr: pnrNotConfirmed}}).toArray())
+      .then(pnrStatus => pnrStatus.length.should.be.equal(0));
   });
 
 });

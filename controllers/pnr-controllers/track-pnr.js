@@ -32,18 +32,8 @@ const taskTrackAgain = 'trackAgain';
 agenda.define(taskName, (job, done) => {
 
   const pnr = job.attrs.data.pnr;
+  TrackPnrController._trackPnr(pnr).then(done);
 
-  //noinspection JSUnresolvedFunction
-  return RailPnr.getStatus(pnr)
-    .then(pnrFromAPI => {
-      //noinspection JSUnresolvedFunction
-      return TrackPnrController._checkAndNotify(pnr, pnrFromAPI).thenReturn(pnrFromAPI);
-    })
-    .then(pnrFromAPI => {
-      //noinspection JSUnresolvedFunction
-      return TrackPnrController._scheduleNextIfNeeded(pnr, pnrFromAPI);
-    })
-    .then(done);
 });
 
 agenda.define(taskTrackAgain, (job, done) => {
@@ -53,6 +43,22 @@ agenda.define(taskTrackAgain, (job, done) => {
 });
 
 class TrackPnrController {
+
+  static _getStatus(pnr) {
+    return RailPnr.getStatus(pnr)
+      .catch(err => {
+        if (err.message === 'invalid Pnr')
+          DaoHelper.agendaJobs.removeMany({data: {pnr: pnr}})
+            .then(() => DaoHelper.pnrStatus.removeMany({pnr}));
+        throw err;
+      }).then(pnrFromApi => {
+        //const confirmed = this._isAllConfirmed(pnrFromApi);
+        //if (confirmed)
+        //  DaoHelper.pnrStatus.removeMany({pnr: pnr})
+        //    .then(() => DaoHelper.agendaJobs.removeMany({data: {pnr: pnr}}));
+        return pnrFromApi;
+      });
+  }
 
   /**
    * Same as RailPnrController.getStatus(), but in the result it also returns a field 'isTracked' that shows
@@ -83,19 +89,33 @@ class TrackPnrController {
         if (isTracking)
           promiseResult = this._turnTrackingOnForUser(userToken, pnr);
         else
-          promiseResult = this._turnTrackingOnForPnr(userToken, pnr)
-            .catch(err => {
-              if (err.message === 'invalid Pnr') {
-                return DaoHelper.agendaJobs.removeMany({data: {pnr: pnr}})
-                  .then(() => DaoHelper.pnrStatus.removeMany({pnr}))
-                  .thenReturn(true);
-              }
-            });
+          promiseResult = this._turnTrackingOnForPnr(userToken, pnr);
 
         return promiseResult.tap((success) => {
           if (!success)
             agenda.schedule('in 1 minute', taskTrackAgain, {userToken, pnr});
         });
+      });
+  }
+
+  //static
+
+  /**
+   * tracks pnr and notifies the user for updated pnr
+   * @param pnr
+   * @returns {Promise.<T>}
+   * @private
+   */
+  static _trackPnr(/*String*/ pnr) {
+    //noinspection JSUnresolvedFunction
+    return this._getStatus(pnr)
+      .then(pnrFromAPI => {
+        //noinspection JSUnresolvedFunction
+        return TrackPnrController._checkAndNotify(pnr, pnrFromAPI).thenReturn(pnrFromAPI);
+      })
+      .then(pnrFromAPI => {
+        //noinspection JSUnresolvedFunction
+        return TrackPnrController._scheduleNextIfNeeded(pnr, pnrFromAPI);
       });
   }
 
@@ -124,13 +144,19 @@ class TrackPnrController {
    * @private
    */
   static _turnTrackingOnForPnr(/*String*/ userToken, /*String*/ pnr) {
-    return RailPnr.getStatus(pnr).then(pnrFromAPI => {
-      if (!pnrFromAPI) return false;
-      const pnrDetail = {userTokens: [userToken], pnr: pnr, details: pnrFromAPI};
-      return DaoHelper.pnrStatus.insertOne(pnrDetail)
-        .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
-        .thenReturn(true);
-    });
+    return this._getStatus(pnr)
+      .then(pnrFromAPI => {
+        // TODO : not needed
+        if (!pnrFromAPI) return false;
+        const pnrDetail = {userTokens: [userToken], pnr: pnr, details: pnrFromAPI};
+        return DaoHelper.pnrStatus.insertOne(pnrDetail)
+          .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
+          .thenReturn(true);
+      })
+      .catch(err => {
+        if (err.message != 'invalid Pnr')
+          return false;
+      });
   }
 
   /**
@@ -205,7 +231,6 @@ class TrackPnrController {
 
         const passengersFromAPI = pnrFromAPI.passengers;
 
-        // TODO : change it to details
         const passengersFromDB = pnrFromDB.details.passengers;
         const isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
 
