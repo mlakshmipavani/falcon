@@ -8,7 +8,7 @@ class CrmTktApi {
   /**
    * Returns the status of the pnr
    * @param pnr PNR number
-   * @returns {Promise}
+   * @returns {Promise<PnrDetails>}
    */
   static getStatus(/*String*/ pnr) {
     const url = config.railway.confirmtktApiUrl + pnr;

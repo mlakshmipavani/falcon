@@ -13,7 +13,7 @@ class RailPnrController {
   /**
    * Returns the status of the pnr
    * @param pnr PNR number
-   * @returns {Promise}
+   * @returns {Promise<PnrDetails>}
    */
   static getStatus(/*string*/ pnr) {
     return Promise.any([ConfirmTktApi.getStatus(pnr), ChkPnrStsIrctcApi.getStatus(pnr)])
