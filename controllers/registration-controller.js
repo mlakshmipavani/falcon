@@ -20,12 +20,18 @@ class RegistrationController {
 
   /**
    * Stores contacts of the registered user so that they can later be used for marketing
+   * @param socialId SocialId of the user
    * @param userToken Token of the user
    * @param contacts Contacts that the user has sent
    * @returns {Promise}
-     */
-  static saveContacts(/*string*/ userToken, /*Array<{email, name}>*/ contacts) {
-    return ContactDao.saveContacts(userToken, contacts);
+   */
+  static contacts(/*string*/ socialId, /*string*/ userToken, /*Array<{email, name}>*/ contacts) {
+    return ContactDao.saveContacts(userToken, contacts)
+      .then(() => UserDao.findUserWithToken(socialId, userToken))
+      .then((/*User*/ user) => user.email)
+
+      // remove the user from contacts as he just registered on yolobots
+      .then((/*string*/ email) => ContactDao.removeContact(email));
   }
 
   /**

@@ -17,14 +17,23 @@ class ContactsDao {
     const bulk = DaoHelper.contacts.initializeUnorderedBulkOp();
     for (const contact of contacts) {
       const query = {email: contact.email};
-      const update = {name: contact.name};
       bulk.find(query).upsert().updateOne({
-        $set: update,
-        $setOnInsert: {userToken}
+        $addToSet: {userTokens: userToken},
+        $setOnInsert: {name: contact.name}
       });
     }
 
     return bulk.execute();
+  }
+
+  /**
+   * Removes a particular contact from the collection
+   * Usage: when a user in contacts becomes a registered user
+   * @param email Email id of the user
+   * @returns {Promise}
+   */
+  static removeContact(/*string*/ email) {
+    return DaoHelper.contacts.removeOne({email});
   }
 }
 

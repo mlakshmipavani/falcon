@@ -37,12 +37,11 @@ class UserDao {
    * Finds a user with the given socialId and token
    * @param socialId Social Id of the user
    * @param token Private token of the user
-   * @returns {Promise.<{_id, socialId}>}
+   * @returns {Promise.<{User}>}
    */
   static findUserWithToken(/* string */ socialId, /* string */ token) {
     const query = {_id: ObjectID(token), socialId};
-    const projection = {socialId: 1}; // _id is included by default
-    return DaoHelper.user.find(query).project(projection).toArray()
+    return DaoHelper.user.find(query).toArray()
       .then(userList => {
         if (!userList || userList.length === 0)
           throw ErrorController.logAndReturnError(`User not found with token : ${token}`);

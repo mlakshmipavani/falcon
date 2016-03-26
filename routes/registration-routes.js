@@ -32,10 +32,11 @@ function contacts(req, res) {
   /** @type {{contacts}} */
   const params = req.params;
   const contacts = params.contacts;
+  const socialId = req.username;
   const userToken = req.authorization.basic.password;
 
   res.json({success: true});
-  return RegistrationController.saveContacts(userToken, contacts);
+  return RegistrationController.contacts(socialId, userToken, contacts);
 }
 
 module.exports = RegistrationRoutes;
