@@ -1,5 +1,6 @@
 'use strict';
 
+const Promise = require('bluebird');
 const request = require('request-promise');
 const xpath = require('xpath');
 const Dom = require('xmldom').DOMParser;
@@ -18,6 +19,8 @@ class ChkPnrStsApi {
     const url = config.railway.chkPnrStsIrctcApiUrl + pnr;
 
     return request.get(url)
+      .then(Promise.resolve) // convert to bluebird promise
+      .timeout(2000)
       .then(this._extractPnrDetail);
   }
 
