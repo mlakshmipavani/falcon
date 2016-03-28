@@ -323,4 +323,48 @@ describe('New Track', () => {
         RailPnrController.getStatus = originalGetStatus;
       });
   });
+
+  it('gets pnr status with tracking info [false]', () => {
+    const pnrDetails = RailResponses.onePassengerNotConfirmed;
+    const originalGetStatus = RailPnrController.getStatus;
+    RailPnrController.getStatus = (pnr) => Promise.resolve(pnrDetails);
+    return TrackPnrController.getStatusWithTrackingInfo(pnr, userToken)
+      .then((/*{isTracked}*/ result) => result.isTracked.should.be.false)
+      .then(() => {
+        // restore original code
+        RailPnrController.getStatus = originalGetStatus;
+      });
+  });
+
+  it('gets pnr status with tracking info [true]', () => {
+    const pnrDetails = RailResponses.onePassengerNotConfirmed;
+    const originalGetStatus = RailPnrController.getStatus;
+    RailPnrController.getStatus = (pnr) => Promise.resolve(pnrDetails);
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+      .then(() => TrackPnrController.getStatusWithTrackingInfo(pnr, userToken))
+      .then((/*{isTracked}*/ result) => result.isTracked.should.be.true)
+      .then(() => {
+        // restore original code
+        RailPnrController.getStatus = originalGetStatus;
+      });
+  });
+
+  it('stops tracking [multiple users tracking same pnr]', () => {
+    const pnrDetails = RailResponses.onePassengerNotConfirmed;
+    const userToken2 = 'token2';
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+      .then(() => PnrStatusDao.addUserToTrackedPnr(userToken2, pnr))
+      .then(() => TrackPnrController.stopTracking(userToken, pnr))
+      .then(() => PnrStatusDao.getPnrDetailsWithTokens(pnr))
+      .then((/*{details, userTokens}*/ result) =>
+        result.userTokens.should.deep.equal([userToken2]));
+  });
+
+  it('stops tracking [the only user]', () => {
+    const pnrDetails = RailResponses.onePassengerNotConfirmed;
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+      .then(() => TrackPnrController.stopTracking(userToken, pnr))
+      .then(() => PnrStatusDao.isPnrTracked(pnr))
+      .should.eventually.be.false;
+  });
 });

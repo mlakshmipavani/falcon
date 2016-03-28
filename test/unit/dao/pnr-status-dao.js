@@ -61,4 +61,35 @@ describe('Pnr Status Dao', () => {
       .then(() => PnrStatusDao.isPnrTracked(pnr))
       .should.eventually.equal(false);
   });
+
+  it('pulls user out [multiple users present]', () => {
+    const userToken2 = 'token2';
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+      .then(() => PnrStatusDao.addUserToTrackedPnr(userToken2, pnr))
+      .then(() => PnrStatusDao.pullUserOut(userToken, pnr))
+      .then(() => PnrStatusDao.getPnrDetailsWithTokens(pnr))
+      .then((/*{details, userTokens}*/ result) =>
+        result.userTokens.should.deep.equal([userToken2]));
+  });
+
+  it('pulls user out [the only user]', () => {
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+      .then(() => PnrStatusDao.pullUserOut(userToken, pnr))
+      .then(() => PnrStatusDao.isPnrTracked(pnr))
+      .should.eventually.be.false;
+  });
+
+  it('checks if a user is tracking a pnr [false]', () => {
+    // some other user is tracking this pnr
+    const userToken2 = 'token2';
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken2)
+      .then(() => PnrStatusDao.isUserTrackingPnr(userToken, pnr))
+      .should.eventually.be.false;
+  });
+
+  it('checks if a user is tracking a pnr [true]', () => {
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+      .then(() => PnrStatusDao.isUserTrackingPnr(userToken, pnr))
+      .should.eventually.be.true;
+  });
 });

@@ -15,6 +15,17 @@ class PnrStatusDao {
   }
 
   /**
+   * Is this particular user tracking a given PNR number
+   * @param userToken Token of the user
+   * @param pnr PNR Number
+   * @return {Promise.<boolean>}
+   */
+  static isUserTrackingPnr(/*string*/ userToken, /*string*/ pnr) {
+    return DaoHelper.pnrStatus.count({pnr, userTokens: userToken})
+      .then(count => count > 0);
+  }
+
+  /**
    * Add a user to an already being tracked pnr
    * @param userToken User Token of the user who wants to track this PNR
    * @param pnr PNR number that's already being tracked
@@ -66,6 +77,27 @@ class PnrStatusDao {
    */
   static removePnrDetails(/*string*/ pnr) {
     return DaoHelper.pnrStatus.removeOne({pnr});
+  }
+
+  /**
+   * Removes the user from a list if people who are tracking the same PNR
+   * If the given user is the only user tracking this PNR then the entire document is removed
+   * @param userToken Token of the user to remove
+   * @param pnr PNR number the user was tracking
+   * @return {Promise}
+   */
+  static pullUserOut(/*string*/ userToken, /*string*/ pnr) {
+    return DaoHelper.pnrStatus.findOneAndUpdate({pnr},
+      {$pull: {userTokens: userToken}},
+      {returnOriginal: false})
+      .then(result => result.value)
+      .then((/*{details, userTokens}*/ result) => result.userTokens.length === 0)
+      .tap(isEmpty => {
+        if (isEmpty) return DaoHelper.pnrStatus.deleteOne({pnr});
+      })
+      .tap(isEmpty => {
+        if (isEmpty) return DaoHelper.agendaJobs.deleteMany({data: {pnr}});
+      });
   }
 }
 

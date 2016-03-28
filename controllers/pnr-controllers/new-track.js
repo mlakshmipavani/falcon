@@ -48,12 +48,39 @@ agenda.define(AgendaTasks.trackAgainTaskName, AgendaTasks.trackAgain);
 
 class TrackPnrController {
 
+  /**
+   * Same as RailPnrController.getStatus(), but in the result it also returns a field 'isTracked' that shows
+   * if the calling user is tracking this pnr or not
+   * @param pnr PNR number
+   * @param userToken Token (or _id of the user)
+   * @returns {Promise<{}>}
+   */
+  static getStatusWithTrackingInfo(/*String*/ pnr, /*String*/ userToken) {
+    return Promise.join(
+      RailPnrController.getStatus(pnr),
+      PnrStatusDao.isUserTrackingPnr(userToken, pnr),
+      (/*{}*/ pnrStatus, /*boolean*/ isTracked) => {
+        //noinspection JSUndefinedPropertyAssignment
+        pnrStatus.isTracked = isTracked;
+        return pnrStatus;
+      });
+  }
+
   static startTracking(/*string*/ userToken, /*string*/ pnr) {
     return PnrStatusDao.isPnrTracked(pnr)
       .then((/*boolean*/ isTracked) => {
         if (isTracked) return PnrStatusDao.addUserToTrackedPnr(userToken, pnr);
         else return this._turnTrackingOn(pnr, userToken);
       });
+  }
+
+  /**
+   * Stops tracking pnr status for given user
+   * @param userToken Token of the user who wants to stop tracking
+   * @param pnr PNR number he was tracking
+   */
+  static stopTracking(/*string*/ userToken, /*string*/ pnr) {
+    return PnrStatusDao.pullUserOut(userToken, pnr);
   }
 
   static _turnTrackingOn(/*string*/ pnr, /*string*/ userToken) {
@@ -125,6 +152,7 @@ class TrackPnrController {
   }
 
   static _getNextSchedule(/*string*/ boardingDate) {
+    if (process.env.NODE_ENV === 'development') return 'in 1 minute';
     let nextRunAt = 'in 5 minutes';
     const now = moment();
     const journeyDate = moment(boardingDate, 'DD-MM-YYYY');
