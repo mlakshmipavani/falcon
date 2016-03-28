@@ -1,22 +1,26 @@
 'use strict';
 
+const Promise = require('bluebird');
 const request = require('request-promise');
 const xpath = require('xpath');
 const Dom = require('xmldom').DOMParser;
 
 const config = require('../../config/config');
+const InvalidPnrError = require('./invalid-pnr-error');
 
 class ChkPnrStsApi {
 
   /**
    * Returns the status of the pnr
    * @param pnr PNR number
-   * @returns {Promise}
+   * @returns {Promise<PnrDetails>}
    */
   static getStatus(/*string*/ pnr) {
     const url = config.railway.chkPnrStsIrctcApiUrl + pnr;
 
     return request.get(url)
+      .then(Promise.resolve) // convert to bluebird promise
+      .timeout(2000)
       .then(this._extractPnrDetail);
   }
 
@@ -31,8 +35,7 @@ class ChkPnrStsApi {
 
     const errorString = xpath.select('//div/text()', doc).toString();
     const isInvalid = errorString.indexOf('invalid') > -1;
-    if (isInvalid)
-      throw new Error('invalid Pnr');
+    if (isInvalid) throw new InvalidPnrError();
 
     const obj = {};
     obj.trainNumber = xpath.select('//table/h5[1]/a/text()', doc).toString().slice(0, 5).trim();

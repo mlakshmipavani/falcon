@@ -1,12 +1,14 @@
 'use strict';
 
-const agenda = require('../../utils/agenda');
 const moment = require('moment');
 const Promise = require('bluebird');
+
 const Utils = require('../../utils/Utils');
-const RailPnr = require('./rail-pnr-controller');
-const DaoHelper = require('../../dao/dao-helper');
+const agenda = require('../../utils/agenda');
+const RailPnrController = require('./rail-pnr-controller');
 const PushController = require('../push-controller');
+const InvalidPnrError = require('./invalid-pnr-error');
+const PnrStatusDao = require('../../dao/pnr-status-dao');
 
 // this is for testing purpose mocking api response
 //var pnrFromAPI = {
@@ -26,31 +28,23 @@ const PushController = require('../push-controller');
 //  chartStatus: 'CHART NOT PREPARED'
 //};
 
-const taskName = 'trackPnr';
-const taskTrackAgain = 'trackAgain';
+const AgendaTasks = {
+  trackPnrTaskName: 'trackPnr',
+  trackPnr: (job, done) => {
+    const pnr = job.attrs.data.pnr;
+    return TrackPnrController._trackPnr(pnr).then(() => done());
+  },
 
-agenda.define(taskName, (job, done) => {
+  trackAgainTaskName: 'trackAgain',
+  trackAgain: (job, done) => {
+    const userToken = job.attrs.data.userToken;
+    const pnr = job.attrs.data.pnr;
+    return TrackPnrController.startTracking(userToken, pnr).then(() => done());
+  }
+};
 
-  const pnr = job.attrs.data.pnr;
-
-  //noinspection JSUnresolvedFunction
-  return RailPnr.getStatus(pnr)
-    .then(pnrFromAPI => {
-      //noinspection JSUnresolvedFunction
-      return TrackPnrController._checkAndNotify(pnr, pnrFromAPI).thenReturn(pnrFromAPI);
-    })
-    .then(pnrFromAPI => {
-      //noinspection JSUnresolvedFunction
-      return TrackPnrController._scheduleNextIfNeeded(pnr, pnrFromAPI);
-    })
-    .then(done);
-});
-
-agenda.define(taskTrackAgain, (job, done) => {
-  const userToken = job.attrs.data.userToken;
-  const pnr = job.attrs.data.pnr;
-  return TrackPnrController.startTracking(userToken, pnr).then(done);
-});
+agenda.define(AgendaTasks.trackPnrTaskName, AgendaTasks.trackPnr);
+agenda.define(AgendaTasks.trackAgainTaskName, AgendaTasks.trackAgain);
 
 class TrackPnrController {
 
@@ -62,7 +56,9 @@ class TrackPnrController {
    * @returns {Promise<{}>}
    */
   static getStatusWithTrackingInfo(/*String*/ pnr, /*String*/ userToken) {
-    return Promise.join(RailPnr.getStatus(pnr), this._isTrackingOnForUser(userToken, pnr),
+    return Promise.join(
+      RailPnrController.getStatus(pnr),
+      PnrStatusDao.isUserTrackingPnr(userToken, pnr),
       (/*{}*/ pnrStatus, /*boolean*/ isTracked) => {
         //noinspection JSUndefinedPropertyAssignment
         pnrStatus.isTracked = isTracked;
@@ -70,214 +66,70 @@ class TrackPnrController {
       });
   }
 
-  /**
-   * Initialises tracking for pnr status
-   * @param userToken Token of the user who wants to track pnr
-   * @param pnr PNR Number to track
-   * @returns {Promise<boolean>}
-   */
-  static startTracking(/*String*/ userToken, /*String*/ pnr) {
-    return this._isTrackingPNR(pnr)
-      .then(isTracking => {
-        let promiseResult;
-        if (isTracking)
-          promiseResult = this._turnTrackingOnForUser(userToken, pnr);
-        else
-          promiseResult = this._turnTrackingOnForPnr(userToken, pnr)
-            .catch(err => {
-              if (err.message === 'invalid Pnr') {
-                return DaoHelper.agendaJobs.removeMany({data: {pnr: pnr}})
-                  .then(() => DaoHelper.pnrStatus.removeMany({pnr}))
-                  .thenReturn(true);
-              }
-            });
-
-        return promiseResult.tap((success) => {
-          if (!success)
-            agenda.schedule('in 1 minute', taskTrackAgain, {userToken, pnr});
-        });
+  static startTracking(/*string*/ userToken, /*string*/ pnr) {
+    return PnrStatusDao.isPnrTracked(pnr)
+      .then((/*boolean*/ isTracked) => {
+        if (isTracked) return PnrStatusDao.addUserToTrackedPnr(userToken, pnr);
+        else return this._turnTrackingOn(pnr, userToken);
       });
-  }
-
-  /**
-   * Adds a user to the notify list to an already running pnr track
-   * @param userToken Token of the user who wants to track pnr
-   * @param pnr PNR Number to track
-   * @returns {Promise.<boolean>}
-   * @private
-   */
-  static _turnTrackingOnForUser(/*String*/ userToken, /*String*/ pnr) {
-    return this._isTrackingOnForUser(userToken, pnr)
-      .then(trackingForUser => {
-        if (!trackingForUser)
-          return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$addToSet: {userTokens: userToken}})
-            .thenReturn(true);
-        return false;
-      });
-  }
-
-  /**
-   * Creates a new pnr track job and associates the user to it's notify list
-   * @param userToken Token of the user who wants to track pnr
-   * @param pnr PNR Number to track
-   * @returns {Promise<boolean>}
-   * @private
-   */
-  static _turnTrackingOnForPnr(/*String*/ userToken, /*String*/ pnr) {
-    return RailPnr.getStatus(pnr).then(pnrFromAPI => {
-      if (!pnrFromAPI) return false;
-      const pnrDetail = {userTokens: [userToken], pnr: pnr, details: pnrFromAPI};
-      return DaoHelper.pnrStatus.insertOne(pnrDetail)
-        .then(() => this._scheduleNextIfNeeded(pnr, pnrFromAPI))
-        .thenReturn(true);
-    });
   }
 
   /**
    * Stops tracking pnr status for given user
-   * @param userToken
-   * @param pnr
+   * @param userToken Token of the user who wants to stop tracking
+   * @param pnr PNR number he was tracking
    */
-  static stopTracking(/*String*/ userToken, /*String*/ pnr) {
-    return DaoHelper.pnrStatus
-      .findOneAndUpdate({pnr: pnr}, {$pull: {userTokens: userToken}}, {returnOriginal: false})
-      .then(result => result.value)
-      .then((pnrFromDB) => {
-        if (pnrFromDB.userTokens.length === 0)
-          return DaoHelper.pnrStatus.deleteMany({pnr: pnr}).thenReturn(true);
-        return false;
+  static stopTracking(/*string*/ userToken, /*string*/ pnr) {
+    return PnrStatusDao.pullUserOut(userToken, pnr);
+  }
+
+  static _turnTrackingOn(/*string*/ pnr, /*string*/ userToken) {
+    return RailPnrController.getStatus(pnr)
+      .tap((/*PnrDetails*/ details) => PnrStatusDao.insertPnrDetails(pnr, details, userToken))
+      .then((/*PnrDetails*/ details) => this._scheduleNextIfNeeded(pnr, details))
+      .catch(err => {
+        if (!(err instanceof InvalidPnrError))
+          this._schedule('in 1 minute', AgendaTasks.trackAgainTaskName, {pnr, userToken});
+        else throw err;
+      });
+  }
+
+  static _trackPnr(/*string*/ pnr) {
+    return RailPnrController.getStatus(pnr)
+      .then((/*PnrDetails*/ pnrDetails) => {
+        return this._arePassengerDetailsSameInDb(pnr, pnrDetails).then((/*boolean*/ isSame) => {
+          return {details: pnrDetails, isSame, allCNF: this._areAllConfirmed(pnrDetails)};
+        });
       })
-      .then((deleted) => {
-        if (deleted) return DaoHelper.agendaJobs.deleteMany({data: {pnr: pnr}});
+      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+        if (!result.isSame) return PnrStatusDao.updatePnrDetails(pnr, result.details);
+      })
+      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+        if (!result.isSame) return this._notifyAllUsers(pnr);
+      })
+      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+        if (result.allCNF) return PnrStatusDao.removePnrDetails(pnr);
+      })
+      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+        return this._scheduleNextIfNeeded(pnr, result.details);
+      })
+      .catch(err => {
+        if (err.some(e => e instanceof InvalidPnrError)) return PnrStatusDao.removePnrDetails(pnr);
+        else this._schedule('in 1 minute', AgendaTasks.trackPnrTaskName, {pnr});
       });
-  }
+  };
 
-  /**
-   * checks if pnr is being tracked for any user
-   * @param pnr
-   * @returns {Promise.<boolean>}
-   * @private
-   */
-  static _isTrackingPNR(/*String*/ pnr) {
-    return DaoHelper.pnrStatus.find({pnr: pnr})
-      .toArray()
-      .then(resultArray => resultArray.length > 0);
-  }
-
-  /**
-   * checks whether pnr is being tracked or not for given user
-   * @param userToken
-   * @param pnr
-   * @returns {Promise.<boolean>}
-   * @private
-   */
-  static _isTrackingOnForUser(/*String*/ userToken, /*String*/ pnr) {
-    return DaoHelper.pnrStatus.find({pnr: pnr}).toArray().then(resultArray => {
-      if (resultArray.length > 0)
-        return resultArray[0].userTokens.indexOf(userToken) >= 0;
-      return false;
-    });
-  }
-
-  /**
-   * it schedules next pnr check if all tickets are not confirmed
-   * @param pnr
-   * @param pnrFromAPI
-   * @private
-   */
-  static _scheduleNextIfNeeded(pnr, pnrFromAPI) {
-    const boardingDate = pnrFromAPI.boardingDate;
-    const confirmed = this._isAllConfirmed(pnrFromAPI);
-    if (!confirmed) this._schedule(boardingDate, pnr);
-  }
-
-  /**
-   * Checks whether if all passengers pnrStatus is confirmed or not
-   * @param pnr pnr number
-   * @param pnrFromAPI pnr Details from irctc
-   * @returns {Promise<T>}
-   * @private
-   */
-  static _checkAndNotify(/*String*/ pnr, /*{passengers}*/ pnrFromAPI) {
-
-    return this._getFromDB(pnr)
-      .spread((/*{userTokens, details}*/ pnrFromDB) => {
-
-        const passengersFromAPI = pnrFromAPI.passengers;
-
-        // TODO : change it to details
-        const passengersFromDB = pnrFromDB.details.passengers;
-        const isSame = this._isPassengersDetailSame(passengersFromDB, passengersFromAPI);
-
-        // tracking will always be on if notification is sent
-        // noinspection JSUndefinedPropertyAssignment
-        pnrFromAPI.isTracked = true;
-
-        if (!isSame) return DaoHelper.pnrStatus.updateOne({pnr: pnr}, {$set: {details: pnrFromAPI}})
-          .then(() => this._notifyAll(pnr, pnrFromAPI));
-
-        return Promise.resolve();
-      });
-  }
-
-  /**
-   * Checks whether if all passengers pnrStatus is confirmed or not
-   * @param pnrDetail pnr Details from irctc
-   * @returns Boolean
-   * @private
-   */
-  static _isAllConfirmed(/*{passengers}*/ pnrDetail) {
-    const passengers = pnrDetail.passengers;
-    return passengers.every((passenger) => passenger.currentStatus === 'CNF');
-  }
-
-  /**
-   * Schedules next call to api based on boarding date
-   * @param boardingDate Should be in 'DD-MM-YYYY' format
-   * @param pnr
-   * @private
-   */
-  static _schedule(/*String*/ boardingDate, /*String*/ pnr) {
-    const nextSchedule = this._getNextSchedule(boardingDate);
-    agenda.schedule(nextSchedule, taskName, {pnr: pnr});
-  }
-
-  /**
-   * Get the new schedule time to check pnr status
-   * @param date Date of journey in DD-MM-YYYY format
-   * @returns String use this string as argument to agenda.schedule
-   * @private
-   */
-  static _getNextSchedule(/*String*/ date) {
-    let nextSchedule = 'in 5 minutes';
-    const now = moment();
-
-    const boardingDate = moment(date, 'DD-MM-YYYY');
-
-    //noinspection JSUnresolvedFunction
-    const difference = boardingDate.diff(now, 'hours');
-    if (difference < 48 && difference >= 24) nextSchedule = 'in 4 hours';
-    else if (difference >= 48) nextSchedule = 'in 24 hours';
-    else if (difference < 24) nextSchedule = 'in 30 minutes';
-    return nextSchedule;
-  }
-
-  /**
-   * finds pnr details saved in DB
-   * @param pnr pnr Number
-   * @returns {Promise<Array<{}>>}
-   * @private
-   */
-  static _getFromDB(/*String*/ pnr) {
-    return DaoHelper.pnrStatus.find({pnr: pnr}).toArray();
+  static _arePassengerDetailsSameInDb(/*string*/ pnr, /*PnrDetails*/ pnrDetails) {
+    return PnrStatusDao.getPnrDetailsWithTokens(pnr)
+      .then(pnrFromDb =>
+        this._isPassengersDetailSame(pnrDetails.passengers, pnrFromDb.details.passengers));
   }
 
   /**
    * Checks whether both the passenger details is same or not
    * @param passengersFromDB passenger details saved in DB
    * @param passengersFromAPI passenger details from API response
-   * @returns {*|boolean}
-   * @private
+   * @returns {boolean}
    */
   static _isPassengersDetailSame(/*Array*/ passengersFromDB, /*Array*/ passengersFromAPI) {
     return passengersFromDB.every((passengerFromDB, i) => {
@@ -285,21 +137,54 @@ class TrackPnrController {
     });
   }
 
-  /**
-   * notifies all user about pnr status update
-   * @param pnr
-   * @param pnrFromAPI
-   * @private
-   */
-  static _notifyAll(/*String*/ pnr, /*{}*/ pnrFromAPI) {
-    return DaoHelper.pnrStatus.find({pnr: pnr}).toArray()
-      .spread(pnrStatus => {
-        //noinspection JSUndefinedPropertyAssignment
-        pnrFromAPI.pnr = pnr;
-        return PushController.pushPnrUpdate(pnrFromAPI, pnrStatus.userTokens);
-      });
+  static _scheduleNextIfNeeded(/*string*/ pnr, /*PnrDetails*/ pnrDetails) {
+    const boardingDate = pnrDetails.boardingDate;
+    const allConfirmed = this._areAllConfirmed(pnrDetails);
+    if (!allConfirmed) {
+      const nextRunAt = this._getNextSchedule(boardingDate);
+      this._schedule(nextRunAt, AgendaTasks.trackPnrTaskName, {pnr});
+    }
   }
 
+  static _areAllConfirmed(/*PnrDetails*/ pnrDetails) {
+    const passengers = pnrDetails.passengers;
+    return passengers.every(passenger => passenger.currentStatus === 'CNF');
+  }
+
+  static _getNextSchedule(/*string*/ boardingDate) {
+    if (process.env.NODE_ENV === 'development') return 'in 1 minute';
+    let nextRunAt = 'in 5 minutes';
+    const now = moment();
+    const journeyDate = moment(boardingDate, 'DD-MM-YYYY');
+    const diff = journeyDate.diff(now, 'hours');
+    if (diff < 48 && diff >= 24) nextRunAt = 'in 4 hours';
+    else if (diff >= 48) nextRunAt = 'in 24 hours';
+    else if (diff < 24) nextRunAt = 'in 30 minutes';
+    return nextRunAt;
+  }
+
+  /**
+   * Schedules a task in Agenda
+   * @param nextRunAt When to run next
+   * @param taskName Name of the task to schedule
+   * @param data Data to pass to the task
+   */
+  static _schedule(/*string*/ nextRunAt, /*string*/ taskName, data) {
+    agenda.schedule(nextRunAt, taskName, data);
+  }
+
+  static _notifyAllUsers(/*string*/ pnr) {
+    return PnrStatusDao.getPnrDetailsWithTokens(pnr)
+      .then((/*{details, userTokens}*/ result) => {
+        result.details.pnr = pnr;
+        return PushController.pushPnrUpdate(result.details, result.userTokens);
+      });
+
+  }
+
+  static get AgendaTasks() {
+    return AgendaTasks;
+  }
 }
 
 module.exports = TrackPnrController;

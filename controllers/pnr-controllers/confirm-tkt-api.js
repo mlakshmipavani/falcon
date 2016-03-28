@@ -1,5 +1,6 @@
 'use strict';
 
+const Promise = require('bluebird');
 const request = require('request-promise');
 const config = require('../../config/config');
 
@@ -8,13 +9,15 @@ class CrmTktApi {
   /**
    * Returns the status of the pnr
    * @param pnr PNR number
-   * @returns {Promise}
+   * @returns {Promise<PnrDetails>}
    */
   static getStatus(/*String*/ pnr) {
     const url = config.railway.confirmtktApiUrl + pnr;
 
     return request.get({url, json: true})
-      .then(this._extractPnrDetail).timedOut(60000);
+      .then(Promise.resolve)
+      .timeout(2000)
+      .then(this._extractPnrDetail);
   }
 
   /**
