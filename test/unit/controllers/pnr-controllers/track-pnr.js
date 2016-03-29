@@ -33,7 +33,7 @@ describe('New Track', () => {
   });
 
   it('verifies if all passengers are CNF', () => {
-    const allCNF = {passengers: [{currentStatus: 'CNF'}, {currentStatus: 'CNF'}]};
+    const allCNF = {passengers: [{currentStatus: 'CNF'}, {currentStatus: 'Confirmed'}]};
     TrackPnrController._areAllConfirmed(allCNF).should.equal(true);
 
     const notAllCNF = {passengers: [{currentStatus: 'CNF'}, {currentStatus: 'RAC'}]};

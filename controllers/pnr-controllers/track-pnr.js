@@ -158,7 +158,10 @@ class TrackPnrController {
    */
   static _areAllConfirmed(/*PnrDetails*/ pnrDetails) {
     const passengers = pnrDetails.passengers;
-    return passengers.every(passenger => passenger.currentStatus === 'CNF');
+    return passengers.every(passenger => {
+      return passenger.currentStatus === 'CNF' ||
+        passenger.currentStatus.toUpperCase() === 'CONFIRMED';
+    });
   }
 
   /**
