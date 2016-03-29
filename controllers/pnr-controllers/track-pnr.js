@@ -98,19 +98,23 @@ class TrackPnrController {
     return RailPnrController.getStatus(pnr)
       .then((/*PnrDetails*/ pnrDetails) => {
         return this._arePassengerDetailsSameInDb(pnr, pnrDetails).then((/*boolean*/ isSame) => {
-          return {details: pnrDetails, isSame, allCNF: this._areAllConfirmed(pnrDetails)};
+          return {
+            details: pnrDetails,
+            isSame,
+            shouldRemove: this._areAllConfirmed(pnrDetails) || this._areAllCancelled(pnrDetails)
+          };
         });
       })
-      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+      .tap((/*{details: PnrDetails, isSame: boolean, shouldRemove: boolean}*/ result) => {
         if (!result.isSame) return PnrStatusDao.updatePnrDetails(pnr, result.details);
       })
-      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+      .tap((/*{details: PnrDetails, isSame: boolean, shouldRemove: boolean}*/ result) => {
         if (!result.isSame) return this._notifyAllUsers(pnr);
       })
-      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
-        if (result.allCNF) return PnrStatusDao.removePnrDetails(pnr);
+      .tap((/*{details: PnrDetails, isSame: boolean, shouldRemove: boolean}*/ result) => {
+        if (result.shouldRemove) return PnrStatusDao.removePnrDetails(pnr);
       })
-      .tap((/*{details: PnrDetails, isSame: boolean, allCNF: boolean}*/ result) => {
+      .tap((/*{details: PnrDetails, isSame: boolean, shouldRemove: boolean}*/ result) => {
         return this._scheduleNextIfNeeded(pnr, result.details);
       })
       .catch(err => {
@@ -140,15 +144,31 @@ class TrackPnrController {
   static _scheduleNextIfNeeded(/*string*/ pnr, /*PnrDetails*/ pnrDetails) {
     const boardingDate = pnrDetails.boardingDate;
     const allConfirmed = this._areAllConfirmed(pnrDetails);
-    if (!allConfirmed) {
+    const allCancelled = this._areAllCancelled(pnrDetails);
+    if (!allConfirmed && !allCancelled) {
       const nextRunAt = this._getNextSchedule(boardingDate);
       this._schedule(nextRunAt, AgendaTasks.trackPnrTaskName, {pnr});
     }
   }
 
+  /**
+   * Checks if all the passengers in the PNR are confirmed
+   * @param pnrDetails
+   * @return {boolean}
+   */
   static _areAllConfirmed(/*PnrDetails*/ pnrDetails) {
     const passengers = pnrDetails.passengers;
     return passengers.every(passenger => passenger.currentStatus === 'CNF');
+  }
+
+  /**
+   * Checks if all the passenger in the PNR are cancelled
+   * @param pnrDetails
+   * @return {boolean}
+   */
+  static _areAllCancelled(/*PnrDetails*/ pnrDetails) {
+    const passengers = pnrDetails.passengers;
+    return passengers.every(passenger => passenger.currentStatus.toUpperCase() === 'CAN/MOD');
   }
 
   static _getNextSchedule(/*string*/ boardingDate) {

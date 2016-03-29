@@ -79,9 +79,28 @@ const twoPassenger01Confirmed = {
   chartStatus: 'CHART NOT PREPARED'
 };
 
+const onePassengerCancelled = {
+  trainNumber: '12956',
+  trainName: 'JP BCT SUPFAST',
+  boardingDate: '27- 3-2016',
+  from: 'JP',
+  to: 'BCT',
+  reservedUpto: 'BCT',
+  boardingPoint: 'JP',
+  class: '3A',
+  passengers: [{
+    name: '1',
+    bookingStatus: 'W/L   12,CK',
+    currentStatus: 'Can/Mod'
+  }],
+  bookingFare: '1810',
+  chartStatus: 'CHART PREPARED'
+};
+
 module.exports = {
   twoPassengersParsed,
   onePassengerConfirmed,
   onePassengerNotConfirmed,
-  twoPassenger01Confirmed
+  twoPassenger01Confirmed,
+  onePassengerCancelled
 };

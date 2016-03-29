@@ -40,6 +40,14 @@ describe('New Track', () => {
     TrackPnrController._areAllConfirmed(notAllCNF).should.equal(false);
   });
 
+  it('verifies if all passengers are CAN', () => {
+    const allCNF = {passengers: [{currentStatus: 'CAN/MOD'}, {currentStatus: 'Can/Mod'}]};
+    TrackPnrController._areAllCancelled(allCNF).should.equal(true);
+
+    const notAllCNF = {passengers: [{currentStatus: 'Can/Mod'}, {currentStatus: 'RAC'}]};
+    TrackPnrController._areAllCancelled(notAllCNF).should.equal(false);
+  });
+
   it('verifies schedule next if needed [allCNF]', () => {
     // prepare
     let scheduleCalled = false;
@@ -202,10 +210,10 @@ describe('New Track', () => {
       .then(() => TrackPnrController._trackPnr(pnr))
 
       // verify
-      .then((/*{details, isSame, allCNF}*/ result) => {
+      .then((/*{details, isSame, shouldRemove}*/ result) => {
         result.details.should.deep.equal(modifiedPassngr);
         result.isSame.should.be.eql(false);
-        result.allCNF.should.be.eql(false);
+        result.shouldRemove.should.be.eql(false);
       })
       .then(() => PnrStatusDao.getPnrDetailsWithTokens(pnr))
       .then((/*{details, userTokens}*/ result) => result.details.should.deep.equal(modifiedPassngr))
@@ -235,10 +243,10 @@ describe('New Track', () => {
       .then(() => TrackPnrController._trackPnr(pnr))
 
       // verify
-      .then((/*{details, isSame, allCNF}*/ result) => {
+      .then((/*{details, isSame, shouldRemove}*/ result) => {
         result.details.should.deep.equal(pnrDetails);
         result.isSame.should.be.eql(true);
-        result.allCNF.should.be.eql(false);
+        result.shouldRemove.should.be.eql(false);
       })
       .then(() => PnrStatusDao.getPnrDetailsWithTokens(pnr))
       .then((/*{details, userTokens}*/ result) => result.details.should.deep.equal(pnrDetails))
@@ -264,10 +272,10 @@ describe('New Track', () => {
       .then(() => TrackPnrController._trackPnr(pnr))
 
       // verify
-      .then((/*{details, isSame, allCNF}*/ result) => {
+      .then((/*{details, isSame, shouldRemove}*/ result) => {
         result.details.should.deep.equal(cnfDetails);
         result.isSame.should.be.eql(false);
-        result.allCNF.should.be.eql(true);
+        result.shouldRemove.should.be.eql(true);
       })
       .then(() => PnrStatusDao.isPnrTracked(pnr))
       .then(isTracked => isTracked.should.be.false)
@@ -306,6 +314,28 @@ describe('New Track', () => {
     const pnrDetails = RailResponses.onePassengerNotConfirmed;
     const originalGetStatus = RailPnrController.getStatus;
     RailPnrController.getStatus = (pnr) => Promise.reject([new InvalidPnrError()]);
+    let scheduleCalled = false;
+    TrackPnrController._schedule = () => scheduleCalled = true;
+
+    return PnrStatusDao.insertPnrDetails(pnr, pnrDetails, userToken)
+
+      // execute
+      .then(() => TrackPnrController._trackPnr(pnr))
+
+      // verify
+      .then(() => scheduleCalled.should.be.false)
+      .then(() => PnrStatusDao.isPnrTracked(pnr))
+      .then((isTracked) => isTracked.should.be.false)
+      .then(() => {
+        // restore original code
+        RailPnrController.getStatus = originalGetStatus;
+      });
+  });
+
+  it('track pnr [PNR cancelled]', () => {
+    const pnrDetails = RailResponses.onePassengerCancelled;
+    const originalGetStatus = RailPnrController.getStatus;
+    RailPnrController.getStatus = (pnr) => Promise.resolve(pnrDetails);
     let scheduleCalled = false;
     TrackPnrController._schedule = () => scheduleCalled = true;
 
