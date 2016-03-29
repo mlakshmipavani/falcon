@@ -20,7 +20,7 @@ class ChkPnrStsApi {
 
     return request.get(url)
       .then(Promise.resolve) // convert to bluebird promise
-      .timeout(2000)
+      .timeout(60000)
       .then(this._extractPnrDetail);
   }
 

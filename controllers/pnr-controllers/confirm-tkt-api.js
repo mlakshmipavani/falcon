@@ -16,7 +16,7 @@ class CrmTktApi {
 
     return request.get({url, json: true})
       .then(Promise.resolve)
-      .timeout(2000)
+      .timeout(60000)
       .then(this._extractPnrDetail);
   }
 
