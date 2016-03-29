@@ -41,7 +41,10 @@ app.on('uncaughtException', (req, res, err) => {
 });
 
 //noinspection JSUnresolvedFunction
-agenda.on('ready', () => agenda.start());
+agenda.on('ready', () => {
+  agenda.cancel({nextRunAt: null});
+  agenda.start();
+});
 
 // stop agenda before exiting
 function gracefullyStop() {
