@@ -90,7 +90,7 @@ function bookOlaCab(req, res) {
   validateRequest(req);
   req.assert('cab_type', 'Cab Type is a required param').notEmpty();
   req.assert('cab_type', 'Cab Type should be one of [mini, sedan, prime]')
-    .isIn(['mini', 'sedan', 'prime']);
+    .isIn(['micro', 'mini', 'sedan', 'prime']);
   const errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 

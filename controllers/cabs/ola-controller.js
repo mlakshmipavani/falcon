@@ -5,6 +5,9 @@ const request = require('request-promise');
 const config = require('../../config/config');
 const Utils = require('../../utils/Utils');
 const UserDao = require('../../dao/user-dao');
+const log = require('../../utils/logger').child({
+  module: 'ola-controller'
+});
 
 const baseUrl = config.ola.baseUrl;
 const headers = {'X-APP-TOKEN': config.ola.token};
@@ -43,7 +46,13 @@ class OlaController {
    */
   static book(/*string*/ userToken, /*number*/ lat, /*number*/ lng, /*string*/ cabType) {
     return UserDao.getOlaAccessToken(userToken)
-      .then(olaToken => this._bookWithOlaAccessToken(lat, lng, cabType, olaToken));
+      .then(olaToken => this._bookWithOlaAccessToken(lat, lng, cabType, olaToken))
+      .tap(result => {
+        if (result.status === 'FAILURE') {
+          log.error(result);
+          throw new Error('Ola Cab booking failed');
+        }
+      });
   }
 
   /**
