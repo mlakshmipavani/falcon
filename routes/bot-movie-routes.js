@@ -39,7 +39,7 @@ function getMovies(/*{check,params, clientIp, validationErrors}*/ req, res) {
 }
 
 function getCities(req, res) {
-  return MovieController.getCites()
+  return MovieController.getCities()
     .then(cities => {
       //noinspection JSUnresolvedFunction
       res.setHeader('Cache-Control', 'private, max-age=3600'); // 1hr

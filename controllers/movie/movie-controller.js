@@ -27,7 +27,7 @@ class MovieController {
       });
   }
 
-  static getCites() {
+  static getCities() {
     return BotMovieDao.getCities();
   }
 

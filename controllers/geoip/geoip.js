@@ -26,7 +26,7 @@ class GeoIp {
             };
           else {
             const error = new Error(`Invalid Ip : ${clientIp}`);
-            log.error(error);
+            if (process.env.NODE_ENV !== 'test') log.error(error);
             throw error;
           }
         }
