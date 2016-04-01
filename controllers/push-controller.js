@@ -114,6 +114,31 @@ class PushController {
       json: true
     };
   }
+
+  /**
+   * Sends a dynamic notification to all the users
+   * Useful when you want to send all users notification like Ola Micro @ Rs.6/Km
+   * @param notif The Dynamic notif object
+   * @return {Promise}
+   * @private
+   */
+  static _pushDynamicNotif(/*DynamicNotif*/ notif) {
+    const action = 'com.stayyolo.PUSH.SHOW_NOTIFICATION';
+
+    const options = this._getRequestOptionsForData(action, notif, []);
+    delete options.body.include_player_ids;
+    options.headers = {Authorization: `Basic ${config.oneSignal.apiKey}`};
+    options.body.included_segments = ['All'];
+    return request(options).then(console.log).catch(console.error);
+  }
+
 }
+
+// PushController._pushDynamicNotif({
+//   botHandle: '@cabs', // use @app to open the home screen
+//   title: 'Ola Micro @ Rs.6/Km',
+//   content: 'Now book Ola Micro through Yolobots!',
+//   bigPicture: 'http://www.nextbigwhat.com/wp-content/uploads/2016/03/OlaMicro-990x556.jpg' // leave blank if not needed
+// });
 
 module.exports = PushController;

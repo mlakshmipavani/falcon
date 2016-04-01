@@ -57,6 +57,8 @@ config.wit.apiKey = process.env.WIT_API_KEY || 'UUA2F5RZ4W4CGX2P7EQWM2RIVXSTDEIA
  */
 config.oneSignal = {};
 config.oneSignal.appId = process.env.ONESIGNAL_APP_ID || '782fdeab-89df-4cbf-b875-2422ae3b276f';
+config.oneSignal.apiKey = process.env.ONESIGNAL_API_KEY ||
+  'ZWE1ODA1ZDctMDM1NS00MjdlLWE4MjMtOTIzM2EyMDc4YTc1';
 
 /**
  * BookMyShow
