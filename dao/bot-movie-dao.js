@@ -77,12 +77,12 @@ class BotMovieDao {
    * @returns {Promise}
    */
   static updateMovieColors(/*Array<{color, eventCode, no_poster}>*/ movieColors) {
-    var bulk = DaoHelper.movies.initializeUnorderedBulkOp();
-    for (let mc of movieColors) {
-      let query = {EventCode: mc.eventCode};
+    const bulk = DaoHelper.movies.initializeUnorderedBulkOp();
+    for (const mc of movieColors) {
+      const query = {EventCode: mc.eventCode};
       if (mc.no_poster) bulk.find(query).remove();
       else {
-        let update = {color: mc.color};
+        const update = {color: mc.color};
         bulk.find(query).update({$set: update});
       }
     }
