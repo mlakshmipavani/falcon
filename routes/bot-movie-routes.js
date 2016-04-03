@@ -25,9 +25,9 @@ function getMovies(/*{check,params, clientIp, validationErrors}*/ req, res) {
   if (errors) return ErrorController.paramError(req, res, errors);
 
   //noinspection JSUnresolvedVariable
-  const langArr = req.params.langArr;
+  let langArr = req.params.langArr;
   if (!(langArr instanceof Array))
-    return ErrorController.paramError(req, res, 'langArr should be an array');
+    langArr = [langArr];
   if (!req.clientIp) return ErrorController.logAndReturnError('client ip is null');
   return MovieController.getMovies(langArr, req.clientIp)
     .then(movies => {
