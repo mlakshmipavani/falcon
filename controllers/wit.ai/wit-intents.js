@@ -9,5 +9,19 @@ module.exports = {
   insult: 'insult',
   okay: 'okay',
   introduction: 'introduction',
-  areYouThere: 'are_you_there'
+  areYouThere: 'are_you_there',
+  goodMorning: 'good_morning',
+  goodAfternoon: 'good_afternoon',
+  goodNight: 'good_night',
+  bye: 'bye',
+  festival: 'festival',
+  say_thank_you: 'say_thank_you',
+  help: 'help',
+  laugh: 'laugh',
+  love: 'love',
+  sex: 'sex',
+  urAge: 'ur_age',
+  gender: 'gender',
+  urCreator: 'ur_creator',
+  whatYouDoing: 'what_u_doing'
 };

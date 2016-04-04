@@ -24,6 +24,16 @@ class Utils {
       return finalObj;
     }, {});
   }
+
+  /**
+   * Returns a random integer between min (included) and max (excluded)
+   * @param min Minimum value of the range
+   * @param max Maximum value of the range
+   * @return {number}
+   */
+  static getRandomInt(/*number*/ min, /*number*/ max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
 }
 
 module.exports = Utils;
