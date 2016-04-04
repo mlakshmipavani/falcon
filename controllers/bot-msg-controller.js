@@ -18,10 +18,10 @@ class BotMsgController {
    * @param body Actual msg content
    * @returns {Promise.<string>}
    */
-  static msg(/*String*/ socialId, /* string */ botHandle, /* string */ body) {
+  static msg(/*String*/ socialId, /* string */ botHandle, /* string */ body, /*string*/ version) {
     switch (botHandle) {
       case HelloController.handle:
-        return HelloController.reply(socialId, body);
+        return HelloController.reply(socialId, body, version);
       default:
         return Promise.reject(new Error('Unknown bot handle'));
     }

@@ -32,7 +32,7 @@ class BotMsgRoutes {
         .then(/* UserMsg */ userMsgObj => res.json({_id: userMsgObj._id.toString()}));
     });
 
-    app.get({path: '/botReply/:msgId', version: apiVersion.v1}, (req, res) => {
+    app.get({path: '/botReply/:msgId', version: [apiVersion.v1, apiVersion.v1_0_1]}, (req, res) => {
 
       // error checking
       req.assert('msgId', 'msgId is a required param').notEmpty();
@@ -40,6 +40,8 @@ class BotMsgRoutes {
       //noinspection JSUnresolvedVariable
       const msgId = req.params.msgId;
       const socialId = req.username;
+      const v = req.version();
+      const version = (!v || v === '*') ? apiVersion.v1 : req.matchedVersion();
       let botHandle;
 
       return UserMsgDao.getMsg(msgId)
@@ -48,7 +50,7 @@ class BotMsgRoutes {
             throw ErrorController.logAndReturnError(
               `${socialId} is asking reply for msg[${msgId}] sent by ${userMsg.socialId}`);
           botHandle = userMsg.botHandle;
-          return BotMsgController.msg(socialId, userMsg.botHandle, userMsg.body);
+          return BotMsgController.msg(socialId, userMsg.botHandle, userMsg.body, version);
         })
         .tap((/* string */ botResponse) => {
           if (!botResponse) throw new Error('no bot response');

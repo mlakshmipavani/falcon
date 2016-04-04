@@ -6,7 +6,7 @@ const WitIntents = require('./wit.ai/wit-intents.js');
 const BotMsgDao = require('../dao/bot-msg-dao.js');
 const Promise = require('bluebird');
 const UserDao = require('../dao/user-dao.js');
-const Utils = require('../utils/Utils');
+const apiVersion = require('../config/api-version');
 
 /**
  * Controller for hello bot
@@ -17,9 +17,10 @@ class HelloController {
    * Given an input, this bot responds to very simple queries
    * @param socialId Social Id of the user sending this msg
    * @param text Msg body sent by the user
+   * @param version Version of the api call
    * @returns {Promise.<string>}
    */
-  static reply(/*String*/ socialId, /*String*/ text) {
+  static reply(/*String*/ socialId, /*String*/ text, /*String*/ version) {
     return Promise.all([WitController.getIntent(text), BotMsgDao.getLastMsg(socialId)])
       .spread((/*{intent, confidence, entities}*/ witResponse, /*{body}*/ lastMsg) => {
 
@@ -29,13 +30,15 @@ class HelloController {
             name = this._getNameFromWitResponse(witResponse, text);
           this.storeName(socialId, name);
           return this._tryToBeHelpful(name);
-        } else if (lastMsg && lastMsg.body === this._askNameAgain) {
+        } else if (lastMsg && lastMsg.body === StaticResponses._askNameAgain) {
           const name = this._getNameFromWitResponse(witResponse, text);
           this.storeName(socialId, name);
           return `hello ${name}`;
-        } else if (witResponse.intent === WitIntents.goodMorning) return this._goodMorning;
-        else if (witResponse.intent === WitIntents.goodAfternoon) return this._goodAfternoon;
-        else if (witResponse.intent === WitIntents.goodNight) return this._goodNight;
+        } else if (witResponse.intent === WitIntents.goodMorning)
+          return StaticResponses._goodMorning;
+        else if (witResponse.intent === WitIntents.goodAfternoon)
+          return StaticResponses._goodAfternoon;
+        else if (witResponse.intent === WitIntents.goodNight) return StaticResponses._goodNight;
         else if (witResponse.intent === WitIntents.name) return this._helloName(witResponse);
         else if (witResponse.intent === WitIntents.hello && !lastMsg) return this._introPlusAskName;
         else if (witResponse.intent === WitIntents.hello) return StaticResponses.hello;
@@ -43,22 +46,32 @@ class HelloController {
           return StaticResponses.howAreYouIntentReply;
         else if (witResponse.intent === WitIntents.thankYou)
           return StaticResponses.thankYouIntentReply;
-        else if (witResponse.intent === WitIntents.inCorrectName) return this._askNameAgain;
-        else if (witResponse.intent === WitIntents.insult) return this._insultReply;
+        else if (witResponse.intent === WitIntents.inCorrectName)
+          return StaticResponses._askNameAgain;
+        else if (witResponse.intent === WitIntents.insult) return StaticResponses._insultReply;
         else if (witResponse.intent === WitIntents.okay) return 'k';
-        else if (witResponse.intent === WitIntents.introduction) return this._intro;
-        else if (witResponse.intent === WitIntents.areYouThere) return this._yup;
+        else if (witResponse.intent === WitIntents.introduction) return StaticResponses._intro;
+        else if (witResponse.intent === WitIntents.areYouThere) return StaticResponses._yup;
         else if (witResponse.intent === WitIntents.bye) return 'bye';
-        else if (witResponse.intent === WitIntents.say_thank_you) return this._sayThankYou;
+        else if (witResponse.intent === WitIntents.say_thank_you)
+          return StaticResponses._sayThankYou;
         else if (witResponse.intent === WitIntents.festival) return this._festival(witResponse);
-        else if (witResponse.intent === WitIntents.help) return this._helpMsg;
-        else if (witResponse.intent === WitIntents.laugh) return this._laugh;
-        else if (witResponse.intent === WitIntents.love) return this._love;
-        else if (witResponse.intent === WitIntents.sex) return this._sex;
-        else if (witResponse.intent === WitIntents.urAge) return this._age;
-        else if (witResponse.intent === WitIntents.urCreator) return this._creator;
-        else if (witResponse.intent === WitIntents.whatYouDoing) return this._whatYouDoing;
-        else if (witResponse.intent === WitIntents.gender) return this._gender;
+        else if (witResponse.intent === WitIntents.help) return StaticResponses._helpMsg;
+        else if (witResponse.intent === WitIntents.laugh) return StaticResponses._laugh;
+        else if (witResponse.intent === WitIntents.love) return StaticResponses._love;
+        else if (witResponse.intent === WitIntents.sex) return StaticResponses._sex;
+        else if (witResponse.intent === WitIntents.urAge) return StaticResponses._age;
+        else if (witResponse.intent === WitIntents.urCreator) return StaticResponses._creator;
+        else if (witResponse.intent === WitIntents.whatYouDoing)
+          return StaticResponses._whatYouDoing;
+        else if (witResponse.intent === WitIntents.gender) return StaticResponses._gender;
+        else if (version === apiVersion.v1_0_1) {
+          if (witResponse.intent === WitIntents.cabBot)
+            return StaticResponses._openCabsBot;
+          else if (witResponse.intent === WitIntents.moviesBot)
+            return StaticResponses._openMoviesBot;
+          else if (witResponse.intent === WitIntents.pnrBot) return this._openPnrBot(witResponse);
+        }
         else return this._sorryNoIdea;
         //else throw new Error(`don't know what to reply`);
       });
@@ -70,70 +83,6 @@ class HelloController {
    */
   static get handle() {
     return '@yobot';
-  }
-
-  /**
-   * Self introduction text
-   * @returns {string}
-   * @private
-   */
-  static get _intro() {
-    return 'My name is Yo, I\'m a built-in robot';
-  }
-
-  static get _goodMorning() {
-    return 'Good morning!';
-  }
-
-  static get _goodAfternoon() {
-    return 'Good afternoon!';
-  }
-
-  static get _goodNight() {
-    return 'Good night!';
-  }
-
-  static get _sayThankYou() {
-    return 'Thank you';
-  }
-
-  static get _helpMsg() {
-    return 'Here\'s what all I can do:\n' +
-      'I\'m (still) learning human language, ' +
-      'but you can try having a normal conversation with me\n' +
-      'Except that, I don\'t come with a manual';
-  }
-
-  static get _laugh() {
-    const responses = ['hehe', 'haha', 'hehehe', 'hahaha'];
-    const index = Utils.getRandomInt(0, responses.length);
-    return responses[index];
-  }
-
-  static get _love() {
-    const responses = ['I don\'t know', 'It\'s complicated'];
-    const index = Utils.getRandomInt(0, responses.length);
-    return responses[index];
-  }
-
-  static get _sex() {
-    return 'Sounds interesting!';
-  }
-
-  static get _age() {
-    return 'I\'m just a new born';
-  }
-
-  static get _creator() {
-    return 'I was created by Team StayYolo';
-  }
-
-  static get _whatYouDoing() {
-    return 'Currently nothing, except chatting with you';
-  }
-
-  static get _gender() {
-    return 'I cannot disclose that, else you\'ll start hitting on me 😜';
   }
 
   static get _introPlusAskName() {
@@ -164,43 +113,18 @@ class HelloController {
       if (FESTIVAL_NAME === 'XMAS' || FESTIVAL_NAME === 'CHRISTMAS') return 'Merry Christmas!';
       return `Happy ${festivalName}!`;
     }
+
+    throw new Error('Festival Intent without entity');
   }
 
-  /**
-   * Ask the user's name
-   * @returns {string}
-   * @private
-   */
-  static get _askName() {
-    return 'What\'s your name?';
-  }
+  static _openPnrBot(/*{entities: {number: Array<{type, value}>}}*/ witResponse) {
+    const pnrObj = witResponse.entities.number;
+    if (pnrObj && pnrObj.length > 0) {
+      const pnrNumber = pnrObj[0].value;
+      return StaticResponses._openPnrBot(pnrNumber);
+    }
 
-  /**
-   * Ask the user's name again
-   * This is when the user tells us that the name is wrong
-   * @returns {string}
-   * @private
-   */
-  static get _askNameAgain() {
-    return 'okay, then what\'s your name?';
-  }
-
-  /**
-   * A reply when the user uses curse words
-   * @returns {string}
-   * @private
-   */
-  static get _insultReply() {
-    return 'I\'m a new born baby bot, you can\'t say that to me!';
-  }
-
-  /**
-   * Affirmative response
-   * @returns {string}
-   * @private
-   */
-  static get _yup() {
-    return 'yup!';
+    throw new Error('PnrBot Intent without entity');
   }
 
   /**

@@ -23,5 +23,10 @@ module.exports = {
   urAge: 'ur_age',
   gender: 'gender',
   urCreator: 'ur_creator',
-  whatYouDoing: 'what_u_doing'
+  whatYouDoing: 'what_u_doing',
+
+  // bot commands
+  cabBot: 'cab_bot',
+  moviesBot: 'movies_bot',
+  pnrBot: 'pnr_bot'
 };
