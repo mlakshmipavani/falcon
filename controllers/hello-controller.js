@@ -5,7 +5,6 @@ const StaticResponses = require('./wit.ai/static-responses.js');
 const WitIntents = require('./wit.ai/wit-intents.js');
 const BotMsgDao = require('../dao/bot-msg-dao.js');
 const Promise = require('bluebird');
-const UserDao = require('../dao/user-dao.js');
 const apiVersion = require('../config/api-version');
 
 /**
@@ -28,11 +27,9 @@ class HelloController {
           let name = text;
           if (witResponse.intent === WitIntents.name)
             name = this._getNameFromWitResponse(witResponse, text);
-          this.storeName(socialId, name);
           return this._tryToBeHelpful(name);
         } else if (lastMsg && lastMsg.body === StaticResponses._askNameAgain) {
           const name = this._getNameFromWitResponse(witResponse, text);
-          this.storeName(socialId, name);
           return `hello ${name}`;
         } else if (witResponse.intent === WitIntents.goodMorning)
           return StaticResponses._goodMorning;
@@ -86,7 +83,7 @@ class HelloController {
   }
 
   static get _introPlusAskName() {
-    return `${this._intro}\n${this._askName}`;
+    return `${StaticResponses._intro}\n${StaticResponses._askName}`;
   }
 
   /**
@@ -141,16 +138,6 @@ class HelloController {
     }
 
     return text;
-  }
-
-  /**
-   * Stores the name provided by the user to hello bot
-   * @param socialId Social Id of the user
-   * @param name Name of the user
-   * @returns {Promise<T>}
-   */
-  static storeName(/*string*/ socialId, /*string*/ name) {
-    return UserDao.updateName(socialId, name);
   }
 
   /**
