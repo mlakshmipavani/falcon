@@ -190,4 +190,9 @@ class MovieDataUpdater {
 
 }
 
+// const Promise = require('bluebird');
+// Promise.delay(1000)
+//   .then(() => MovieDataUpdater.update())
+//   .then(console.log).catch(console.error);
+
 module.exports = MovieDataUpdater;
