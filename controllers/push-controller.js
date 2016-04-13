@@ -15,7 +15,8 @@ class PushController {
    * @param userTokens _id of users to send the notification
    * @returns {Promise<T>}
    */
-  static pushPnrUpdate(/*{}*/ data, /*Array<string>*/ userTokens) {
+  static pushPnrUpdate(/*PnrDetails|{isTracked}*/ data, /*Array<string>*/ userTokens) {
+    if (!data.isTracked) log.warn('Pushing PNR update w/o isTracked field');
     const action = 'com.stayyolo.PUSH.ON_PNR_TRACK_UPDATE';
     return OneSignalDao.getPlayerIds(userTokens)
       .then((/*Array<string>*/ playerIds) => this._pushData(action, data, playerIds));

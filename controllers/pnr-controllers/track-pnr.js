@@ -200,6 +200,7 @@ class TrackPnrController {
     return PnrStatusDao.getPnrDetailsWithTokens(pnr)
       .then((/*{details, userTokens}*/ result) => {
         result.details.pnr = pnr;
+        result.details.isTracked = true; // if he's getting the notif, that means he's tracking it
         return PushController.pushPnrUpdate(result.details, result.userTokens);
       });
 
