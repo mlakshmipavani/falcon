@@ -20,4 +20,5 @@ test.js
 
 .mongo/
 production.yml
+logspout.yml
 dump/
