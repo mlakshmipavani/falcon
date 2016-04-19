@@ -133,6 +133,21 @@ class PushController {
     return request(options).then(console.log).catch(console.error);
   }
 
+  /**
+   * Sends OneSignal analytics about who opened the notification
+   * @param notificationId Notification Id obtained when sending the notification
+   * @return {Promise}
+   */
+  static notifOpened(/*string*/ notificationId) {
+    return request.put({
+      url: `https://onesignal.com/api/v1/notifications/${notificationId}`,
+      body: {
+        app_id: config.oneSignal.appId,
+        opened: true
+      },
+      json: true
+    });
+  }
 }
 
 // PushController._pushDynamicNotif({
