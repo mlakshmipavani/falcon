@@ -76,6 +76,19 @@ config.awsLambda.apiKey = process.env.AWS_LAMBDA_API_KEY ||
 config.awsLambda.closestMaterialColorUrl = process.env.CLOSEST_MATERIAL_COLOR_URL ||
   'https://iwwfzsbdy8.execute-api.us-east-1.amazonaws.com/prod/closest-material-color';
 
+
+/**
+ * TvDb
+ */
+config.tvDb = {};
+config.tvDb.apiKey = 'AE585420DDDD83DD';
+
+/**
+ * Trakt.tv ApiKeys
+ */
+config.trakt = {};
+config.trakt.apiKey = '8866354e1c30f88f97f0e4305dfc7aff4b3c61ce31ab516bb9f2c2fda53bcd6c';
+
 /**
  * Export
  */
