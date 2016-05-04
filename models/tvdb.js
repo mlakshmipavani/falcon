@@ -9,6 +9,7 @@
  *   name,
  *   genre,
  *   running,
+ *   rating,
  *   length,
  *   poster
  * }

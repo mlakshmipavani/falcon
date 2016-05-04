@@ -21,7 +21,7 @@ function getMovies(/*{check,params, clientIp, validationErrors}*/ req, res) {
   // error checking
   req.check('langArr', 'Languages array is required param').notEmpty();
 
-  let errors = req.validationErrors();
+  const errors = req.validationErrors();
   if (errors) return ErrorController.paramError(req, res, errors);
 
   //noinspection JSUnresolvedVariable

@@ -9,7 +9,8 @@
  *   title,
  *   ids: {trakt,tvdb, imdb, tmdb},
  *   overview,
- *   first_aired
+ *   first_aired,
+ *   totalEpisodes
  * }
  *
  * } TraktEpisode

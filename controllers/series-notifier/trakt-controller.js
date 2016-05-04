@@ -3,6 +3,7 @@
 const config = require('../../config/config');
 
 const Promise = require('bluebird');
+const _object = require('lodash/object');
 const trakt = require('trakt-api')(config.trakt.apiKey);
 
 const TvDbController = require('./tvdb-controller');
@@ -17,8 +18,16 @@ class TraktController {
    * @return {Promise<TraktEpisode>}
    */
   static getNextEpisode(/*string*/ imdbId) {
+    let episodeCount = 0;
     return this._findRunningSeason(imdbId)
-      .then((/*{episodes}*/ season) => this._findNextEpisode(season.episodes));
+      .tap((/*{episode_count}*/ season) => episodeCount = season.episode_count)
+      .then((/*{episodes}*/ season) => this._findNextEpisode(season.episodes))
+      .then(this._keepOnlyRequiredFields)
+      .then(this._correctEmptyFields)
+      .tap((/*TraktEpisode*/ episode) => {
+        // set total episodes in this season
+        if (episode) episode.totalEpisodes = episodeCount;
+      });
   }
 
   /**
@@ -44,8 +53,9 @@ class TraktController {
 
     //noinspection JSUnresolvedFunction
     return trakt.showSeasons(imdbId, {extended: 'episodes,full'})
+      .filter((/*{first_aired}*/ season) => season.first_aired) // remove non aired seasons
       .each(TraktController._convertAirDate)
-      .call('sort', (a, b) => b.first_aired - a.first_aired) // sort descending by air date
+      .call('sort', (a, b) => b.number - a.number) // sort descending by air date
       .filter((/*{first_aired}*/ season) => season.first_aired <= now) // remove seasons that haven't started yet
       .get(0); // get the first one
   }
@@ -54,6 +64,7 @@ class TraktController {
    * Finds the next episode from a given array of Episodes
    * @param episodes All the Episodes of the current running season
    * @return {TraktEpisode}
+   * @private
    */
   static _findNextEpisode(/*Array<TraktEpisode>*/ episodes) {
     const now = new Date();
@@ -61,6 +72,30 @@ class TraktController {
     const filtered = episodes.sort((a, b) => a.first_aired - b.first_aired) // sort ascending by air date
       .filter((/*{first_aired}*/ season) => season.first_aired > now); // keep only those that haven't aired yet
     return filtered[0];
+  }
+
+  /**
+   * Keeps only those fields that are required
+   * @param episode Episode Details
+   * @return {TraktEpisode}
+   * @private
+   */
+  static _keepOnlyRequiredFields(episode) {
+    if (!episode) return episode;
+    episode = _object.pick(episode, ['season', 'number', 'title', 'overview', 'first_aired']);
+    return episode;
+  }
+
+  /**
+   * Fills in default values in empty fields
+   * @param episode Episode Information
+   * @return {TraktEpisode}
+   * @private
+   */
+  static _correctEmptyFields(/*TraktEpisode*/ episode) {
+    if (!episode) return episode;
+    episode.title = episode.title ? episode.title : `Episode ${episode.number}`;
+    return episode;
   }
 
   /**

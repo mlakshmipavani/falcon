@@ -53,9 +53,9 @@ class TvDbController {
    * @param data Data Received from TvDb
    * @return {boolean}
    */
-  static _filterData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, poster}*/ data) {
+  static _filterData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, Rating, poster}*/ data) {
     return data.id && data.IMDB_ID && data.SeriesName && data.Genre && data.Status && data.Runtime
-      && data.poster;
+      && data.Rating && data.poster;
   }
 
   /**
@@ -63,13 +63,14 @@ class TvDbController {
    * @param data Data Received from TvDb
    * @return {Series}
    */
-  static _parseData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, poster}*/ data) {
+  static _parseData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, Rating, poster}*/ data) {
     return {
       imdbId: data.IMDB_ID,
       tvDbId: data.id,
       name: data.SeriesName,
       genre: TVDB.utils.parsePipeList(data.Genre),
       running: data.Status === 'Continuing',
+      rating: data.Rating,
       length: data.Runtime,
       poster: `http://thetvdb.com/banners/_cache/${data.poster}`
     };

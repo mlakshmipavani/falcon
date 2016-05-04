@@ -15,6 +15,7 @@ class SeriesNotifierBotRoutes {
   static setup(app) {
     app.get({path: `${prefix}/trending`, version: apiVersion.v1}, getTrending);
     app.get({path: `${prefix}/search`, version: apiVersion.v1}, getSearchResults);
+    app.get({path: `${prefix}/nextEpisodes`, version: apiVersion.v1}, getNextEpisodes);
   }
 
 }
@@ -42,6 +43,26 @@ function getSearchResults(req, res) {
     .catch(err => {
       log.error(err, 'Error occurred while searching series');
       return res.send(err);
+    });
+}
+
+function getNextEpisodes(req, res) {
+  // error checking
+  req.check('tvdbIds', 'tvdbIds shouldn\'t be empty').notEmpty();
+
+  const errors = req.validationErrors();
+  if (errors) return ErrorController.paramError(req, res, errors);
+
+  /** @type {{tvdbIds}} */
+  const params = req.params;
+  let tvdbIds = params.tvdbIds;
+
+  if (!(tvdbIds instanceof Array)) tvdbIds = [tvdbIds];
+  return SeriesController.nextEpisodesWithSeriesInfoMulti(tvdbIds)
+    .then(episodes => res.json(episodes))
+    .catch(err => {
+      log.error(err, 'failed fetching next episodes');
+      res.send(err);
     });
 }
 

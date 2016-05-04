@@ -65,5 +65,9 @@ class DaoHelper {
     //noinspection JSCheckFunctionSignatures
     /** @type {Collection} */
     exports.trendingSeries = db.collection('trendingSeries');
+
+    //noinspection JSCheckFunctionSignatures
+    /** @type {Collection} */
+    exports.nextEpisodeCache = db.collection('nextEpisodeCache');
   }
 }
