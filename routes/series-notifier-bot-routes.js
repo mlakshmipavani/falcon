@@ -13,20 +13,22 @@ const prefix = '/bot/@seriesnotifier';
 class SeriesNotifierBotRoutes {
 
   static setup(app) {
-    app.get({path: `${prefix}/trending`, version: apiVersion.v1}, getTrending);
+    app.get({path: `${prefix}/trending`, version: apiVersion.v1}, this.getTrending);
     app.get({path: `${prefix}/search`, version: apiVersion.v1}, getSearchResults);
     app.get({path: `${prefix}/nextEpisodes`, version: apiVersion.v1}, getNextEpisodes);
   }
 
-}
-
-function getTrending(req, res) {
-  return SeriesDao.getTrending()
-    .then(data => res.json(data))
-    .catch(err => {
-      log.error(err, 'Error occurred while getting trending series');
-      return res.send(err);
-    });
+  static getTrending(req, res) {
+    return SeriesDao.getTrending()
+      .then(data => {
+        res.cache('private', {maxAge: 43200}); // 12 hrs
+        res.json(data);
+      })
+      .catch(err => {
+        log.error(err, 'Error occurred while getting trending series');
+        return res.send(err);
+      });
+  }
 }
 
 function getSearchResults(req, res) {
@@ -59,7 +61,11 @@ function getNextEpisodes(req, res) {
 
   if (!(tvdbIds instanceof Array)) tvdbIds = [tvdbIds];
   return SeriesController.nextEpisodesWithSeriesInfoMulti(tvdbIds)
-    .then(episodes => res.json(episodes))
+    .then(episodes => {
+      res.header('Cache-Control', 'private');
+      res.header('Expires', SeriesController.findExpireDate(episodes));
+      res.json(episodes);
+    })
     .catch(err => {
       log.error(err, 'failed fetching next episodes');
       res.send(err);

@@ -51,6 +51,24 @@ class SeriesController {
   }
 
   /**
+   * Finds an estimate date till when the given data is valid
+   * Finds the episode that's coming earliest and sets the expire date to thats
+   * @return {Date}
+   */
+  static findExpireDate(/*Array<{series: Series, episode: TraktEpisode}>*/ nextEpisodes) {
+    const dates = nextEpisodes.map(nEp => nEp.episode)
+      .filter(ep => ep && ep.first_aired)
+      .map(ep => ep.first_aired)
+      .sort();
+    if (dates.length !== 0) return dates[0];
+
+    // set the cache to expire tomorrow
+    const now = new Date();
+    now.setDate(now.getDate() + 1);
+    return now;
+  }
+
+  /**
    * Updates the Trending Series in Db
    * @return {Promise}
    */
