@@ -20,7 +20,15 @@ class SeriesController {
           episode: SeriesController.nextEpisode(series.imdbId)
         };
       })
-      .props();
+      .props()
+      .then((/*{series: Series, episode: TraktEpisode, comingSeason}*/ nextEpisode) => {
+        if (nextEpisode.episode) return nextEpisode;
+        return TraktController.findComingSeason(nextEpisode.series.imdbId)
+          .then(comingSeason => {
+            nextEpisode.comingSeason = comingSeason;
+            return nextEpisode;
+          });
+      });
   }
 
   static nextEpisodesWithSeriesInfoMulti(/*Array<string>*/ tvdbIds) {

@@ -44,6 +44,27 @@ class TraktController {
   }
 
   /**
+   * Finds the next up coming season of the TvShow
+   * @param imdbId IMDB Id of the TvShow
+   * @return {Promise<{number, first_aired}>}
+   */
+  static findComingSeason(/*string*/ imdbId) {
+    //noinspection JSUnresolvedFunction
+    return trakt.showSeasons(imdbId, {extended: 'full'})
+      .call('sort', (a, b) => b.number - a.number) // sort descending by air date
+      .get(0)
+      .then((/*{number, first_aired}*/ season) => {
+        if (!season) return season;
+        if (season.first_aired) {
+          season.first_aired = new Date(season.first_aired);
+          if (season.first_aired.getTime() - (new Date().getTime()) > 0) // is first_aired date in future
+            return {number: season.number, first_aired: season.first_aired};
+          return {number: season.number + 1}; // if it's in past that means the next season info hasn't been added yet
+        } else return {number: season.number};
+      });
+  }
+
+  /**
    * Returns the current running reason or the last season if the next season isn't announced
    * @param imdbId IMDB ID of the TV Show
    * @return {Promise<TraktSeason>}
@@ -55,7 +76,7 @@ class TraktController {
     return trakt.showSeasons(imdbId, {extended: 'episodes,full'})
       .filter((/*{first_aired}*/ season) => season.first_aired) // remove non aired seasons
       .each(TraktController._convertAirDate)
-      .call('sort', (a, b) => b.number - a.number) // sort descending by air date
+      .call('sort', (a, b) => b.number - a.number) // sort descending by season number
       .filter((/*{first_aired}*/ season) => season.first_aired <= now) // remove seasons that haven't started yet
       .get(0); // get the first one
   }
