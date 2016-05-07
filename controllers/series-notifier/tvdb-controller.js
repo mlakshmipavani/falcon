@@ -4,6 +4,9 @@ const TVDB = require('node-tvdb');
 const Promise = require('bluebird');
 
 const config = require('../../config/config');
+const log = require('../../utils/logger').child({
+  module: 'tvdb-controller'
+});
 
 const tvdb = new TVDB(config.tvDb.apiKey);
 
@@ -18,6 +21,7 @@ class TvDbController {
    * Searches Tv Shows based on the query provided
    * @param query A piece of text that is matched against the title of the Tv Show
    * @return {Promise<Array<Series>>}
+   * @deprecated
    */
   static search(/*string*/ query) {
     return Promise.resolve(tvdb.getSeriesByName(query))
@@ -33,9 +37,19 @@ class TvDbController {
    * @return {Promise<Array<Series>>}
    */
   static getSeriesByIds(/*Array<string>*/ tvDbIds) {
-    return Promise.map(tvDbIds, id => tvdb.getSeriesById(id))
+    return Promise.map(tvDbIds, id => TvDbController.getSeriesById(id))
       .filter(TvDbController._filterData)
       .map(TvDbController._parseData);
+  }
+
+  /**
+   * Returns Tv Show based on TvDb IDs
+   * @param tvDbId A Single TvDb Id string
+   * @return {Promise<Series>}
+   */
+  static getSeriesById(/*string*/ tvDbId) {
+    return tvdb.getSeriesById(tvDbId)
+      .catch(err => log.error(err, `error loading tvDbId: ${tvDbId}`));
   }
 
   /**
@@ -54,8 +68,9 @@ class TvDbController {
    * @return {boolean}
    */
   static _filterData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, Rating, poster}*/ data) {
-    return data.id && data.IMDB_ID && data.SeriesName && data.Genre && data.Status && data.Runtime
-      && data.Rating && data.poster;
+    if (!data) return false;
+    return data.id && data.IMDB_ID && data.SeriesName && data.Genre && data.Status
+      && data.Runtime && data.Rating && data.poster;
   }
 
   /**
@@ -80,7 +95,6 @@ class TvDbController {
    * Arranges the currently running shows on the top
    * @param shows An array of Tv Shows to sort
    * @return {Array.<Series>}
-   * @private
    */
   static _sortShowsByRunning(/*Array<Series>*/ shows) {
     return shows.sort((a, b) => b.running - a.running);

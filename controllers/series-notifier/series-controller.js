@@ -90,7 +90,7 @@ class SeriesController {
    * @return {Promise<Array<Series>>}
    */
   static search(/*string*/ query) {
-    return TvDbController.search(query);
+    return TraktController.search(query);
   }
 
 }

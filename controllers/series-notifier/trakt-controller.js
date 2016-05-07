@@ -4,6 +4,7 @@ const config = require('../../config/config');
 
 const Promise = require('bluebird');
 const _object = require('lodash/object');
+const _array = require('lodash/array');
 const trakt = require('trakt-api')(config.trakt.apiKey);
 
 const TvDbController = require('./tvdb-controller');
@@ -11,6 +12,23 @@ const SeriesDao = require('../../dao/series-dao');
 const util = require('util');
 
 class TraktController {
+
+  /**
+   * Searches Tv Shows based on the query provided
+   * @param query A piece of text that is matched against the title of the Tv Show
+   * @return {Promise<Array<Series>>}
+   */
+  static search(/*string*/ query) {
+    //noinspection JSUnresolvedFunction
+    return Promise.resolve(trakt.searchShow(query))
+      .map((/*{show}*/ result) => result.show)
+      .filter((/*{title, year, status}*/ show) => show.title && show.year && show.status)
+      .map((/*{ids: {tvdb}}*/ show) => show.ids.tvdb)
+      .filter(id => id) // remove null/undefined ids
+      .then(ids => _array.uniq(ids)) // make them unique
+      .then(TvDbController.getSeriesByIds)
+      .then(TvDbController._sortShowsByRunning);
+  }
 
   /**
    * Returns the next episode of a Tv Show
