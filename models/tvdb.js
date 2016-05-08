@@ -11,7 +11,8 @@
  *   running,
  *   rating,
  *   length,
- *   poster
+ *   poster,
+ *   fanArt
  * }
  *
  * } Series

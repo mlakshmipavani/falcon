@@ -21,6 +21,7 @@ class TvDbController {
    * Searches Tv Shows based on the query provided
    * @param query A piece of text that is matched against the title of the Tv Show
    * @return {Promise<Array<Series>>}
+   * @see {@link TraktController#search(string)}
    * @deprecated
    */
   static search(/*string*/ query) {
@@ -78,7 +79,8 @@ class TvDbController {
    * @param data Data Received from TvDb
    * @return {Series}
    */
-  static _parseData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, Rating, poster}*/ data) {
+  static _parseData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, Rating, poster, fanart}*/
+                    data) {
     return {
       imdbId: data.IMDB_ID,
       tvDbId: data.id,
@@ -87,7 +89,8 @@ class TvDbController {
       running: data.Status === 'Continuing',
       rating: data.Rating,
       length: data.Runtime,
-      poster: `http://thetvdb.com/banners/_cache/${data.poster}`
+      poster: `http://thetvdb.com/banners/_cache/${data.poster}`,
+      fanArt: `http://thetvdb.com/banners/${data.fanart}`
     };
   }
 
