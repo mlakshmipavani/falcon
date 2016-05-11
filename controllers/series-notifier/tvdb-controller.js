@@ -25,11 +25,20 @@ class TvDbController {
    * @deprecated
    */
   static search(/*string*/ query) {
-    return Promise.resolve(tvdb.getSeriesByName(query))
+    return TvDbController._getSeriesByName(query)
       .then(this._catchEmptyData)
       .map((/*{id}*/ show) => show.id)
       .then(this.getSeriesByIds)
       .then(this._sortShowsByRunning);
+  }
+
+  /**
+   * A method that makes a call to TVDB and fires a search query
+   * @param query Text to search
+   * @return {Promise}
+   */
+  static _getSeriesByName(/*string*/ query) {
+    return Promise.resolve(tvdb.getSeriesByName(query));
   }
 
   /**
@@ -71,7 +80,7 @@ class TvDbController {
   static _filterData(/*{id, IMDB_ID, SeriesName, Genre, Status, Runtime, Rating, poster}*/ data) {
     if (!data) return false;
     return data.id && data.IMDB_ID && data.SeriesName && data.Genre && data.Status
-      && data.Runtime && data.Rating && data.poster;
+      && data.Runtime && data.Rating && data.poster && true;
   }
 
   /**
