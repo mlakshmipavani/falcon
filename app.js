@@ -9,6 +9,7 @@ const ApiVersion = require('./config/api-version');
 const config = require('./config/config.js');
 const log = require('./utils/logger');
 const agenda = require('./utils/agenda');
+const TrendingSeriesUpdater = require('./controllers/series-notifier/trending-series-updater');
 
 const authMiddleware = require('./middlewares/auth-middleware');
 const requestIp = require('request-ip');
@@ -43,6 +44,7 @@ app.on('uncaughtException', (req, res, err) => {
 //noinspection JSUnresolvedFunction
 agenda.on('ready', () => {
   agenda.cancel({nextRunAt: null});
+  TrendingSeriesUpdater.onAgendaReady();
   agenda.start();
 });
 
