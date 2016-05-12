@@ -15,6 +15,7 @@ describe('TvDb Controller', () => {
   afterEach(() => DaoHelper.db.dropDatabase());
 
   it('verify search', () => {
+    const originalSeriesByName = TvDbController._getSeriesByName;
     TvDbController._getSeriesByName = () => Promise.resolve(mockResponses.searchResponse);
     const getSeriesByIdsCode = TvDbController.getSeriesByIds;
     TvDbController.getSeriesByIds = (arr) => {
@@ -24,7 +25,8 @@ describe('TvDb Controller', () => {
 
     return TvDbController.search('The flash')
       .then(data => data.should.deep.equal(parsedResponses.searchResponse))
-      .then(() => TvDbController.getSeriesByIds = getSeriesByIdsCode);
+      .then(() => TvDbController.getSeriesByIds = getSeriesByIdsCode)
+      .then(() => TvDbController._getSeriesByName = originalSeriesByName);
   });
 
   it('sorts shows by running flag', () => {
@@ -52,7 +54,8 @@ describe('TvDb Controller', () => {
   });
 
   it('verifies getSeriesByIds', () => {
-    TvDbController.getSeriesById = (id) => {
+    const originalCode = TvDbController._getSeriesById;
+    TvDbController._getSeriesById = (id) => {
       if (id === mockResponses.gameOfThrones.id)
         return Promise.resolve(mockResponses.gameOfThrones);
       else if (id === mockResponses.theFlash.id)
@@ -62,8 +65,9 @@ describe('TvDb Controller', () => {
 
     return TvDbController
       .getSeriesByIds([mockResponses.gameOfThrones.id, mockResponses.theFlash.id])
-      .should.eventually
-      .deep.equal([mockResponses.gameOfThronesParsed, mockResponses.theFlashParsed]);
+      .then(results => results.should.deep.equal(
+        [mockResponses.gameOfThronesParsed, mockResponses.theFlashParsed]))
+      .then(() => TvDbController._getSeriesById = originalCode);
   });
 
 });

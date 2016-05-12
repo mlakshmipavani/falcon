@@ -47,18 +47,18 @@ class TvDbController {
    * @return {Promise<Array<Series>>}
    */
   static getSeriesByIds(/*Array<string>*/ tvDbIds) {
-    return Promise.map(tvDbIds, id => TvDbController.getSeriesById(id))
+    return Promise.map(tvDbIds, id => TvDbController._getSeriesById(id))
       .filter(TvDbController._filterData)
       .map(TvDbController._parseData);
   }
 
   /**
-   * Returns Tv Show based on TvDb IDs
+   * Queries TvDb server for the result
    * @param tvDbId A Single TvDb Id string
-   * @return {Promise<Series>}
+   * @return {Promise}
    * @private
    */
-  static getSeriesById(/*string*/ tvDbId) {
+  static _getSeriesById(/*string*/ tvDbId) {
     return tvdb.getSeriesById(tvDbId)
       .catch(err => log.error(err, `error loading tvDbId: ${tvDbId}`));
   }
