@@ -199,10 +199,10 @@ class TraktController {
 
 }
 
-const imdb = 'tt3107288';
-Promise.delay(0)
-  .then(() => TraktController.findComingSeason(imdb))
-  .then(data => console.log(util.inspect(data, {depth: null})))
-  .catch(console.error);
+// const imdb = 'tt3107288';
+// Promise.delay(0)
+//   .then(() => TraktController.findComingSeason(imdb))
+//   .then(data => console.log(util.inspect(data, {depth: null})))
+//   .catch(console.error);
 
 module.exports = TraktController;
