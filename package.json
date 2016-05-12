@@ -31,7 +31,7 @@
     "node-tvdb": "2.0.1",
     "node-wit": "2.0.0",
     "request-ip": "1.2.2",
-    "request-promise": "2.0.1",
+    "request-promise": "3.0.0",
     "restify": "4.0.4",
     "restify-errors": "4.2.2",
     "restify-validator": "0.3.1",
