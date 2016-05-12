@@ -25,8 +25,8 @@
     "bluebird": "3.3.5",
     "bunyan": "1.8.1",
     "cheerio": "0.20.0",
-    "lodash": "4.6.1",
-    "moment": "2.12.0",
+    "lodash": "4.12.0",
+    "moment": "2.13.0",
     "mongodb": "2.1.18",
     "node-tvdb": "2.0.1",
     "node-wit": "2.0.0",
@@ -44,10 +44,10 @@
     "chai-as-promised": "5.3.0",
     "chai-joi": "1.1.0",
     "istanbul": "0.4.3",
-    "joi": "8.0.5",
+    "joi": "8.1.0",
     "jscs": "2.11.0",
     "mocha": "2.4.5",
     "supertest": "1.2.0",
-    "supertest-as-promised": "3.0.0"
+    "supertest-as-promised": "3.1.0"
   }
 }
