@@ -34,6 +34,17 @@ class Utils {
   static getRandomInt(/*number*/ min, /*number*/ max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
+
+  /**
+   * Gives you date after {@link count} days
+   * @param count
+   * @return {Date}
+   */
+  static inDays(/*number*/ count) {
+    const today = new Date();
+    today.setDate(today.getDate() + count);
+    return today;
+  }
 }
 
 module.exports = Utils;

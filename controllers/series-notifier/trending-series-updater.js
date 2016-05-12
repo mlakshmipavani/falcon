@@ -1,7 +1,7 @@
 'use strict';
 
 const agenda = require('../../utils/agenda');
-const TraktController = require('./trakt-controller.js');
+const SeriesController = require('./series-controller');
 
 const AgendaTasks = {
   taskName: 'updateTrendingSeries',
@@ -13,7 +13,7 @@ const AgendaTasks = {
 class TrendingSeriesUpdater {
 
   static update() {
-    return TraktController.updateTrendingData();
+    return SeriesController.updateTrendingData();
   }
 
   static onAgendaReady() {

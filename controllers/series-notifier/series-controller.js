@@ -67,8 +67,13 @@ class SeriesController {
     const dates = nextEpisodes.map(nEp => nEp.episode)
       .filter(ep => ep && ep.first_aired)
       .map(ep => ep.first_aired)
-      .sort();
-    if (dates.length !== 0) return dates[0];
+      .sort((a, b) => a.getTime() - b.getTime());
+    if (dates.length !== 0) {
+      const closest = dates[0];
+      const weekFar = new Date();
+      weekFar.setDate(weekFar.getDate() + 7); // a week is the max a cache can stay
+      return (closest.getTime() < weekFar.getTime()) ? closest : weekFar;
+    }
 
     // set the cache to expire tomorrow
     const now = new Date();

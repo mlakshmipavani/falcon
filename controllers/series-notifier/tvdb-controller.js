@@ -56,6 +56,7 @@ class TvDbController {
    * Returns Tv Show based on TvDb IDs
    * @param tvDbId A Single TvDb Id string
    * @return {Promise<Series>}
+   * @private
    */
   static getSeriesById(/*string*/ tvDbId) {
     return tvdb.getSeriesById(tvDbId)
@@ -113,8 +114,8 @@ class TvDbController {
   }
 }
 
-// Promise.delay(1000)
-//   .then(() => TvDbController.search('The flash'))
-//   .then(console.log).catch(console.error);
+Promise.delay(1000)
+  .then(() => TvDbController.getSeriesByIds(['279121']))
+  .then(console.log).catch(console.error);
 
 module.exports = TvDbController;

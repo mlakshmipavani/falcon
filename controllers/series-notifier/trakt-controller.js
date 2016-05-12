@@ -57,11 +57,11 @@ class TraktController {
    */
   static _getNextEpisode(/*string*/ imdbId, /*Date*/ now) {
     let episodeCount = 0;
-    return this._findRunningSeason(imdbId, now)
+    return TraktController._findRunningSeason(imdbId, now)
       .tap((/*{episode_count}*/ season) => episodeCount = season.episode_count)
-      .then((/*{episodes}*/ season) => this._findNextEpisode(season.episodes, now))
-      .then(this._keepOnlyRequiredFields)
-      .then(this._correctEmptyFields);
+      .then((/*{episodes}*/ season) => TraktController._findNextEpisode(season.episodes, now))
+      .then(TraktController._keepOnlyRequiredFields)
+      .then(TraktController._correctEmptyFields);
 
     // if you wanna send the episode count, then unComment the below code
     // .tap((/*TraktEpisode*/ episode) => {
@@ -159,7 +159,7 @@ class TraktController {
    */
   static _findNextEpisode(/*Array<TraktEpisode>*/ episodes, /*Date*/ now) {
     episodes.forEach(TraktController._convertAirDate);
-    const filtered = episodes.sort((a, b) => a.first_aired - b.first_aired) // sort ascending by air date
+    const filtered = episodes.sort((a, b) => a.first_aired.getTime() - b.first_aired.getTime()) // sort ascending by air date
       .filter((/*{first_aired}*/ season) => season.first_aired > now); // keep only those that haven't aired yet
     return filtered[0];
   }
@@ -199,10 +199,10 @@ class TraktController {
 
 }
 
-// const imdb = 'tt1632701';
-// Promise.delay(0)
-//   .then(() => TraktController.getNextEpisode(imdb))
-//   .then(data => console.log(util.inspect(data, {depth: null})))
-//   .catch(console.error);
+const imdb = 'tt3107288';
+Promise.delay(0)
+  .then(() => TraktController.findComingSeason(imdb))
+  .then(data => console.log(util.inspect(data, {depth: null})))
+  .catch(console.error);
 
 module.exports = TraktController;
