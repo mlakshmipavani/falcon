@@ -4,6 +4,7 @@ const request = require('request-promise');
 const UserDao = require('../dao/user-dao.js');
 const OneSignalDao = require('../dao/onesignal-dao');
 const ContactDao = require('../dao/contacts-dao');
+const AwsLambda = require('./aws-lambda');
 
 class RegistrationController {
 
@@ -13,6 +14,10 @@ class RegistrationController {
         const socialId = result.sub;
         const name = result.given_name || result.name;
         return UserDao.newUser(socialId, name, result.email);
+      })
+      .tap((/*User*/ userObj) => {
+        if (!userObj.isEmailConfirmed)
+          return AwsLambda.sendWelcomeMail(userObj.email, userObj.name);
       })
       .then((/*User*/ userObj) => userObj._id.toString())
       .then((/*string*/ token) => OneSignalDao.map(token, oneSignalUserId).thenReturn({token}));

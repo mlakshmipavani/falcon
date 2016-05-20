@@ -75,6 +75,8 @@ config.awsLambda.apiKey = process.env.AWS_LAMBDA_API_KEY ||
   'nBWVBXBOPV6AYcdC8reQR8Z0twOwu0e9aYsrSlvJ';
 config.awsLambda.closestMaterialColorUrl = process.env.CLOSEST_MATERIAL_COLOR_URL ||
   'https://iwwfzsbdy8.execute-api.us-east-1.amazonaws.com/prod/closest-material-color';
+config.awsLambda.welcomeMailUrl = process.env.WELCOME_MAIL_URL ||
+  'https://iwwfzsbdy8.execute-api.us-east-1.amazonaws.com/prod/welcome-email';
 
 
 /**
