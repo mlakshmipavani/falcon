@@ -66,6 +66,17 @@ class UserDao {
   }
 
   /**
+   * Sets email confirmed for a user
+   * @param socialId Social id of the user
+   * @return {Promise}
+   */
+  static setEmailConfirmed(/*string*/ socialId) {
+    const query = {socialId};
+    const update = {isEmailConfirmed: true};
+    return DaoHelper.user.updateOne(query, {$set: update});
+  }
+
+  /**
    * Store the ola Access token given after user logged in to Ola A/c
    * @param userToken The User token (_id) in our db
    * @param olaAccessToken

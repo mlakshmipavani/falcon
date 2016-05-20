@@ -42,21 +42,23 @@ class AwsLambda {
    * Sends the newly registered user an email confirmation mail
    * @param email Email of the newly registered user
    * @param name Name of the newly registered user
+   * @param socialId Social id of the newly registered user
    * @return {Promise}
    */
-  static sendWelcomeMail(/*string*/ email, /*string*/ name) {
+  static sendWelcomeMail(/*string*/ email, /*string*/ name, /*string*/ socialId) {
     if (!email) return Promise.reject('email is empty!').catch(e => log.error(e));
     if (!name) return Promise.reject('name is empty!').catch(e => log.error(e));
+    if (!socialId) return Promise.reject('socialId is empty!').catch(e => log.error(e));
 
     if (process.env.NODE_ENV === 'test') return Promise.resolve();
-    return request(this._getOptionsForWelcomeMail(email, name));
+    return request(this._getOptionsForWelcomeMail(email, name, socialId));
   }
 
   /**
    * @private
    */
-  static _getOptionsForWelcomeMail(/*string*/ email, /*string*/ name) {
-    return this._getOptions(config.awsLambda.welcomeMailUrl, {email, name});
+  static _getOptionsForWelcomeMail(/*string*/ email, /*string*/ name, /*string*/ socialId) {
+    return this._getOptions(config.awsLambda.welcomeMailUrl, {email, name, id: socialId});
   }
 
   /**
