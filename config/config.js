@@ -3,6 +3,7 @@
 const config = {};
 
 config.appName = 'FalconV2';
+config.isProduction = process.env.NODE_ENV === 'production';
 
 //noinspection JSUnresolvedVariable
 /**

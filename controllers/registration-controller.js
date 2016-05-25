@@ -5,6 +5,7 @@ const UserDao = require('../dao/user-dao.js');
 const OneSignalDao = require('../dao/onesignal-dao');
 const ContactDao = require('../dao/contacts-dao');
 const AwsLambda = require('./aws-lambda');
+const config = require('../config/config');
 
 class RegistrationController {
 
@@ -16,7 +17,7 @@ class RegistrationController {
         return UserDao.newUser(socialId, name, result.email);
       })
       .tap((/*User*/ userObj) => {
-        if (!userObj.isEmailConfirmed)
+        if (!userObj.isEmailConfirmed && config.isProduction)
           return AwsLambda.sendWelcomeMail(userObj.email, userObj.name, userObj.socialId);
       })
       .then((/*User*/ userObj) => userObj._id.toString())
