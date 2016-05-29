@@ -64,6 +64,7 @@ class UberController {
    */
   static _calculateFare(cab) {
     const fareBreakUp = cab.price_details;
+    if (!fareBreakUp) return;
     const calculate = (time) => {
       const fare = (fareBreakUp.base + (fareBreakUp.cost_per_distance * 5)
         + (time * fareBreakUp.cost_per_minute)) * cab.surgeMultiplier;
