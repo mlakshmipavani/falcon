@@ -18,7 +18,7 @@ class RegistrationController {
       })
       .tap((/*User*/ userObj) => {
         if (!userObj.isEmailConfirmed && config.isProduction)
-          return AwsLambda.sendWelcomeMail(userObj.email, userObj.name, userObj.socialId);
+          return AwsLambda.sendWelcomeMail(userObj.email, userObj.name, userObj._id.toString());
       })
       .then((/*User*/ userObj) => userObj._id.toString())
       .then((/*string*/ token) => OneSignalDao.map(token, oneSignalUserId).thenReturn({token}));
