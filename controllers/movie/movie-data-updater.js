@@ -79,7 +79,7 @@ class MovieDataUpdater {
         const keys = ['EventCode', 'ImageCode', 'EventTitle', 'GenreArray', 'Language', 'Length',
           'TrailerURL', 'ReleaseDateCode', 'FShareURL'];
         keys.forEach(key => obj[key] = movie[key]);
-        obj.PosterUrl = `http://in.bmscdn.com/events/Large/${movie.ImageCode}.jpg`;
+        obj.PosterUrl = `http://in.bmscdn.com/events/Large/${movie.EventCode}.jpg`;
         if (obj.TrailerURL) {
           const videoId = YoutubeController.getVideoId(obj.TrailerURL);
           obj.TrailerBgUrl = YoutubeController.getWideThumbnailUrl(videoId);
@@ -190,9 +190,9 @@ class MovieDataUpdater {
 
 }
 
-// const Promise = require('bluebird');
-// Promise.delay(1000)
-//   .then(() => MovieDataUpdater.update())
-//   .then(console.log).catch(console.error);
+const Promise = require('bluebird');
+Promise.delay(1000)
+  .then(() => MovieDataUpdater.update())
+  .then(console.log).catch(console.error);
 
 module.exports = MovieDataUpdater;
