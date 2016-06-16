@@ -10,6 +10,24 @@ const log = require('../utils/logger').child({
 class PushController {
 
   /**
+   * Send a push to user who referred the user who just installed the app
+   * @param referrerUserToken THe person who referred the new user
+   * @param newUserName The name of the new user
+   * @return {Promise|undefined}
+   */
+  static pushReferralInstalled(/*string*/ referrerUserToken, /*string*/ newUserName) {
+    if (!newUserName) {
+      log.error('New user\'s name is empty');
+      return;
+    }
+
+    const action = 'com.stayyolo.PUSH.REFERRAL_INSTALLED';
+    const data = {name: newUserName};
+    return OneSignalDao.getPlayerIds([referrerUserToken])
+      .then((/*Array<string>*/ playerIds) => this._pushData(action, data, playerIds));
+  }
+
+  /**
    * Push a PNR status Update
    * @param data Pnr Data
    * @param userTokens _id of users to send the notification

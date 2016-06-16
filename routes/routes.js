@@ -11,6 +11,7 @@ const BotMovieRoutes = require('./bot-movie-routes');
 const NotificationRoutes = require('./notification-routes.js');
 const SeriesNotifierRoutes = require('./series-notifier-bot-routes');
 const InternalRoutes = require('./internal');
+const ReferralRoutes = require('./referral-routes');
 
 /**
  * A single point entry to all the routes in this server
@@ -42,6 +43,7 @@ class Routes {
     NotificationRoutes.setup(app);
     SeriesNotifierRoutes.setup(app);
     InternalRoutes.setup(app);
+    ReferralRoutes.setup(app);
   }
 }
 

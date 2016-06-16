@@ -53,6 +53,20 @@ class UserDao {
   }
 
   /**
+   * Finds a user with the given socialId only
+   * @param socialId Social Id of the user
+   * @return {Promise<User>}
+   */
+  static findUserWithSocialId(/*string*/ socialId) {
+    const query = {socialId};
+    return DaoHelper.user.find(query).next()
+      .tap(doc => {
+        if (!doc)
+          throw ErrorController.logAndReturnError(`User not found socialId : ${socialId}`);
+      });
+  }
+
+  /**
    * Updates the name of a user
    * @param socialId
    * @param newName
