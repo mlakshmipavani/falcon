@@ -47,6 +47,24 @@ class ReferralController {
     });
   }
 
+  /**
+   * Returns the points of the Terms & Conditions of the referral
+   * @return {Promise<Array<string>>}
+   */
+  static termsAndConditions() {
+    //noinspection Eslint
+    return Promise.resolve([
+      'BookMyShow voucher worth Rs. 250 will be given away as winning Prize',
+      'Your friend must download the app and install using referral link given to you',
+      'Only after your friend logs in, the referral would be considered successful',
+      'With each referral your chance of winning increases',
+      'This is a weekly contest, the winner will be announced every Sunday',
+      'Yolobots reserves the right to, without liability or prejudice to any of its other ' +
+      'rights, at any time, without previous notice and from time to time, withdraw/suspend/amend/cancel this Offer, with or without any reason',
+      'Yolobots reserves the right to, without liability or prejudice to any of its other rights, at any time, without previous notice and from time to time, cancel referral credit/prize, with or without any reason',
+      'Yolobots has the sole discretion to change, suspend or modify the Offer or these terms and conditions at any time without prior notice, at its sole discretion'
+    ]);
+  }
 }
 
 module.exports = ReferralController;

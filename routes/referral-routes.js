@@ -19,6 +19,8 @@ class ReferralRoutes {
       version: ApiVersion.v1
     }, ReferralRoutes.referralFrom);
 
+    app.get({path: '/referral/t&c', version: ApiVersion.v1}, ReferralRoutes.termsAndConditions);
+
   }
 
   static getReferUrl(req, res) {
@@ -48,6 +50,18 @@ class ReferralRoutes {
       .catch(err => {
         log.error(err);
         res.send({success: false, error: err.message});
+      });
+  }
+
+  static termsAndConditions(req, res) {
+    return ReferralController.termsAndConditions()
+      .then(tc => {
+        res.cache('private', {maxAge: 43200}); // 12 hrs
+        res.json(tc);
+      })
+      .catch(err => {
+        log.error(err);
+        res.send(err);
       });
   }
 
