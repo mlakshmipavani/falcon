@@ -2,7 +2,7 @@
 
 const Promise = require('bluebird');
 const PushController = require('./push-controller');
-var UserDao = require('../dao/user-dao.js');
+const UserDao = require('../dao/user-dao');
 
 class ReferralController {
 

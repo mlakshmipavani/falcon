@@ -43,13 +43,16 @@ class ReferralRoutes {
     const params = req.params;
     const referrerSocialId = params.socialId;
     const newUserSocialId = req.username;
-    if (!referrerSocialId) return res.send({success: false, error: 'socialId is empty'});
+    if (!referrerSocialId) {
+      log.error(new Error('socialId is empty'));
+      return res.json({success: false, error: 'socialId is empty'});
+    }
 
     return ReferralController.referralInstalled(referrerSocialId, newUserSocialId)
-      .then(() => res.send({success: true}))
+      .then(() => res.json({success: true}))
       .catch(err => {
         log.error(err);
-        res.send({success: false, error: err.message});
+        res.json({success: false, error: err.message});
       });
   }
 
@@ -65,6 +68,9 @@ class ReferralRoutes {
       });
   }
 
+  static getLogger() {
+    return log;
+  }
 }
 
 module.exports = ReferralRoutes;
