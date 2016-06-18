@@ -37,6 +37,7 @@ class ReferralController {
    * @param newUserSocialId Social Id of user B
    */
   static referralInstalled(/*string*/ referrerSocialId, /*string*/ newUserSocialId) {
+    if (referrerSocialId === newUserSocialId) return Promise.resolve();
     return Promise.props({
       referrer: UserDao.findUserWithSocialId(referrerSocialId),
       newUser: UserDao.findUserWithSocialId(newUserSocialId)
