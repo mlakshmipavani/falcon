@@ -17,6 +17,24 @@ describe('Push Controller', () => {
     return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
   });
 
+  it('push referral installed', () => {
+    // mock
+    let data;
+    PushController._pushData = (action, obj, playerIds) => {
+      data = {action, obj, playerIds};
+      return Promise.resolve();
+    };
+
+    // prepare
+    const userToken = '56d1d4f702bdabb3ee7c604c';
+    const name = 'Jaydeep';
+
+    // execute
+    return PushController.pushReferralInstalled(userToken, name)
+      .then(() => data.action.should.equal('com.stayyolo.PUSH.REFERRAL_INSTALLED'))
+      .then(() => data.obj.name.should.equal(name));
+  });
+
   it('pushes pnr update', () => {
     const userTokens = ['56d1d4f702bdabb3ee7c604c'];
     const oneSignalId = 'abcd-abcd-abcd-abcd';
