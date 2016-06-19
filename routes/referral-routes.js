@@ -19,6 +19,11 @@ class ReferralRoutes {
       version: ApiVersion.v1
     }, ReferralRoutes.referralFrom);
 
+    app.post({
+      path: '/referral/pushReferral',
+      version: ApiVersion.v1
+    }, ReferralRoutes.pushReferNotif);
+
     app.get({path: '/referral/t&c', version: ApiVersion.v1}, ReferralRoutes.termsAndConditions);
 
   }
@@ -49,6 +54,19 @@ class ReferralRoutes {
     }
 
     return ReferralController.referralInstalled(referrerSocialId, newUserSocialId)
+      .then(() => res.json({success: true}))
+      .catch(err => {
+        log.error(err);
+        res.json({success: false, error: err.message});
+      });
+  }
+
+  /**
+   * Sends a notif back to the same user explaining the new Referral program
+   */
+  static pushReferNotif(req, res) {
+    const userToken = req.authorization.basic.password;
+    return ReferralController.pushReferAndEarnNotif(userToken)
       .then(() => res.json({success: true}))
       .catch(err => {
         log.error(err);

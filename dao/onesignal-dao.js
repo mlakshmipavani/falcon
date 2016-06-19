@@ -21,7 +21,7 @@ class OneSignalDao {
   /**
    * Returns OneSignalUserIds from userTokens
    * @param userTokens An array of _id of users
-   * @returns {Promise<T>}
+   * @returns {Promise<Array<string>>}
    */
   static getPlayerIds(/*Array<string>*/ userTokens) {
     return DaoHelper.oneSignal.find({userToken: {$in: userTokens}}).toArray()

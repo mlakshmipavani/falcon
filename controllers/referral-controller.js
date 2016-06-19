@@ -4,6 +4,7 @@ const Promise = require('bluebird');
 const Bitly = require('bitly');
 const PushController = require('./push-controller');
 const UserDao = require('../dao/user-dao');
+const OneSignalDao = require('../dao/onesignal-dao');
 
 const bitly = new Bitly('4f6170004f03bed5ed5e05c7240f88e6ce5038ab');
 
@@ -17,7 +18,8 @@ class ReferralController {
    */
   static getReferUrl(/*string*/ socialId, /*string*/ utmCampaign) {
     const yolobotsUrl = `https://www.yolobots.com/refer/${socialId}`;
-    const androidPackageName = 'com.stayyolo.app.dev';
+    let androidPackageName = 'com.stayyolo.app';
+    if (process.env.NODE_ENV === 'development') androidPackageName += '.dev';
     const androidMinVersionCode = '150000205';
 
     // UTM params
@@ -51,6 +53,23 @@ class ReferralController {
       if (!users.newUser) throw new Error(`newUser is empty, socialId: ${newUserSocialId}`);
       PushController.pushReferralInstalled(users.referrer._id.toString(), users.newUser.name);
     });
+  }
+
+  /**
+   * Push a notif to user which explains the new Referral Program
+   * @param userToken The user token to whom the notif should be sent
+   * @return {Promise<>}
+   */
+  static pushReferAndEarnNotif(/*string*/ userToken) {
+    return OneSignalDao.getPlayerIds([userToken])
+      .then(oneSignalIds => {
+        return PushController.pushDynamicNotif({
+          botHandle: '@refer',
+          title: 'Win movie tickets!',
+          content: 'Refer your friends and win movie tickets',
+          bigPicture: 'https://s3-ap-southeast-1.amazonaws.com/promo-assets-yolobots/refer/windfd.png'
+        }, oneSignalIds);
+      });
   }
 
   /**

@@ -138,16 +138,17 @@ class PushController {
    * Sends a dynamic notification to all the users
    * Useful when you want to send all users notification like Ola Micro @ Rs.6/Km
    * @param notif The Dynamic notif object
+   * @param oneSignalIds If provided sends the notif to only these users, else to ALL the users
    * @return {Promise}
-   * @private
    */
-  static _pushDynamicNotif(/*DynamicNotif*/ notif) {
+  static pushDynamicNotif(/*DynamicNotif*/ notif, /*Array<string>=*/ oneSignalIds) {
     const action = 'com.stayyolo.PUSH.SHOW_NOTIFICATION';
 
     const options = this._getRequestOptionsForData(action, notif, []);
     delete options.body.include_player_ids;
     options.headers = {Authorization: `Basic ${config.oneSignal.apiKey}`};
-    options.body.included_segments = ['All'];
+    if (oneSignalIds) options.body.include_player_ids = oneSignalIds;
+    else options.body.included_segments = ['All'];
     return request(options).then(console.log).catch(console.error);
   }
 
