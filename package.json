@@ -22,6 +22,7 @@
   "homepage": "https://bitbucket.org/stayyolo/falconv2#readme",
   "dependencies": {
     "agenda": "0.8.1",
+    "bitly": "4.1.1",
     "bluebird": "3.3.5",
     "bunyan": "1.8.1",
     "cheerio": "0.20.0",

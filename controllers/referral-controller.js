@@ -1,8 +1,11 @@
 'use strict';
 
 const Promise = require('bluebird');
+const Bitly = require('bitly');
 const PushController = require('./push-controller');
 const UserDao = require('../dao/user-dao');
+
+const bitly = new Bitly('4f6170004f03bed5ed5e05c7240f88e6ce5038ab');
 
 class ReferralController {
 
@@ -27,7 +30,9 @@ class ReferralController {
     const url = `https://tj3b4.app.goo.gl/?link=${yolobotsUrl}&apn=${androidPackageName}`
       + `&amv=${androidMinVersionCode}`
       + `&utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`;
-    return Promise.resolve(url);
+
+    //noinspection JSUnresolvedFunction
+    return bitly.shorten(url).then(result => result.data.url);
   }
 
   /**
