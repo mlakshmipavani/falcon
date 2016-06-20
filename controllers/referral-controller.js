@@ -67,7 +67,7 @@ class ReferralController {
           botHandle: '@refer',
           title: 'Win movie tickets!',
           content: 'Refer your friends and win movie tickets',
-          bigPicture: 'https://s3-ap-southeast-1.amazonaws.com/promo-assets-yolobots/refer/windfd.png'
+          bigPicture: 'https://s3-ap-southeast-1.amazonaws.com/promo-assets-yolobots/refer/refer-info-notif.png'
         }, oneSignalIds);
       });
   }
