@@ -25,13 +25,16 @@ class ReferralController {
     // UTM params
     const utmSource = socialId;
     const utmMedium = 'referral';
+    const fullUtm = `utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`;
 
     // it's encoded to cover the edge cases where there's a space in the campaign name
     utmCampaign = encodeURIComponent(utmCampaign);
 
-    const url = `https://tj3b4.app.goo.gl/?link=${yolobotsUrl}&apn=${androidPackageName}`
-      + `&amv=${androidMinVersionCode}`
-      + `&utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`;
+    const desktopUrl = encodeURIComponent(`${yolobotsUrl}?${fullUtm}`);
+    const url = `https://tj3b4.app.goo.gl/?link=${desktopUrl}&apn=${androidPackageName}`
+      + `&amv=${androidMinVersionCode}&al=${yolobotsUrl}`
+      + `&${fullUtm}`;
+    console.log(url);
 
     //noinspection JSUnresolvedFunction
     return bitly.shorten(url).then(result => result.data.url);
