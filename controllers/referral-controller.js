@@ -17,6 +17,20 @@ class ReferralController {
    * @return {Promise.<string>}
    */
   static getReferUrl(/*string*/ socialId, /*string*/ utmCampaign) {
+    return UserDao.findUserWithSocialId(socialId)
+      .then(user => user.name)
+      .then(name => ReferralController._getReferUrl(socialId, name, utmCampaign));
+  }
+
+  /**
+   * Get the URL that the user will share with his friends
+   * @param socialId Social Id of the user
+   * @param nameOfReferrer Name of the user who's referring
+   * @param utmCampaign The current campaign running
+   * @return {Promise.<string>}
+   * @private
+   */
+  static _getReferUrl(/*string*/ socialId, /*string*/ nameOfReferrer, /*string*/ utmCampaign) {
     const yolobotsUrl = `https://www.yolobots.com/refer/${socialId}`;
     let androidPackageName = 'com.stayyolo.app';
     if (process.env.NODE_ENV === 'development') androidPackageName += '.dev';
@@ -25,7 +39,11 @@ class ReferralController {
     // UTM params
     const utmSource = socialId;
     const utmMedium = 'referral';
-    const fullUtm = `utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`;
+
+    //noinspection UnnecessaryLocalVariableJS
+    const utmTerm = nameOfReferrer;
+    const fullUtm = `utm_source=${utmSource}&utm_medium=${utmMedium}`
+      + `&utm_campaign=${utmCampaign}&utm_term=${utmTerm}`;
 
     // it's encoded to cover the edge cases where there's a space in the campaign name
     utmCampaign = encodeURIComponent(utmCampaign);
@@ -34,7 +52,6 @@ class ReferralController {
     const url = `https://tj3b4.app.goo.gl/?link=${desktopUrl}&apn=${androidPackageName}`
       + `&amv=${androidMinVersionCode}&al=${yolobotsUrl}`
       + `&${fullUtm}`;
-    console.log(url);
 
     //noinspection JSUnresolvedFunction
     return bitly.shorten(url).then(result => result.data.url);
