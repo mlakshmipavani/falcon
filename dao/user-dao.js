@@ -113,6 +113,9 @@ class UserDao {
     return DaoHelper.user.find(query, projection).next().then(userObj => userObj.olaAccessToken);
   }
 
+  static logger() {
+    return log;
+  }
 }
 
 module.exports = UserDao;
