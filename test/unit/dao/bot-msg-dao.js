@@ -51,4 +51,21 @@ describe('BotMsgDao', () => {
       .then((/*BotMsg*/ msg) => msg.body.should.equal(botMsg.body));
   });
 
+  it('when insertion gives undefined ', ()=> {
+    const originalCode = DaoHelper.botMsg.insertOne;
+    DaoHelper.botMsg.insertOne = () => Promise.resolve({insertedCount: 0});
+
+    return BotMsgDao.insert()
+      .then(data => should.equal(data, undefined))
+      .then(() => DaoHelper.botMsg.insertOne = originalCode);
+  });
+
+  it('finds msg with no _id', () => {
+    let error;
+    return BotMsgDao.getMsg()
+      .catch(err => error = err)
+      .then(() => {
+        if (!error) throw new Error('this should fail');
+      });
+  });
 });
