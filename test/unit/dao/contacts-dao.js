@@ -6,14 +6,13 @@ const DaoHelper = require('../../../dao/dao-helper');
 
 describe('Contact Dao', () => {
 
-  const token1 = 'token1';
-  const token2 = 'token2';
-
+  const token1 = 'testertoken1';
+  const token2 = 'testertoken2';
   const contact1 = {email: 'jaydp17@gmail.com', name: 'jaydp'};
   const contact2 = {email: 'parthpatolia@gmail.com', name: 'parth'};
 
   before(() => {
-    return Promise.delay(100).then(() => DaoHelper.db.dropDatabase());
+    return Promise.delay(300).then(() => DaoHelper.db.dropDatabase());
   });
 
   it('Save 2 contacts', () => {
@@ -29,10 +28,17 @@ describe('Contact Dao', () => {
       .spread((/*Contact*/ contact) => contact.userTokens.should.deep.equal([token1, token2]));
   });
 
+  it('to get Friends of users', () => {
+    return ContactDao.findEmailAndFriends()
+      .then(res => {
+        res[0].email.should.equal(contact1.email);
+        res[1].email.should.equal(contact2.email);
+      });
+  });
+
   it('Removes a contact', () => {
     return ContactDao.removeContact(contact2.email)
       .then(() => DaoHelper.contacts.count({email: contact2.email}))
       .should.eventually.equal(0);
   });
-
 });
