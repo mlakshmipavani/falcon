@@ -48,7 +48,7 @@ class main {
         };
         return request(searchReq)
           .then(result => {
-            result.data.forEach(dat => console.log(dat.Name))
+            result.data.forEach(dat => console.log(dat.Name));
           });
       });
   }
@@ -95,8 +95,8 @@ class main {
             });
           }).catch(error => {
             console.log(error);
-          })
-      })
+          });
+      });
   }
 }
 
