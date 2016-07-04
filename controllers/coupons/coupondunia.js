@@ -70,21 +70,21 @@ class main {
           headers: {'cache-control': 'no-cache'}
         };
         return Promise.resolve(request(searchReq))
-         .then(result => result.data)
-          .filter( (/*{Name}*/result) => result.Name === userInput)
-          .then( /*{@type:arrray}*/category=>{
+          .then(result => result.data)
+          .filter((/*{Name}*/result) => result.Name === userInput)
+          .then(/*Array<{CategoryID}>*/ category=> {
             const queryString = 'pi=86&ts=' + ts + '&category_id=' + category[0].CategoryID;
             const data = apiKey + queryString;
             const cs = crypto.createHash('md5').update(data).digest('hex');
             const url = 'http://coupondunia.in/api/coupons_by_category?' + queryString + '&cs=' + cs;
             const categoryUrl = {
-            method: 'GET',
-            url: url,
+              method: 'GET',
+              url: url,
               json: true,
               headers: {'cache-control': 'no-cache'}
             };
             return Promise.resolve(request(categoryUrl))
-               .then( (result) => result.data.Coupons );
+              .then((/*{data: {Coupons}}*/ result) => result.data.Coupons);
           });
       });
   }
