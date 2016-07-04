@@ -22,7 +22,7 @@ function getTimestamp() {
       console.log('Error');
     });
 }
-let ts;
+let ts; /*Timestamp*/
 const apiKey = 'D8CFF01E-2DD2-3CAA-ADE4-35E0EC07E351';
 
 class main {
@@ -43,11 +43,10 @@ class main {
           json: true,
           headers: {'cache-control': 'no-cache'}
         };
-        return Promise.resolve(request(searchReq))
-          .then((/*{data}*/ result) => result.data)
-          .tap(console.log)
-          .map((/*{Name}*/ cat) => cat.Name);
-      });
+        return Promise.resolve(request(searchReq));
+      })
+      .then((/*{data}*/ result) => result.data)
+      .map((/*{Name}*/ categories) => categories.Name);
   }
 
   /* Gives all coupons Based on the category given by user.
@@ -62,7 +61,6 @@ class main {
         const dataSearch = apiKey + queryStringSearch;
         const csSearch = crypto.createHash('md5').update(dataSearch).digest('hex');
         const url = 'http://coupondunia.in/api/all_categories?' + queryStringSearch + '&cs=' + csSearch;
-
         const searchReq = {
           method: 'GET',
           url: url,
@@ -84,10 +82,11 @@ class main {
               headers: {'cache-control': 'no-cache'}
             };
             return Promise.resolve(request(categoryUrl))
-              .then((/*{data: {Coupons}}*/ result) => result.data.Coupons);
-          });
+          }).then((/*{data: {Coupons}}*/ result) => result.data.Coupons);
+
       });
   }
 }
 
 module.exports = main;
+
