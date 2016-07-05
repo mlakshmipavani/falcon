@@ -3,36 +3,42 @@
 const Promise = require('bluebird');
 const request = require('request-promise');
 const crypto = require('crypto');
+const apiKey = 'D8CFF01E-2DD2-3CAA-ADE4-35E0EC07E351';
 const log = require('../../utils/logger').child({
   module: 'coupondunia'
 });
 
-function getTimestamp() {
-  const timeStampRequest = {
-    method: 'GET',
-    url: 'http://coupondunia.in/api/date',
-    json: true,
-    headers: {'cache-control': 'no-cache'}
-  };
-  return Promise.resolve(request(timeStampRequest))
-    .then(body => {
-      const couponDuniaTime = body.data.timestamp;
-      const partnerTime = Date.now();
-      return (partnerTime + ( partnerTime - couponDuniaTime ));
-    })
-    .catch(error => {
-      log.error(error);
-    });
-}
-const apiKey = 'D8CFF01E-2DD2-3CAA-ADE4-35E0EC07E351';
 
-class main {
+class CouponDuniaController {
+
+  /**
+   *Gives the Required Timestamp
+   *@return {Promise<T>}
+   */
+  static getTimestamp() {
+    const timeStampRequest = {
+      method: 'GET',
+      url: 'http://coupondunia.in/api/date',
+      json: true,
+      headers: {'cache-control': 'no-cache'}
+    };
+    return Promise.resolve(request(timeStampRequest))
+      .then(body => {
+        const couponDuniaTime = body.data.timestamp;
+        const partnerTime = Date.now();
+        return (partnerTime + ( partnerTime - couponDuniaTime ));
+      })
+      .catch(error => {
+        log.error(error);
+      });
+  }
+
   /**
    *Gives all the Coupons available
    *@return {Promise<T>}
    */
   static getAllCategories() {
-    return getTimestamp()
+    return this.getTimestamp()
       .then(timestamp => {
         const queryStringSearch = `pi=86&ts=${timestamp}`;
         const dataSearch = apiKey + queryStringSearch;
@@ -56,7 +62,7 @@ class main {
    * @return {Promise<T>}
    */
   static getCouponsByCategory(userInput) {
-    return getTimestamp()
+    return this.getTimestamp()
       .then(timestamp => {
         const queryStringSearch = `pi=86&ts=${timestamp}`;
         const dataSearch = apiKey + queryStringSearch;
@@ -88,5 +94,5 @@ class main {
   }
 }
 
-module.exports = main;
+module.exports = CouponDuniaController;
 
