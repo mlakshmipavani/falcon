@@ -1,6 +1,6 @@
 'use strict';
 
-const couponDunia = require('../controllers/coupons/coupondunia');
+const CouponDunia = require('../controllers/coupons/coupondunia');
 
 /**
  * Sets up all the routes required for couponDunia
@@ -17,14 +17,14 @@ class CouponDuniaRoutes {
 }
 
 function allCategories(req, res) {
-  return couponDunia.getAllCategories()
-    .then( data => res.json(data));
+  return CouponDunia.getAllCategories()
+    .then(data => res.json(data));
 }
 
 function couponCategory(req, res) {
-  const userInput = req.params.category;
-  return couponDunia.getCouponsByCategory(userInput)
-    .then( data => res.json(data));
+  const UserInput = req.params.category;
+  return CouponDunia.getCouponsByCategory(UserInput)
+    .then(data => res.json(data));
 }
 
 module.exports = CouponDuniaRoutes;

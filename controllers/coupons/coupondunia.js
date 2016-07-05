@@ -3,6 +3,9 @@
 const Promise = require('bluebird');
 const request = require('request-promise');
 const crypto = require('crypto');
+const log = require('../../utils/logger').child({
+  module: 'coupondunia'
+});
 
 function getTimestamp() {
   const timeStampRequest = {
@@ -17,26 +20,24 @@ function getTimestamp() {
       const partnerTime = Date.now();
       return (partnerTime + ( partnerTime - couponDuniaTime ));
     })
-    .then(body => body)
     .catch(error => {
-      console.log('Error');
+      log.error(error);
     });
 }
-let ts; /*Timestamp*/
 const apiKey = 'D8CFF01E-2DD2-3CAA-ADE4-35E0EC07E351';
 
 class main {
-  /*
-   gives all the Coupons available
+  /**
+   *Gives all the Coupons available
+   *@return {Promise<T>}
    */
   static getAllCategories() {
     return getTimestamp()
-      .then(data => {
-        ts = data;
-        const queryStringSearch = 'pi=86&ts=' + ts;
+      .then(timestamp => {
+        const queryStringSearch = `pi=86&ts=${timestamp}`;
         const dataSearch = apiKey + queryStringSearch;
         const csSearch = crypto.createHash('md5').update(dataSearch).digest('hex');
-        const url = 'http://coupondunia.in/api/all_categories?' + queryStringSearch + '&cs=' + csSearch;
+        const url = `http://coupondunia.in/api/all_categories?${queryStringSearch}&cs=${csSearch}`;
         const searchReq = {
           method: 'GET',
           url: url,
@@ -49,18 +50,18 @@ class main {
       .map((/*{Name}*/ categories) => categories.Name);
   }
 
-  /* Gives all coupons Based on the category given by user.
-   user: string
-   note: categoryID is automatically fetched using categoryName
+  /**
+   * Gives all coupons Based on the category given by user.
+   * @param userInput Category to get coupons
+   * @return {Promise<T>}
    */
   static getCouponsByCategory(userInput) {
     return getTimestamp()
-      .then(data => {
-        ts = data;
-        const queryStringSearch = 'pi=86&ts=' + ts;
+      .then(timestamp => {
+        const queryStringSearch = `pi=86&ts=${timestamp}`;
         const dataSearch = apiKey + queryStringSearch;
         const csSearch = crypto.createHash('md5').update(dataSearch).digest('hex');
-        const url = 'http://coupondunia.in/api/all_categories?' + queryStringSearch + '&cs=' + csSearch;
+        const url = `http://coupondunia.in/api/all_categories?${queryStringSearch}&cs=${csSearch}`;
         const searchReq = {
           method: 'GET',
           url: url,
@@ -71,19 +72,18 @@ class main {
           .then(result => result.data)
           .filter((/*{Name}*/result) => result.Name === userInput)
           .then(/*Array<{CategoryID}>*/ category=> {
-            const queryString = 'pi=86&ts=' + ts + '&category_id=' + category[0].CategoryID;
+            const queryString = `pi=86&ts=${timestamp}&category_id=${category[0].CategoryID}`;
             const data = apiKey + queryString;
             const cs = crypto.createHash('md5').update(data).digest('hex');
-            const url = 'http://coupondunia.in/api/coupons_by_category?' + queryString + '&cs=' + cs;
+            const url = `http://coupondunia.in/api/coupons_by_category?${queryString}&cs=${cs}`;
             const categoryUrl = {
               method: 'GET',
               url: url,
               json: true,
               headers: {'cache-control': 'no-cache'}
             };
-            return Promise.resolve(request(categoryUrl))
+            return Promise.resolve(request(categoryUrl));
           }).then((/*{data: {Coupons}}*/ result) => result.data.Coupons);
-
       });
   }
 }
