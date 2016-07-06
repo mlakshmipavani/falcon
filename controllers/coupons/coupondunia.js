@@ -12,8 +12,8 @@ const log = require('../../utils/logger').child({
 class CouponDuniaController {
 
   /**
-   *Gives the Required Timestamp
-   *@return {Promise<T>}
+   * Gives the Required Timestamp
+   * @return {Promise<T>}
    */
   static getTimestamp() {
     const timeStampRequest = {
@@ -34,8 +34,8 @@ class CouponDuniaController {
   }
 
   /**
-   *Gives all the Coupons available
-   *@return {Promise<T>}
+   * Gives all the Coupons available
+   * @return {Promise<T>}
    */
   static getAllCategories() {
     return this.getTimestamp()
