@@ -1,7 +1,8 @@
 'use strict';
 
 const Promise = require('bluebird');
-const request = require('request-promise');
+//const request = require('request-promise');
+const request = require('../../test/mock/coupons/request');
 const crypto = require('crypto');
 const apiKey = 'D8CFF01E-2DD2-3CAA-ADE4-35E0EC07E351';
 const log = require('../../utils/logger').child({
@@ -22,7 +23,7 @@ class CouponDuniaController {
       json: true,
       headers: {'cache-control': 'no-cache'}
     };
-    return Promise.resolve(request(timeStampRequest))
+    return Promise.resolve(request.callOne(timeStampRequest))
       .then(body => {
         const couponDuniaTime = body.data.timestamp;
         const partnerTime = Date.now();
@@ -50,7 +51,7 @@ class CouponDuniaController {
           json: true,
           headers: {'cache-control': 'no-cache'}
         };
-        return Promise.resolve(request(searchReq));
+        return Promise.resolve(request.callOne(searchReq));
       })
       .then((/*{data}*/ result) => result.data)
       .map((/*{Name}*/ categories) => categories.Name);
@@ -74,7 +75,7 @@ class CouponDuniaController {
           json: true,
           headers: {'cache-control': 'no-cache'}
         };
-        return Promise.resolve(request(searchReq))
+        return Promise.resolve(request.callOne(searchReq))
           .then(result => result.data)
           .filter((/*{Name}*/result) => result.Name === userInput)
           .then(/*Array<{CategoryID}>*/ category=> {
@@ -88,7 +89,7 @@ class CouponDuniaController {
               json: true,
               headers: {'cache-control': 'no-cache'}
             };
-            return Promise.resolve(request(categoryUrl));
+            return Promise.resolve(request.callTwo(categoryUrl));
           }).then((/*{data: {Coupons}}*/ result) => result.data.Coupons);
       });
   }
